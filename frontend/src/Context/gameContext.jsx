@@ -17,6 +17,8 @@ const initialState = {
   modalOpen: false,
   testingDialogOpen: false,
   expandedAccordion: null,
+  currTesterData:[],
+  currTesterID:null
 };
 
 // Reducer function to manage state updates
@@ -51,6 +53,8 @@ const gameReducer = (state, action) => {
       return { ...state, currVersionTestingData: action.payload, loading: false, error: null };
     case 'SET_FILES_COLS_DATA':
           return { ...state, filesColsData: action.payload, loading: false, error: action.payload };
+    case 'CURR_TESTER_DATA':
+          return { ...state, currTesterData: action.payload };     
     default:
       return state;
   }
@@ -74,7 +78,7 @@ export const GameContextProvider = ({ children }) => {
 
   useEffect(() => {
     fetchGameVersions(state.selectedGame);
-  }, [state.selectedGame,state.currVersion]);
+  }, [state.selectedGame,state.currVersion,state.currTesterData]);
 
   return (
     <GameContext.Provider value={{ state, dispatch }}>

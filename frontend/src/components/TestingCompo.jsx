@@ -28,8 +28,6 @@ const TestingCompo = ({ release }) => {
         );
         const data = await response.json();
 
-        console.log("data", data)
-
         if (data && data.length > 0) {
 
           dispatch({
@@ -51,107 +49,50 @@ const TestingCompo = ({ release }) => {
   }, [release.id]);
 
 
-  //   // const handleCheckboxChange = (rowIndex, checked) => {
-  //   //   console.log("function called")
-  //   //   const updatedData = state.currVersionTestingData.map((row, index) => {
-  //   //     if (index === rowIndex) {
-  //   //       return { ...row, status: checked ? "true" : "false" };
-  //   //     }
-  //   //     return row;
-  //   //   });
-  //   //   console.log("updatedData", updatedData)
-  //   //   dispatch({
-  //   //     type: "FETCH_CURR_TESTING_DATA",
-  //   //     payload: updatedData,
-  //   //   });
-  //   // };
-
-  console.log(state.currVersionTestingData)
-
-    const handleCheckboxChange = (rowIndex, checked) => {
-      const updatedData = getSelectedTesterData().map((item, index) => {
-        if (index === rowIndex) {
-          return { ...item, status: checked ? "true" : "false" };
-        }
-        return item;
-      });
-
-      const updatedTesterData = state.currVersionTestingData.find(entry => entry.tester_id === parseInt(selectedTesterId));
-
-      if (updatedTesterData) {
-        updatedTesterData.data = JSON.stringify(updatedData);
+  const handleCheckboxChange = (row, checked) => {
+    const updatedData = state.currTesterData.map((item, index) => {
+      if (row.id === item.id) {
+        return { ...item, status: checked ? "true" : "false" };
       }
-      // setSelectedTesterId(selectedTesterId); // Trigger re-render
-      console.log("updatedTesterData.data", updatedTesterData.data)
-    };
-    
+      return item;
+    });
 
+    dispatch({
+      type: "CURR_TESTER_DATA",
+      payload: updatedData
+    });
+
+    console.log('selectedTesterId',selectedTesterId)
+    console.log('updatedData data',updatedData)
+    console.log('currVersionTestingData',state.currVersionTestingData[0].version_id)
+
+  };
+
+  
+    
   const handleChange = (event) => {
     setSelectedTesterId(event.target.value);
+    getSelectedTesterData();
   };
 
   const getSelectedTesterData = () => {
+
     const testerData = state.currVersionTestingData.find(entry => entry.tester_id === parseInt(selectedTesterId));
-    return testerData ? JSON.parse(testerData.data) : [];
+    
+    if(testerData && testerData.data){
+      testerData.data = typeof testerData.data == 'string' ? JSON.parse(testerData.data) : testerData.data;
+
+      dispatch({
+        type: "CURR_TESTER_DATA",
+        payload: testerData.data,
+      });
+    }
   };
 
-  const selectedTesterData = getSelectedTesterData();
 
   return (
 
     <Container>
-      {/* <Table size="small" style={{border: '1px solid rgba(224, 224, 224, 1)'}}>
-        <TableHead sx={{ backgroundColor: "#ffd966" }}>
-          <TableRow>
-            {console.log("currVersionTestingData",state.currVersionTestingData)}
-            {Object.keys(state.currVersionTestingData[0] || {})
-              .filter((key) => !keysToSkip.includes(key))
-              .map((key) => (
-                <TableCell key={key}>{key.toUpperCase()}</TableCell>
-              ))}
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {state.currVersionTestingData.map((row, rowIndex) => (
-            <TableRow key={row.id}>
-              {Object.entries(row)
-                .filter(([key]) => !keysToSkip.includes(key))
-                .map(([key, value]) => (
-                  <TableCell key={key}>
-                    {key === "status" ? (
-                      <Checkbox
-                        checked={value === "true"}
-                        onChange={(e) => handleCheckboxChange(rowIndex, e.target.checked)}
-                        color="primary"
-                      />
-                    ) : (
-                      value
-                    )}
-                  </TableCell>
-                ))}
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table> */}
-
-
-
-      {/* <FormControl fullWidth>
-          <InputLabel id="tester-select-label">Select Tester</InputLabel>
-          <Select
-            labelId="tester-select-label"
-            value={selectedTesterId}
-            label="Select Tester"
-            onChange={handleChange}
-          >
-            {state.currVersionTestingData.map((entry) => (
-              <MenuItem key={entry.tester_id} value={entry.tester_id}>
-                Tester {entry.tester_id}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl> */}
-
 
       <Box sx={{ width: '100%', mx: 'auto', mt: 5 }}>
         <FormControl fullWidth>
@@ -171,7 +112,7 @@ const TestingCompo = ({ release }) => {
           </Select>
         </FormControl>
         <Box sx={{ mt: 3 }}>
-          {selectedTesterId && selectedTesterData.length > 0 && (
+          {selectedTesterId && state.currTesterData.length > 0 && (
             <>
               <Table size="small" style={{ border: '1px solid rgba(224, 224, 224, 1)' }}>
                 <TableHead sx={{ backgroundColor: "#ffd966" }}>
@@ -181,13 +122,13 @@ const TestingCompo = ({ release }) => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {selectedTesterData.map((row, rowIndex) => (
+                  {state.currTesterData.map((row, rowIndex) => (
                     <TableRow key={row.id}>
                       <TableCell>{row.Point}</TableCell>
                       <TableCell>
                         <Checkbox
                           checked={row.status === "true"}
-                          onChange={(e) => handleCheckboxChange(rowIndex, e.target.checked)}
+                          onChange={(e) => handleCheckboxChange(row, e.target.checked)}
                           color="primary"
                         />
                       </TableCell>
