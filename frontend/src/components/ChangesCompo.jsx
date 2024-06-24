@@ -66,7 +66,7 @@ const ChangesCompo = ({ release }) => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        selectedVersion: release.id,
+        testerId: release.id,
         updatedData: updatedData,
       }),
     })
@@ -113,7 +113,6 @@ const ChangesCompo = ({ release }) => {
                       <Checkbox
                         checked={value === "true"}
                         onChange={(e) => handleCheckboxChange(rowIndex, e.target.checked)}
-
                         color="primary"
                         key={key}
                       />
