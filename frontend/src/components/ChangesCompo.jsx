@@ -46,19 +46,18 @@ const ChangesCompo = ({ release }) => {
 
   const handleCheckboxChange = (rowIndex, checked) => {
     console.log("currVersion", state.currVersion)
-    const updatedData = state.currVersion.map((row, index) => {
+    const updatedChangesData = state.currVersion.map((row, index) => {
       if (index === rowIndex) {
         return { ...row, status: checked ? "true" : "false" };
       }
-      console.log(`Updating row at index ${index} with checked status: ${checked}`);
       return row;
     });
 
     dispatch({
       type: "FETCH_CURR_VERSION",
-      payload: updatedData,
+      payload: updatedChangesData,
     });
-    console.log("Updated Data:", updatedData);
+    console.log("Updated Data:", updatedChangesData);
 
     fetch('http://localhost:3001/update-changes-data', {
       method: 'POST',
@@ -66,8 +65,8 @@ const ChangesCompo = ({ release }) => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        testerId: release.id,
-        updatedData: updatedData,
+        selectedVersion: release.id,
+        updatedChangesData: updatedChangesData,
       }),
     })
       .then(response => {
@@ -81,7 +80,7 @@ const ChangesCompo = ({ release }) => {
         // Dispatch action to handle updated data
         dispatch({
           type: "FETCH_CURR_VERSION",
-          payload: updatedData,
+          payload: updatedChangesData,
         });
       })
       .catch(error => {

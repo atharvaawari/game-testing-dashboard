@@ -569,9 +569,12 @@ app.post("/add-testing-file-data", async (req, res) => {
 app.post("/update-changes-data", async (req, res) => {
   try {
     const NumselectedVersion = parseInt(req.body.selectedVersion)
-    const updatedDataString = JSON.stringify(req.body.updatedData)
+    const updatedChangesDataString = JSON.stringify(req.body.updatedChangesData)
 
-    const data = await executeDynamicSQLByTable(`UPDATE game_changes SET data='${updatedDataString}' WHERE version_id =${NumselectedVersion}`);
+    // console.log(`Updating game_changes for version_id=${NumselectedVersion} with data=${updatedDataString}`);
+    console.log("NumselectedVersion", NumselectedVersion)
+    const data = await executeDynamicSQLByTable(`UPDATE game_changes SET data='${updatedChangesDataString}' WHERE version_id =${NumselectedVersion}`);
+
 
     res.status(200).json({ message: 'Data Request arvied' });
   } catch (error) {
@@ -582,10 +585,15 @@ app.post("/update-changes-data", async (req, res) => {
 
 app.post("/update-testing-data", async (req, res) => {
   try {
-    const TesterId = parseInt(req.body.selectedTesterId)
-    const updatedTesterDataString = JSON.stringify(req.body.updatedTesterData)
-      // console.log(updatedTesterDataString)
-    // const data = await executeDynamicSQLByTable(`UPDATE game_testers_data SET data='${updatedTesterDataString}' WHERE tester_id =${TesterId}`);
+    const TesterId = parseInt(req.body.testerId)
+    const updatedTesterDataString = JSON.stringify(req.body.updatedData)
+    const currVersionId = parseInt(req.body.versionId)
+    
+    // console.log(`Updating game_testers_data for tester_id=${TesterId} and version_id=${currVersionId} with data=${updatedTesterDataString}`);
+
+    const data = await executeDynamicSQLByTable(
+       `UPDATE game_testers_data SET data='${updatedTesterDataString}' WHERE tester_id =${TesterId} AND version_id =${currVersionId}`
+    );
 
     res.status(200).json({ message: 'Data Request arvied' });
   } catch (error) {

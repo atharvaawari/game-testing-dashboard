@@ -62,17 +62,51 @@ const TestingCompo = ({ release }) => {
       payload: updatedData
     });
 
-    console.log('selectedTesterId',selectedTesterId)
-    console.log('updatedData data',updatedData)
-    console.log('currVersionTestingData',state.currVersionTestingData[0].version_id)
-
+    updateTesterData(updatedData);
   };
 
-  
+  const updateTesterData = (updatedData) => {
+    
+    fetch('http://localhost:3001/update-testing-data', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        testerId: selectedTesterId,
+        updatedData: updatedData,
+        versionId: state.currVersionTestingData[0].version_id
+      }),
+    })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Failed to update data');
+        }
+        return response.json();
+      })
+      .then(data => {
+        console.log('Data updated successfully:', data);
+        // Dispatch action to handle updated data
+        dispatch({
+          type: "FETCH_CURR_VERSION",
+          payload: state.currTesterData,
+        });
+      })
+      .catch(error => {
+        console.error('Error updating data:', error);
+        // Dispatch action to handle error
+        dispatch({
+          type: "UPDATE_DATA_ERROR",
+          payload: error.message,
+        });
+      });
+  }
     
   const handleChange = (event) => {
     setSelectedTesterId(event.target.value);
+
     getSelectedTesterData();
+    
   };
 
   const getSelectedTesterData = () => {
