@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
+  <title><%=parentCategory%> Uploads</title>
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <!-- <<<<<<<<< - my style sheet - >>>>>>>>>> -->
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      font-family: 'Nunito', sans-serif;
+      background-color: #f3f4f6;
+      margin: 0;
+      padding: 0;
+      text-align: center;
+    }
+
+    a{
+      text-decoration: none;
+    }
+
+    label {
+      font-size: 18px;
+      vertical-align: sub;
+      font-weight: 700;
+    }
+
+    .input-box {
+      text-align: left;
+      margin: 1.5rem 1rem 0px 1rem;
+    }
+
+    h1 {
+      display: block;
+      margin-bottom: 0.5rem;
+      color: #555;
+      margin-top: 1rem;
+      font-weight: 600;
+    }
+
+    h2 {
+      color: #333;
+      margin-top: 2rem;
+    }
+
+    h4 {
+      text-transform: capitalize;
+      text-align: left;
+      font-weight: 700;
+      font-size:16px
+    }
+
+    input[type="date"] {
+      width: 100px;
+      padding: 0.5rem;
+      margin-bottom: 1rem;
+      border: 1px solid #e0e0e0;
+      border-radius: 4px;
+    }
+
+    button {
+      background-color: #007BFF;
+      color: #ffffff;
+      border: none;
+      border-radius: 4px;
+      padding: 0.5rem 1rem;
+      margin: 0.5rem;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    .selected {
+      background-color: #ffeb3b;
+    }
+
+    small {
+      font-size: .875em;
+      padding: 6px;
+      border-radius: 8px;
+    }
+
+    .w-sm {
+      width: 30%;
+    }
+
+    .titl2 {
+      font-weight: 800;
+      font-size: 20px;
+      text-transform: capitalize;
+    }
+
+    .center {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+      background: #8a2be233;
+      padding: 15px;
+      border-radius: 8px;
+      height: 100%;
+    }
+
+    .tr {
+      border: 1px solid black;
+      padding: 0 5px;
+      background: #F1F6F9;
+    }
+
+    .th {
+      font-weight: 700;
+      border: 1px solid black;
+      width: fit-content;
+      padding: 10px 14px;
+      margin: 30px 0;
+      background: #FFF89A;
+    }
+
+    .color-F7D716D9 {
+      background: #F7D716D9;
+    }
+
+    .color-F66B0EE0 {
+      background: #F66B0EE0;
+    }
+
+    .color-5BF477 {
+      background: #5BF477;
+    }
+
+    .color-FF5F9E {
+      background: #FF5F9E;
+    }
+
+    table {
+      font-size:14px;
+      caption-side: bottom;
+      border-collapse: collapse;
+      margin: auto;
+      box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.25) !important;
+    }
+
+    .body {
+      width: 450px;
+      overflow: auto;
+      display: none;
+      overflow: auto;
+      background: white;
+      position: fixed;
+      left: 51px;
+      top: 25px;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 1rem;
+      border-radius: 16px;
+      box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.25) !important;
+      opacity: 0;
+      transition: opacity 0.3s, transform 0.3s;
+      z-index: 10000;
+      color:black
+    }
+
+    .body.show {
+      display: block;
+      opacity: 1;
+    }
+
+    .th-style {
+      padding: .5rem .5rem;
+      background-color: #FFD966;
+      border-bottom: 1px solid #8080805e;
+      font-weight: 800;
+    }
+
+    .baged--1 {
+      background: #FFCC8F;
+      padding: 5px 8px;
+      margin: 0 10px;
+      border-radius: 7px;
+      display: inline-block;
+    }
+
+    .category-container {
+      display: inline-block;
+      min-width: 950px;
+    }
+
+    .accordion-item {
+      width: 100%;
+    }
+
+    .grid-box-7-3 {
+      display: grid;
+      grid-template-columns: 70% 30%;
+    }
+
+    .alert-success {
+      z-index: -1 !important;
+    }
+
+    .target-details {
+      max-width: 30vw;
+      height: 50px;
+      min-width: 65%;
+    }
+
+    .w-btn-input input{
+      width: 60px;
+      background-color: #fff;
+    }
+
+    .w-btn-input {
+      display: inline-block;
+    }
+
+    .bck-border {
+      border: 1px solid black;
+      padding: 6px;
+      border-radius: 5px;
+      background-color: #fff;
+      border: 1px solid rgba(0,0,0,.125);
+    }
+
+    .section-header {
+     display: flex;
+     justify-content: space-between;
+    }
+
+
+    .acc-activity-box{
+      display: inline-block;
+      padding-top: 6px;
+    }
+
+    .accordion-header{
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .accordion-button::after{
+      margin-bottom: 9px;
+      margin-left: 10px;
+    }
+
+    .f-icon{
+      font-size:15px;
+      padding:.2rem
+    }
+
+    .f-btn{
+      font-size:15px;
+      padding:.5rem
+    }
+    .active-section{
+      background: rgba(0, 0, 0, 0.34);
+      color:white
+    }
+  </style>
+</head>
+
+<body>
+
+  <%- include('../partials/header.ejs') -%>
+
+  <main>
+
+   <div class="category-container mt-3">
+    
+    <div class="section-header">
+      <div class="bck-border">
+        <small class="text-dark"><strong><%=startDate%> To <%=endDate%></strong> </small>
+        <small class="text-dark" >/</small>
+        
+        <small class="text-dark"><strong>Total Activity this Week : <%=totalPostCountWeek%></strong> </small>
+      </div>
+
+      <div class="w-btn-input">
+
+        <a class="btn btn-primary" href="uploads-<%=parentCategory%>?w=<%=prevWeek%>">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M15 18l-6-6 6-6"></path>
+          </svg>
+        </a>
+        <div class="d-inline-block ">
+          <input class="btn btn-outline-dark " type="text" id="currentWeek" value="<%=currentWeek%>" readonly>
+        </div>
+        <a class="btn btn-primary" href="uploads-<%=parentCategory%>?w=<%=nextWeek%>">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M9 18l6-6-6-6"></path>
+            </svg>
+         
+        </a>
+      
+      </div>
+    </div>
+
+    <% for( a=0; a < data.length; a++) { %>
+
+      <%
+        // Define a custom function
+        function calculatePercentage(counts, target) {
+          return (counts / target) * 100;
+        }
+      %>
+
+    <div class="mb-4 ">
+
+      <div class="accordion-item mt-4">
+        <div class="accordion-header" id="heading-<%=a%>">
+          <a class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-<%=a%>" aria-expanded="false" aria-controls="collapseThree">
+            <h4> <%=data[a].category%></h4>
+          </a>
+
+
+        </div>
+        <div id="collapse-<%=a%>" class="accordion-collapse collapse " aria-labelledby="heading-<%=a%>" data-bs-parent="#accordionExample">
+          <div class="accordion-body">
+            <div class="grid-box-7-3">
+              <div>
+              </div>
+            </div>
+
+
+            <% if(!data[a].dataArray2.length<1) { %>
+
+            <table>
+
+              <thead>
+                <tr>
+                  <th class="th-style">Note</th>
+                  <th class="th-style">Channel Name</th>
+                  <% if(parentCategory == 'youtube') { %>
+                  <th class="th-style">Video</th>
+                  <th class="th-style">Shorts</th>
+                  <th class="th-style">Post</th>
+                  <th class="th-style">Polls</th>
+                  <th class="th-style">Comments</th>
+                  <% } else if(parentCategory == 'instagram') { %>
+                  <th class="th-style">Reel</th>
+                  <th class="th-style">Post</th>
+                  <th class="th-style">Story</th>
+                  <th class="th-style">Highlights</th>
+                  <th class="th-style">Poll or Quiz</th>
+                  <th class="th-style">Comments</th>
+                  <% } else if(parentCategory == 'facebook') { %>
+                  <th class="th-style">Post</th>
+                  <th class="th-style">Reel</th>
+                  <th class="th-style">Video</th>
+                  <th class="th-style">story </th>
+                  <th class="th-style">Comments</th>
+                  <% } else if(parentCategory == 'website') { %>
+                  <th class="th-style">Monday</th>
+                  <th class="th-style">Tuesday</th>
+                  <th class="th-style">Wednesday</th>
+                  <th class="th-style">Thursday </th>
+                  <th class="th-style">Friday</th>
+                  <th class="th-style">Saturday</th>
+                  <th class="th-style">Sunday</th>
+                  <% } %>
+                  <th class="th-style">Total</th>
+                </tr>
+              </thead>
+
+
+              <% for( i=0; i < data[a].dataArray2.length; i++) { %>
+
+              <% if(parentCategory == 'youtube') { %>
+
+              <%- include('../partials/yt.ejs') -%>
+
+              <% } else if(parentCategory == 'instagram') {%>
+
+              <%- include('../partials/instagram.ejs') -%>
+
+              <% } else if(parentCategory == 'facebook') {%>
+
+              <%- include('../partials/facebook.ejs') -%>
+
+              <% } else if(parentCategory == 'website') { %>
+
+              <%- include('../partials/website.ejs') -%>
+
+              <% } %>
+
+              <% } %>
+
+            </table>
+
+            <% } else { %>
+
+            <div class="alert alert-success " role="alert">
+              <strong> No data available for Week <%=currentWeek%>. Please check back later or choose another week.</strong>
+            </div>
+
+            <% } %>
+
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <% } %>
+
+   </div>
+  
+  </main>
+
+  <script>
+
+    function toggleBody(emailId) {
+      const body = document.getElementById('body' + emailId);
+      body.classList.toggle('show');
+    }
+
+    function submitChennelData(formId) {
+      const inputs = document.querySelectorAll(`#form-${formId} input`);
+      var inputsSelectedValue = '';
+
+      for (var i = 0; i < inputs.length; i++) {
+        if (inputs[i].checked) {
+          inputsSelectedValue = inputs[i].value;
+          break;
+        }
+      }
+
+      const selectElement = document.getElementById(`channel_list-${formId}`);
+      const contentType = document.getElementById(`content-type-${formId}`);
+      const selectedValue = selectElement.value;
+      const week = document.getElementById('currentWeek');
+
+
+      apiReq('upload-yt-data', [{
+        data: Number(inputsSelectedValue),
+        channelId: Number(selectedValue),
+        week: Number(week.value),
+        contentType: contentType.value,
+        category: '<%=parentCategory%>'
+      }])
+
+
+    }
+
+    function submitNotes(channelRef, channelId) {
+
+      let notesText = document.querySelector(`#${channelRef}`);
+
+      toggleBody(`-notes-` + channelRef.replace('notes-text-', ''));
+
+      apiReq('add-note', [{
+        data: notesText.value,
+        channelId: Number(channelId),
+        category: '<%=parentCategory%>'
+      }])
+
+    }
+
+    function submitWeeklyTargets(targetsCategory) {
+
+      let targetTitle = document.querySelector(`#${targetsCategory}-target-title`);
+      let targetDesc = document.querySelector(`#${targetsCategory}-target-desc`);
+      let week = document.querySelector(`#currentWeek`); 
+
+      apiReq('add-wekkly-target', [{
+        task_owner: targetTitle.value,
+        task_details: targetDesc.value,
+        category: '<%=parentCategory%>',
+        week:week.value,
+        targets_category:targetsCategory
+      }])
+
+    }
+
+    function handleCheckboxClick(elementRef,targetsCategory) {
+
+      apiReq('wekkly-target-is-checked', [{
+        isChecked: elementRef.checked,
+        id: elementRef.id,
+        category: '<%=parentCategory%>',
+        targets_category:targetsCategory
+      }])
+
+    }
+
+    function editWeeklyTargets(id,targetsCategory,currTask) {
+
+      let targetOwner = document.querySelector(`#${targetsCategory}-targets-owner-edit-${currTask}`);
+      let targetDetails = document.querySelector(`#${targetsCategory}-targets-details-edit-${currTask}`);
+      let week = document.querySelector(`#currentWeek`); 
+
+      //  toggleBody(`-notes-`+channelRef.replace('notes-text-', ''));
+
+      apiReq('wekkly-target-is-edit', [{
+        task_owner: targetOwner.value,
+        task_details: targetDetails.value,
+        task_id: id,
+        category: '<%=parentCategory%>',
+        targets_category:targetsCategory,
+        week:week.value,
+      }])
+
+    }
+
+    async function updateContent(formId, channelId, contentType) {
+
+      try {
+    
+          const inputs = document.querySelectorAll(`#update-content input`);
+          var inputsSelectedValue = '';
+    
+          for (var i = 0; i < inputs.length; i++) {
+        if (inputs[i].checked) {
+          inputsSelectedValue = inputs[i].value;
+          break;
+        }
+          }
+    
+          const week = document.getElementById('currentWeek');
+    
+          apiReq('/test-1', [{
+        data: Number(inputsSelectedValue),
+        channelId: Number(channelId),
+        week: Number(week.value),
+        contentType: contentType,
+        category: '<%=parentCategory%>'
+          }])
+    
+      } catch (error) {
+        // Handle errors here
+        console.log('Fetch error:', error);
+    
+          if (error.response) {
+        console.error('Response status:', error.response.status);
+        console.error('Response text:', await error.response.text());
+      }
+    
+      }
+    }
+
+  </script>
+
+  <script type="text/javascript" src="/static/js/pop-msg.js"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js" integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V" crossorigin="anonymous"></script>
+
+
+</body>
+
+</html>

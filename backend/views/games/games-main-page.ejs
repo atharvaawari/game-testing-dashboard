@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <!-- <<<<<<<<< - my style sheet - >>>>>>>>>> -->
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <!-- Link Swiper's CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+
+
+  <style>
+    :root {
+      --body-font: 'Roboto', sans-serif;
+      --body-alt-font: 'Chakra Petch', sans-serif;
+      --body-color: #fff;
+      --para-color: #64BE56;
+      --para-alt-color: #00FADF;
+      --body-bg: #0E063D;
+    }
+
+    body {}
+
+    section {
+      margin: 5rem 0;
+    }
+
+
+    a {
+      text-decoration: none;
+    }
+
+    .section-header {
+      color: black;
+      margin-bottom: 2rem;
+    }
+
+    .title {
+      font-weight: 800;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+      font-size: 40px;
+    }
+
+    .card-title {
+      color: var(--body-color);
+      text-transform: uppercase;
+      font-weight: 700;
+      font-size: 26px;
+
+    }
+
+    .card-para {
+
+      color: white;
+    }
+
+    .main-container {
+      /* background: linear-gradient(178.07deg, #4609C3 -9.74%, #0E063DED 95%); */
+      box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
+      ;
+      border-radius: 20px;
+      padding: 25px 100px 0;
+      margin-bottom: -8px;
+      padding-bottom: 50px;
+    }
+
+    .game-card {
+
+      width: 260px;
+      height: 300px;
+      background: #744c98;
+      border-radius: 10px;
+      padding: 1rem;
+
+    }
+
+    .game-card-img {
+      height: 180px;
+
+    }
+
+    .cmn-btn {
+      position: relative;
+      text-transform: uppercase;
+      font-weight: 500;
+      font-size: 18px;
+      line-height: 27px;
+      transition: all 0.5s;
+      padding: 11px 32px;
+      background: linear-gradient(351.09deg, #F0B000 4.36%, #F029A0 117.5%);
+      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
+      border-radius: 25px;
+      overflow: hidden;
+      z-index: 0;
+      border: none;
+      color: var(--body-color);
+      text-decoration: none;
+      margin-top: 2rem;
+    }
+
+    .games-cards-box {
+      display: flex;
+      gap: 35px;
+    }
+
+    .btn-box {
+      text-align: center;
+    }
+
+    .points-box {
+      color: var(--body-color);
+      font-weight: 600;
+      border-radius: 8px;
+      background: linear-gradient(351.09deg, #F0B000 4.36%, #F029A0 117.5%);
+      padding: 2px 0px;
+      height: 60px;
+      justify-content: space-around;
+      display: flex;
+      align-items: center;
+    }
+
+    hr:not([size]) {
+      height: 1px;
+      background: black;
+    }
+
+
+    .swiper {
+      width: 100%;
+      height: 100%;
+    }
+
+    .swiper-slide {
+      text-align: center;
+      font-size: 18px;
+      background: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+ 
+    }
+
+    .more-blogs-btn-box{
+        display: flex;
+  justify-content: center;
+    }
+
+    .swiper-button-next, .swiper-button-prev {
+  all:unset;
+  margin: 1rem;
+  
+}
+
+.more-blogs-btn-box button{
+    background:black;
+    padding: 5px 20px;
+  background: #955BA5;
+    background-color: rgb(149, 91, 165);
+  background-color: rgb(149, 91, 165);
+  border-radius: 7px;
+  border: none;
+}
+
+.swiper-button-prev::after, .swiper-rtl .swiper-button-next::after ,
+.swiper-button-next::after, .swiper-rtl .swiper-button-prev::after {
+  all:unset
+}
+
+
+           @media screen and (max-width: 568px) {
+          .main-container {
+  
+  box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
+  border-radius: 20px;
+  padding: 1rem;
+    padding-bottom: 0px;
+  margin-bottom: -8px;
+  padding-bottom: 50px;
+}
+
+.swiper-slide {
+  text-align: center;
+  font-size: 18px;
+  background: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+}
+
+.games-cards-box {
+  display: flex;
+  gap: 35px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+           }
+  </style>
+</head>
+
+<body>
+
+  <%- include('../partials/header.ejs') -%>
+
+  <section id="available-game-section">
+    <div class="overlay pb-120">
+      <div class="container wow fadeInUp" style="visibility: visible; animation-name: fadeInUp;">
+        <div class="main-container">
+
+          <div class="row justify-content-between">
+            <div class="">
+              <div class="section-header">
+                <h2 class="title">Games</h2>
+                <p>We are constantly adding new games</p>
+                <hr>
+              </div>
+            </div>
+          </div>
+
+          <div class="games-cards-box">
+            <!-- Swiper -->
+            <div class="swiper mySwiper">
+              <div class="swiper-wrapper">
+
+                <% 
+                    uniqueGames.forEach(game => {
+                    %>
+                <div class="swiper-slide">
+                  <a href="/games/<%=game.page_link%>">
+                    <div class="game-card p-0">
+                      <img class="game-card-img" width="100%" height="100%" src="/static/images/game-img.webp" alt="">
+                      <hr>
+                      <h5 class="card-title px-3"><%=game.game_name%></h5>
+
+                      <!-- <div class="points-box">
+                                <span><img src="https://www.mindyourlogic.com/static/all-icons/scoreboard-icon-4.png" alt="" width="30px" height="30px">Top Score : <%=game.highest_score%></span>
+          
+                              </div> -->
+                    </div>
+                  </a>
+                </div>
+
+                <% 
+                    });
+                    %>
+
+              </div>
+
+                          <div class="more-blogs-btn-box">
+              <button class="swiper-button-prev">
+                <svg width="10" height="30" viewBox="0 0 30 45" fill="black" xmlns="http://www.w3.org/2000/svg">
+                  <path
+                    d="M9.60985 22.497L28.6537 6.62618C29.4138 5.98763 29.8899 5.07384 29.9778 4.08492C30.0657 3.096 29.7582 2.11254 29.1226 1.34992C28.487 0.587294 27.5751 0.107652 26.5866 0.0160259C25.5982 -0.0755999 24.6137 0.228258 23.8488 0.86106L1.34775 19.6144C0.925842 19.9669 0.586462 20.4078 0.353582 20.9059C0.120702 21.404 0 21.9471 0 22.497C0 23.0468 0.120702 23.59 0.353582 24.088C0.586462 24.5861 0.925842 25.027 1.34775 25.3795L23.8488 44.1328C24.6134 44.7686 25.599 45.0749 26.5893 44.9844C27.5795 44.8939 28.4933 44.414 29.13 43.6501C29.7667 42.8862 30.0741 41.9007 29.9848 40.9103C29.8955 39.9198 29.4167 39.0053 28.6537 38.3676L9.60985 22.497Z"
+                    fill="white"></path>
+                </svg>
+              </button>
+              <button class="swiper-button-next">
+                <svg width="10" height="30" viewBox="0 0 30 45" fill="black" xmlns="http://www.w3.org/2000/svg">
+                  <path
+                    d="M20.3901 22.503L1.34632 38.3738C0.586194 39.0124 0.110051 39.9262 0.022166 40.9151C-0.0657191 41.904 0.241812 42.8875 0.877415 43.6501C1.51302 44.4127 2.42489 44.8924 3.41335 44.984C4.40181 45.0756 5.38629 44.7717 6.15121 44.1389L28.6522 25.3856C29.0742 25.0331 29.4135 24.5922 29.6464 24.0941C29.8793 23.596 30 23.0529 30 22.503C30 21.9532 29.8793 21.41 29.6464 20.912C29.4135 20.4139 29.0742 19.973 28.6522 19.6205L6.15121 0.867218C5.38663 0.231382 4.40096 -0.0749239 3.41071 0.0155867C2.42047 0.106097 1.50665 0.586022 0.869978 1.34994C0.233307 2.11385 -0.0741416 3.09928 0.0151723 4.08975C0.104486 5.08022 0.583261 5.99474 1.34632 6.6324L20.3901 22.503Z"
+                    fill="white"></path>
+                </svg>
+              </button>
+            </div>
+       
+            </div>
+
+
+
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <section id="available-game-section">
+    <div class="overlay pb-120">
+      <div class="container wow fadeInUp" style="visibility: visible; animation-name: fadeInUp;">
+        <div class="main-container">
+          <div class="row justify-content-between">
+            <div class="">
+              <div class="section-header">
+                <h2 class="title">TOP 3 RANK</h2>
+                <p>We are constantly adding new games</p>
+                <hr>
+              </div>
+            </div>
+          </div>
+
+          <div class="games-cards-box">
+
+          
+
+
+            <% let rank=1
+            sortedUsers.slice(0, 3).forEach(game => {
+             %>
+            <a href="/player/<%=game.emp_id%>">
+              <div class="game-card" style="height:180px">
+                <h5 class="card-title"><%=game.challengers%></h5>
+                <h6 class="card-para "><%=game.name%></h6>
+                <hr>
+
+                <div class="points-box">
+                  <div>
+                    <span><img src="https://www.mindyourlogic.com/static/all-icons/scoreboard-icon-3.png" alt="" width="30px" height="30px">Rank :
+                      <%=rank%></span>
+
+                  </div>
+
+                  <div>
+                    <span><img src="https://www.mindyourlogic.com/static/all-icons/scoreboard-icon-4.png" alt="" width="30px" height="30px">Score :
+                      <%=game.total%></span>
+
+                  </div>
+                </div>
+
+              </div>
+            </a>
+
+
+            <% 
+                rank++});
+            %>
+          </div>
+          <div class="btn-box">
+            <a href="/games-ranking">
+              <button href="" class="cmn-btn">See All</button>
+            </a>
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- Swiper JS -->
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+
+      <!-- Initialize Swiper -->
+      <script>
+        const myjsmedia = (widthSize) => {
+
+          if (widthSize.matches) {
+
+            var swiper = new Swiper('.mySwiper', {
+
+      
+         loop: false,
+              slidesPerView: 1,
+              spaceBetween: 50,
+              initialSlide: 0,
+              loop: false,
+              pagination: {
+                el: '.swiper-pagination',
+                type: 'fraction',
+              },
+              navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev',
+              },
+            });
+
+          } else {
+
+            var swiper = new Swiper('.mySwiper', {
+
+     
+         loop: false,
+              slidesPerView: 3,
+              spaceBetween: 60,
+              initialSlide: 0,
+     
+              pagination: {
+                el: '.swiper-pagination',
+              },
+              navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev',
+              },
+            });
+
+          }
+        };
+
+        const widthSize = window.matchMedia("(max-width: 992px)")
+
+        myjsmedia(widthSize);
+
+        widthSize.addEventListener("change", myjsmedia)
+      </script>
+
+
+
+
+
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js" integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V" crossorigin="anonymous"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,381 @@
+
+   <tbody>
+
+    <tr style="border-bottom: 1px solid #8080805e;background: white; ">
+
+    <td class="px-2 text-left">
+        <a class="f-btn d-inline-flex align-items-center pop-up-btn btn btn-primary position-relative" type="button" onclick="toggleBody('-notes-<%= i %>-<%= a %>')">
+          Notes
+          <% if(! data[a].dataArray2[i][1].notes.notes.trim() == '') { %>
+          <span class="position-absolute top-4 start-100 translate-middle badge rounded-pill bg-danger">
+            <%=data[a].dataArray2[i][1].notes.notes.trim().substring(0,10) + ".. "%>
+       </span>
+       <% } %>
+       </a>
+
+       <div class="body" id="body-notes-<%= i %>-<%= a %>">
+        <div>
+         <div class="tr pending-leaves-container">
+           <div class="edit-form m-2">
+             <p class="titl2">Notes for <%=data[a].dataArray2[i][0]%></p>
+             <hr>
+             
+             <% if(! data[a].dataArray2[i][1].notes.notes.trim() == '') { %>
+
+              <textarea id="notes-text-<%= i %>-<%= a %>" cols="30" rows="5"><%= data[a].dataArray2[i][1].notes.notes %></textarea>
+          
+             <% } else { %>
+              <textarea id="notes-text-<%= i %>-<%= a %>" cols="30" rows="5"></textarea>
+
+             <% } %>
+           </div>
+         </div>
+        </div>
+        <div>
+         <button onclick="submitNotes('notes-text-<%= i %>-<%= a %>','<%= data[a].dataArray2[i][1].post_category_id.post_category_id %>')">
+             Save
+         </button>
+         <button onclick="toggleBody('-notes-<%= i %>-<%= a %>')">
+           Close
+         </button>
+        </div>
+     </div>
+    </td>
+
+    <td class="px-2"><strong><%=data[a].dataArray2[i][0]%></strong></td>
+
+    <td>
+      <strong>
+        <button              
+              <% if(data[a].dataArray2[i][1].counts.monday < data[a].dataArray2[i][1].target.monday_target) {%> 
+                class="btn btn-danger f-btn"
+              <% } else { %> 
+                class="btn btn-success f-btn"
+              <% } %> 
+              onclick="toggleBody('-monday-<%=i%>-<%=a%>')">
+          <%= data[a].dataArray2[i][1].counts.monday %>
+        </button>
+        | 
+        <small><%= data[a].dataArray2[i][1].target.monday_target %></small>
+      </strong>
+
+      <div class="body" id="body-monday-<%=i%>-<%=a%>" style="height: 400px; overflow-y: scroll; background: #F1F6F9">
+        <h3 class="p-3"><strong>Users for <%= data[a].dataArray2[i][0] %> Upload</strong></h3>
+
+        <% if (data[a].dataArray2[i][1].userData.monday.length > 0) { %>
+        <% for (let l = 0; l < data[a].dataArray2[i][1].userData.monday.length; l++) { %>
+        <div class="tr p-3">
+        
+         <strong class="baged--1">Name: <%= data[a].dataArray2[i][1].userData.monday[l].user_name %></strong>
+        
+          <div class="p-1">
+            <%
+                const timestamp = new Date(data[a].dataArray2[i][1].userData.monday[l].time_stamp);
+                const formattedDate = timestamp.toLocaleDateString('en-US');
+                const formattedTime = timestamp.toLocaleTimeString('en-US');
+              %>
+
+            <strong>Date: <%= formattedDate %> | Time <%= formattedTime %></strong>
+          </div>
+        </div>
+        <% } %>
+        <% } %>
+            <div>
+              <%- include('../partials/content-upload-temp.ejs',{ channelId : data[a].dataArray2[i][1].post_category_id.post_category_id, contentType : 'monday'  }) -%>
+            </div>
+        <div>
+          <button onclick="toggleBody('-monday-<%=i%>-<%=a%>')">Close</button>
+        </div>
+      </div>
+    </td>  
+
+    <td>
+      <strong>
+        <button              
+              <% if(data[a].dataArray2[i][1].counts.tuesday < data[a].dataArray2[i][1].target.tuesday_target) {%> 
+                class="btn btn-danger f-btn"
+              <% } else { %> 
+                class="btn btn-success f-btn"
+              <% } %> 
+              onclick="toggleBody('-tuesday-<%=i%>-<%=a%>')">
+          <%= data[a].dataArray2[i][1].counts.tuesday %>
+        </button>
+        | 
+        <small><%= data[a].dataArray2[i][1].target.tuesday_target %></small>
+      </strong>
+
+      <div class="body" id="body-tuesday-<%=i%>-<%=a%>" style="height: 400px; overflow-y: scroll; background: #F1F6F9;">
+        <h3 class="p-3"><strong>Users for <%= data[a].dataArray2[i][0] %> Upload</strong></h3>
+
+        <% if (data[a].dataArray2[i][1].userData.tuesday.length > 0) { %>
+        <% for (let l = 0; l < data[a].dataArray2[i][1].userData.tuesday.length; l++) { %>
+        <div class="tr p-3">
+          <%= data[a].dataArray2[i][1].userData.tuesday[l].user_name %>
+
+          <div class="p-1">
+            <strong class="baged--1">Name: <%= data[a].dataArray2[i][1].userData.tuesday[l].user_name %></strong>
+          </div>
+ 
+          <div class="p-1">
+            <%
+                const timestamp = new Date(data[a].dataArray2[i][1].userData.tuesday[l].time_stamp);
+                const formattedDate = timestamp.toLocaleDateString('en-US');
+                const formattedTime = timestamp.toLocaleTimeString('en-US');
+              %>
+
+            <strong>Date: <%= formattedDate %> | Time <%= formattedTime %></strong>
+          </div>
+        </div>
+        <% } %>
+        <% } %>
+            <div>
+              <%- include('../partials/content-upload-temp.ejs',{ channelId : data[a].dataArray2[i][1].post_category_id.post_category_id, contentType : 'tuesday'  }) -%>
+            </div>
+        <div>
+          <button onclick="toggleBody('-tuesday-<%=i%>-<%=a%>')">Close</button>
+        </div>
+      </div>
+    </td>
+
+    <td>
+      <strong>
+        <button              
+              <% if(data[a].dataArray2[i][1].counts.wednesday < data[a].dataArray2[i][1].target.wednesday_target) {%> 
+                class="btn btn-danger f-btn"
+              <% } else { %> 
+                class="btn btn-success f-btn"
+              <% } %> 
+              onclick="toggleBody('-wednesday-<%=i%>-<%=a%>')">
+          <%= data[a].dataArray2[i][1].counts.wednesday %>
+        </button>
+        | 
+        <small><%= data[a].dataArray2[i][1].target.wednesday_target %></small>
+      </strong>
+
+      <div class="body" id="body-wednesday-<%=i%>-<%=a%>" style="height: 400px; overflow-y: scroll; background: #F1F6F9;">
+        <h3 class="p-3"><strong>Users for <%= data[a].dataArray2[i][0] %> Upload</strong></h3>
+
+        <% if (data[a].dataArray2[i][1].userData.wednesday.length > 0) { %>
+        <% for (let l = 0; l < data[a].dataArray2[i][1].userData.wednesday.length; l++) { %>
+        <div class="tr p-3">
+          <%= data[a].dataArray2[i][1].userData.wednesday[l].user_name %>
+
+          <div class="p-1">
+            <strong class="baged--1">Name: <%= data[a].dataArray2[i][1].userData.wednesday[l].user_name %></strong>
+          </div>
+
+          <div class="p-1">
+            <%
+                const timestamp = new Date(data[a].dataArray2[i][1].userData.wednesday[l].time_stamp);
+                const formattedDate = timestamp.toLocaleDateString('en-US');
+                const formattedTime = timestamp.toLocaleTimeString('en-US');
+              %>
+
+            <strong>Date: <%= formattedDate %> | Time <%= formattedTime %></strong>
+          </div>
+        </div>
+        <% } %>
+        <% } %>
+            <div>
+              <%- include('../partials/content-upload-temp.ejs',{ channelId : data[a].dataArray2[i][1].post_category_id.post_category_id, contentType : 'wednesday'  }) -%>
+            </div>
+        <div>
+          <button onclick="toggleBody('-wednesday-<%=i%>-<%=a%>')">Close</button>
+        </div>
+      </div>
+    </td>
+
+    <td>
+      <strong>
+        <button              
+              <% if(data[a].dataArray2[i][1].counts.thursday < data[a].dataArray2[i][1].target.thursday_target) {%> 
+                class="btn btn-danger f-btn"
+              <% } else { %> 
+                class="btn btn-success f-btn"
+              <% } %> 
+              onclick="toggleBody('-thursday-<%=i%>-<%=a%>')">
+          <%= data[a].dataArray2[i][1].counts.thursday %>
+        </button>
+        | 
+        <small><%= data[a].dataArray2[i][1].target.thursday_target %></small>
+      </strong>
+
+      <div class="body" id="body-thursday-<%=i%>-<%=a%>" style="height: 400px; overflow-y: scroll; background: #F1F6F9;">
+        <h3 class="p-3"><strong>Users for <%= data[a].dataArray2[i][0] %> Upload</strong></h3>
+
+        <% if (data[a].dataArray2[i][1].userData.thursday.length > 0) { %>
+        <% for (let l = 0; l < data[a].dataArray2[i][1].userData.thursday.length; l++) { %>
+        <div class="tr p-3">
+
+          <div class="p-1">
+            <strong class="baged--1">Name: <%= data[a].dataArray2[i][1].userData.thursday[l].user_name %></strong>
+          </div>
+
+          <div class="p-1">
+            <%
+                const timestamp = new Date(data[a].dataArray2[i][1].userData.thursday[l].time_stamp);
+                const formattedDate = timestamp.toLocaleDateString('en-US');
+                const formattedTime = timestamp.toLocaleTimeString('en-US');
+              %>
+
+            <strong>Date: <%= formattedDate %> | Time <%= formattedTime %></strong>
+          </div>
+        </div>
+        <% } %>
+        <% } %>
+            <div>
+              <%- include('../partials/content-upload-temp.ejs',{ channelId : data[a].dataArray2[i][1].post_category_id.post_category_id, contentType : 'thursday'  }) -%>
+            </div>
+        <div>
+          <button onclick="toggleBody('-thursday-<%=i%>-<%=a%>')">Close</button>
+        </div>
+      </div>
+    </td>
+
+    <td>
+      <strong>
+        <button              
+              <% if(data[a].dataArray2[i][1].counts.friday < data[a].dataArray2[i][1].target.friday_target) {%> 
+                class="btn btn-danger f-btn"
+              <% } else { %> 
+                class="btn btn-success f-btn"
+              <% } %> 
+              onclick="toggleBody('-friday-<%=i%>-<%=a%>')">
+          <%= data[a].dataArray2[i][1].counts.friday %>
+        </button>
+        | 
+        <small><%= data[a].dataArray2[i][1].target.friday_target %></small>
+      </strong>
+
+      <div class="body" id="body-friday-<%=i%>-<%=a%>" style="height: 400px; overflow-y: scroll; background: #F1F6F9;">
+        <h3 class="p-3"><strong>Users for <%= data[a].dataArray2[i][0] %> Upload</strong></h3>
+
+        <% if (data[a].dataArray2[i][1].userData.friday.length > 0) { %>
+        <% for (let l = 0; l < data[a].dataArray2[i][1].userData.friday.length; l++) { %>
+        <div class="tr p-3">
+
+          <div class="p-1">
+            <strong class="baged--1">Name: <%= data[a].dataArray2[i][1].userData.friday[l].user_name %></strong>
+          </div>
+    
+          <div class="p-1">
+            <%
+                const timestamp = new Date(data[a].dataArray2[i][1].userData.friday[l].time_stamp);
+                const formattedDate = timestamp.toLocaleDateString('en-US');
+                const formattedTime = timestamp.toLocaleTimeString('en-US');
+              %>
+
+            <strong>Date: <%= formattedDate %> | Time <%= formattedTime %></strong>
+          </div>
+        </div>
+        <% } %>
+        <% } %>
+            <div>
+              <%- include('../partials/content-upload-temp.ejs',{ channelId : data[a].dataArray2[i][1].post_category_id.post_category_id, contentType : 'friday'  }) -%>
+            </div>
+        <div>
+          <button onclick="toggleBody('-friday-<%=i%>-<%=a%>')">Close</button>
+        </div>
+      </div>
+    </td>
+
+    <td>
+      <strong>
+        <button              
+              <% if(data[a].dataArray2[i][1].counts.saturday < data[a].dataArray2[i][1].target.saturday_target) {%> 
+                class="btn btn-danger f-btn"
+              <% } else { %> 
+                class="btn btn-success f-btn"
+              <% } %> 
+              onclick="toggleBody('-saturday-<%=i%>-<%=a%>')">
+          <%= data[a].dataArray2[i][1].counts.saturday %>
+        </button>
+        | 
+        <small><%= data[a].dataArray2[i][1].target.saturday_target %></small>
+      </strong>
+
+      <div class="body" id="body-saturday-<%=i%>-<%=a%>" style="height: 400px; overflow-y: scroll; background: #F1F6F9;">
+        <h3 class="p-3"><strong>Users for <%= data[a].dataArray2[i][0] %> Upload</strong></h3>
+
+        <% if (data[a].dataArray2[i][1].userData.saturday.length > 0) { %>
+        <% for (let l = 0; l < data[a].dataArray2[i][1].userData.saturday.length; l++) { %>
+        <div class="tr p-3">
+          <%= data[a].dataArray2[i][1].userData.saturday[l].user_name %>
+
+          <div class="p-1">
+            <strong>Total saturday: <%= data[a].dataArray2[i][1].userData.saturday[l].count %></strong>
+          </div>
+          <div class="p-1">
+            <%
+                const timestamp = new Date(data[a].dataArray2[i][1].userData.saturday[l].time_stamp);
+                const formattedDate = timestamp.toLocaleDateString('en-US');
+                const formattedTime = timestamp.toLocaleTimeString('en-US');
+              %>
+
+            <strong>Date: <%= formattedDate %> | Time <%= formattedTime %></strong>
+          </div>
+        </div>
+        <% } %>
+        <% } %>
+            <div>
+              <%- include('../partials/content-upload-temp.ejs',{ channelId : data[a].dataArray2[i][1].post_category_id.post_category_id, contentType : 'saturday'  }) -%>
+            </div>
+        <div>
+          <button onclick="toggleBody('-saturday-<%=i%>-<%=a%>')">Close</button>
+        </div>
+      </div>
+    </td>
+
+    <td>
+      <strong>
+        <button              
+              <% if(data[a].dataArray2[i][1].counts.sunday < data[a].dataArray2[i][1].target.sunday_target) {%> 
+                class="btn btn-danger f-btn"
+              <% } else { %> 
+                class="btn btn-success f-btn"
+              <% } %> 
+              onclick="toggleBody('-sunday-<%=i%>-<%=a%>')">
+          <%= data[a].dataArray2[i][1].counts.sunday %>
+        </button>
+        | 
+        <small><%= data[a].dataArray2[i][1].target.sunday_target %></small>
+      </strong>
+
+      <div class="body" id="body-sunday-<%=i%>-<%=a%>" style="height: 400px; overflow-y: scroll; background: #F1F6F9;">
+        <h3 class="p-3"><strong>Users for <%= data[a].dataArray2[i][0] %> Upload</strong></h3>
+
+        <% if (data[a].dataArray2[i][1].userData.sunday.length > 0) { %>
+        <% for (let l = 0; l < data[a].dataArray2[i][1].userData.sunday.length; l++) { %>
+        <div class="tr p-3">
+
+          <div class="p-1">
+            <strong class="baged--1">Name: <%= data[a].dataArray2[i][1].userData.sunday[l].user_name %></strong>
+          </div>
+
+          <div class="p-1">
+            <%
+                const timestamp = new Date(data[a].dataArray2[i][1].userData.sunday[l].time_stamp);
+                const formattedDate = timestamp.toLocaleDateString('en-US');
+                const formattedTime = timestamp.toLocaleTimeString('en-US');
+              %>
+
+            <strong>Date: <%= formattedDate %> | Time <%= formattedTime %></strong>
+          </div>
+        </div>
+        <% } %>
+        <% } %>
+            <div>
+              <%- include('../partials/content-upload-temp.ejs',{ channelId : data[a].dataArray2[i][1].post_category_id.post_category_id, contentType : 'sunday'  }) -%>
+            </div>
+        <div>
+          <button onclick="toggleBody('-sunday-<%=i%>-<%=a%>')">Close</button>
+        </div>
+      </div>
+    </td>
+
+    <td>
+     <strong><%=data[a].dataArray2[i][1].counts.monday+data[a].dataArray2[i][1].counts.tuesday+data[a].dataArray2[i][1].counts.wednesday+data[a].dataArray2[i][1].counts.thursday+data[a].dataArray2[i][1].counts.friday+data[a].dataArray2[i][1].counts.saturday + data[a].dataArray2[i][1].counts.sunday %></strong>
+    </td>
+
+    </tr>
+   </tbody>

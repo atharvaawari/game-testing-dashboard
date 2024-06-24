@@ -1,0 +1,309 @@
+  <section>
+
+    <div class="category-container mb-3">
+      <div class="accordion-item">
+        <div class="accordion-header" id="">
+          <a class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#w--targets-box" aria-expanded="true" aria-controls="collapseThree">
+            <h4>This Week Targets</h4>
+          </a>
+          <div class="acc-activity-box">
+            <% if( ( (privilegeData.AnimationAdmin || privilegeData.MasterAdmin ) && parentCategory == 'animation' )  ||
+             ( (privilegeData.GameAdmin || privilegeData.MasterAdmin ) && parentCategory == 'game' ) ||
+             ( (privilegeData.UploadsAdmin || privilegeData.MasterAdmin ) && parentCategory == 'uploads' )  ||
+             ( (privilegeData.MasterAdmin ) && parentCategory == 'website' ) 
+             ) 
+             { %> 
+            <!-- add targets pop -->
+            <button class="float-end" onclick="toggleBody('-add-weekly')">Add </button>
+            <button class="btn btn-outline-dark ms-5">
+            
+            <% let filteredItems = gamesTasks.filter(item => item.is_complete == 0);%>
+            <%=filteredItems.length%>
+
+            </button>
+            <div class="body" id="body-add-weekly">
+              <div>
+                <div class="pending-leaves-container">
+                  <div class="edit-form m-2">
+                    <p class="titl2">Add This Week Targets</p>
+                    <hr>
+
+                    <div class="input-box">
+                      <label for="">Task Owner</label>
+
+                      <div class="dropdown" id="dropdown1">
+                        <input type="text" id="weekly-target-title" weekly-set-data-email="" oninput="filterOptions('dropdown1')" placeholder="Search..." onclick="toggleDropdown('dropdown1')" value="">
+
+                        <div class="dropdown-content">
+                          <% for (let b = 0; b < empList.length; b++) { %>
+                            <a onclick="getSelectedValue(this,'dropdown1','weekly')" weekly-data-email="<%= empList[b].email %>" id="<%= empList[b].name %>"><%= empList[b].name %></a>
+                          <% } %>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div class="input-box">
+                      <label for="">Task Title</label>
+                      <textarea id="weekly-target-desc" cols="18" rows="1"></textarea>
+                    </div>
+                    <div class="input-box">
+                      <label for="">Task Details</label>
+                      <textarea id="weekly-more-details" cols="18" rows="1"></textarea>
+                    </div>
+                    <div class="input-box mb-4">
+                      <label for="">Priority </label>
+                      
+                       <select id="weekly-set-priority">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                       </select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div>
+                <button class="btn btn-primary"  onclick="submitWeeklyTargets('weekly')">
+                  Save
+                </button>
+                <button class="btn btn-primary" onclick="toggleBody('-add-weekly')">
+                  Close
+                </button>
+              </div>
+            </div>
+            <!-- add targets pop -->
+           <% } %>  
+          </div>
+        </div>
+        <div id="w--targets-box" class="accordion-collapse collapse" aria-labelledby="" data-bs-parent="#accordionExample">
+          <div class="accordion-body">
+            <% if(gamesTasks.length > 0 ) {%>
+            <table id='weekly-targets-table'>
+              <thead>
+                <tr class="th-style">
+                  <th class="th-style">Priority </th>
+                  <th class="th-style">Task Owner</th>
+                  <th class="th-style">Title</th>
+                  <th class="th-style"> Task Details</th>
+                  <th class="th-style">Check</th>
+                  <% if( ( (privilegeData.AnimationAdmin || privilegeData.MasterAdmin ) && parentCategory == 'animation' )  ||
+                  ( (privilegeData.GameAdmin || privilegeData.MasterAdmin ) && parentCategory == 'game' ) ||
+                  ( (privilegeData.UploadsAdmin || privilegeData.MasterAdmin ) && parentCategory == 'uploads' )  ||
+                  ( (privilegeData.MasterAdmin || privilegeData.WebsiteAdmin  ) && parentCategory == 'website' ) 
+                  ){ %> 
+                  <th class="th-style">Edit</th>
+                  <th class="th-style">Delete</th>
+                  <th class="th-style"></th>
+                  <% } %>  
+                </tr>
+              </thead>
+              <tbody>
+
+                <% let firstIteration = 0; for( a = 0; a < gamesTasks.length; a++) { %>
+
+                <% if(gamesTasks[a].is_complete == 0 ) {%>
+
+                <tr>
+                  <td><%=gamesTasks[a].priority %></td>
+                  <td><%=gamesTasks[a].task_owner %></td>
+                  <td class="target-details"><%=gamesTasks[a].task_details%></td>
+                  <td>
+                    <%- include("../task/details.ejs", { dynamicCategory: "weekly" , dynamicValues: gamesTasks[a].more_details , taskId:gamesTasks[a].id }) -%>
+                  </td>
+                  <td>
+                    <% if(gamesTasks[a].is_complete == 1) {%>
+                    <input type="checkbox" id="<%=gamesTasks[a].id%>" onclick="handleCheckboxClick(this,'weekly')" checked>
+                    <% } else {%>
+                    <input type="checkbox" id="<%=gamesTasks[a].id%>" onclick="handleCheckboxClick(this,'weekly')">
+                    <% } %>
+                  </td>
+                    <% if( ( (privilegeData.AnimationAdmin || privilegeData.MasterAdmin ) && parentCategory == 'animation' )  ||
+                    ( (privilegeData.GameAdmin || privilegeData.MasterAdmin ) && parentCategory == 'game' ) ||
+                    ( (privilegeData.UploadsAdmin || privilegeData.MasterAdmin ) && parentCategory == 'uploads' )  ||
+                    ( (privilegeData.MasterAdmin || privilegeData.WebsiteAdmin  ) && parentCategory == 'website' ) 
+                    ){ %> 
+                  <td>
+                    <button onclick="toggleBody('-weekly-targets-edit-<%=a%>')" class="pop-up-btn btn  btn-secondary f-icon"> ✏️</button>
+                  
+                    <!-- update targets pop -->
+                    <div class="body" id="body-weekly-targets-edit-<%=a%>">
+                      <div>
+                        <div class="pending-leaves-container">
+                          <div class="edit-form m-2">
+                            <p class="titl2">Update This Week Targets</p>
+                            <hr>
+
+                            <div class="input-box">
+                              <label for="">Task Owner</label>
+
+                              <div class="dropdown" id="dropdown2-<%=a%>">
+                                <input type="text" id="weekly-targets-owner-edit-<%=a%>" weekly-set-data-email="" oninput="filterOptions('dropdown2-<%=a%>')" placeholder="Search..." onclick="toggleDropdown('dropdown2-<%=a%>')" value="<%=gamesTasks[a].task_owner%>">
+        
+                                <div class="dropdown-content">
+                                  <% for (let b = 0; b < empList.length; b++) { %>
+                                    <a onclick="getSelectedValue(this,'dropdown2-<%=a%>','weekly')" weekly-data-email="<%= empList[b].email %>" id="<%= empList[b].name %>"><%= empList[b].name %></a>
+                                  <% } %>
+                                </div>
+                              </div>
+                            
+                            
+                            </div>
+                            <div class="input-box">
+                              <label for="">Task Title</label>
+                              <textarea id="weekly-targets-details-edit-<%=a%>" cols="18" rows="2"><%=gamesTasks[a].task_details%></textarea>
+                            </div>
+
+                            <div class="input-box">
+                              <label for="">Task Details</label>
+                              <textarea id="weekly-more-details-edit-<%=a%>" cols="18" rows="1"><%=gamesTasks[a].more_details%></textarea>
+                            </div>
+                            <div class="input-box mb-4">
+                              <label for="">Priority </label>
+                           
+                              <select id="weekly-set-priority-edit-<%=a%>">
+                               <option value="1">1</option>
+                               <option value="2">2</option>
+                               <option value="3">3</option>
+                               <option value="4">4</option>
+                               <option value="5">5</option>
+                              </select>
+
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div>
+                        <button onclick="editWeeklyTargets('<%=gamesTasks[a].id%>','weekly','<%=a%>')">
+                          Save
+                        </button>
+                        <button onclick="toggleBody('-weekly-targets-edit-<%=a%>')">
+                          Close
+                        </button>
+                      </div>
+                    </div>
+                    <!-- update targets pop -->
+                  </td>
+                  <td>
+                   <button onclick="deleteTask('<%=gamesTasks[a].id%>','weekly')" class="pop-up-btn btn  btn-secondary f-icon"> 🗑️ </button>
+                  </td>
+                  <td>
+                    <%- include("../components/[move-to-next-week].ejs",{dynamicCategory: "weekly" , taskId:gamesTasks[a].id  , moveToValue :gamesTasks[a].week , limit :52 }) -%>
+                  </td>
+
+                  <% } %>  
+                </tr>
+
+                <% } else { %>
+
+                <% if(firstIteration == 0) {%>
+
+                <tr class="divider-line">
+                  <td>
+                  
+                  </td>
+                </tr>
+
+                <%  firstIteration = 1 } %>
+
+                <tr>
+                  <td><%=gamesTasks[a].priority %></td>
+                  <td><%=gamesTasks[a].task_owner %></td>
+                  <td class="target-details"><%=gamesTasks[a].task_details%></td>
+                  <td>
+                    <%- include("../task/details.ejs", { dynamicCategory: "weekly"  , dynamicValues: gamesTasks[a].more_details , taskId:gamesTasks[a].id }) -%> 
+                  </td>
+                  <td>
+                    <% if(gamesTasks[a].is_complete == 1) {%>
+                    <input type="checkbox" id="<%=gamesTasks[a].id%>" onclick="handleCheckboxClick(this,'weekly')" checked>
+                    <% } else {%>
+                    <input type="checkbox" id="<%=gamesTasks[a].id%>" onclick="handleCheckboxClick(this,'weekly')">
+                    <% } %>
+                  </td>
+                   <% if( ( (privilegeData.AnimationAdmin || privilegeData.MasterAdmin ) && parentCategory == 'animation' )  ||
+                   ( (privilegeData.GameAdmin || privilegeData.MasterAdmin ) && parentCategory == 'game' ) ||
+                   ( (privilegeData.UploadsAdmin || privilegeData.MasterAdmin ) && parentCategory == 'uploads' )  ||
+                   ( (privilegeData.MasterAdmin || privilegeData.WebsiteAdmin  ) && parentCategory == 'website' ) 
+                   ){ %> 
+                  <td>
+                    <button onclick="toggleBody('-weekly-targets-edit-<%=a%>')" class="pop-up-btn btn  btn-secondary f-icon"> ✏️</button>
+                  
+                    <!-- update targets pop -->
+                    <div class="body" id="body-weekly-targets-edit-<%=a%>">
+                      <div>
+                        <div class="pending-leaves-container">
+                          <div class="edit-form m-2">
+                            <p class="titl2">Update This Week Targets</p>
+                            <hr>
+
+                            <div class="input-box">
+                              <label for="">Task Owner</label>
+                              <div class="dropdown" id="dropdown2-<%=a%>">
+                                <input type="text" id="weekly-targets-owner-edit-<%=a%>" oninput="filterOptions('dropdown2-<%=a%>')" placeholder="Search..." onclick="toggleDropdown('dropdown2-<%=a%>')" value="<%=gamesTasks[a].task_owner%>">
+        
+                                <div class="dropdown-content">
+                                  <% for (let b = 0; b < empList.length; b++) { %>
+                                    <a onclick="getSelectedValue(this,'dropdown2-<%=a%>')" id="<%= empList[b].name %>"><%= empList[b].name %></a>
+                                  <% } %>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="input-box">
+                              <label for="">Task Title</label>
+                              <textarea id="weekly-targets-details-edit-<%=a%>" cols="18" rows="2"><%=gamesTasks[a].task_details%></textarea>
+                            </div>
+                            <div class="input-box">
+                              <label for="">Task Details</label>
+                              <textarea id="weekly-more-details-edit" cols="18" rows="1"><%=gamesTasks[a].more_details%></textarea>
+                            </div>
+                            <div class="input-box mb-4">
+                              <label for="">Priority </label>
+                          
+                              <select id="weekly-set-priority-edit-<%=a%>">
+                               <option value="1">1</option>
+                               <option value="2">2</option>
+                               <option value="3">3</option>
+                               <option value="4">4</option>
+                               <option value="5">5</option>
+                              </select>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div>
+                        <button onclick="editWeeklyTargets('<%=gamesTasks[a].id%>','weekly','<%=a%>')">
+                          Save
+                        </button>
+                        <button onclick="toggleBody('-weekly-targets-edit-<%=a%>')">
+                          Close
+                        </button>
+                      </div>
+                    </div>
+                    <!-- update targets pop -->
+                  </td>
+                  <td>
+                   <button onclick="deleteTask('<%=gamesTasks[a].id%>','weekly')" class="pop-up-btn btn  btn-secondary f-icon"> 🗑️ </button>
+                  </td>
+                  <td>
+                    <%- include("../components/[move-to-next-week].ejs",{dynamicCategory: "weekly" , taskId:gamesTasks[a].id  , moveToValue :gamesTasks[a].week , limit :52  }) -%>
+                  </td>
+                  <% } %>  
+                </tr>
+
+                <% } %>
+                <% } %>
+
+              </tbody>
+            </table>
+            <% } else { %>
+            <table>
+              <strong class="py-3">No Data Found </strong>
+            </table>
+            <% } %>
+
+          </div>
+        </div>
+    </div>
+
+  </section>

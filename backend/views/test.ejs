@@ -1,0 +1,51 @@
+                    <% let firstIteration = 0; for( a = 0; a < releaseGames.length; a++) { %>
+
+                    <% if(releaseGames.is_complete == 0 ) {%>
+
+                        <tr>
+                            <td><%=releaseGames[a].priority %></td>
+                            <td><%=releaseGames[a].task_owner %></td>
+                            <td class="target-details"><%=releaseGames[a].task_details%></td>
+                            <td>
+                              <%- include("../task/details.ejs", { dynamicCategory: "game" , dynamicValues: releaseGames[a].more_details , taskId:releaseGames[a].id }) -%>
+                            </td>
+                            <td>
+                              <% if(releaseGames[a].is_complete == 1) {%>
+                              <input type="checkbox" id="<%=releaseGames[a].id%>" onclick="handleCheckboxClick(this,'game')" checked>
+                              <% } else {%>
+                              <input type="checkbox" id="<%=releaseGames[a].id%>" onclick="handleCheckboxClick(this,'game')">
+                              <% } %>
+                            </td>
+
+                          </tr>
+      
+                          <% } else { %>
+      
+                          <% if(firstIteration == 0) {%>
+      
+                          <tr class="divider-line">
+                            <td>
+      
+                            </td>
+                          </tr>
+      
+                          <%  firstIteration = 1 } %>
+      
+                          <tr>
+                            <td><%=releaseGames[a].priority %></td>
+                            <td><%=releaseGames[a].task_owner %></td>
+                            <td class="target-details"><%=releaseGames[a].task_details%></td>
+                            <td>
+                              <%- include("../task/details.ejs", { dynamicCategory: "game"  , dynamicValues: releaseGames[a].more_details , taskId:releaseGames[a].id }) -%>
+                            </td>
+                            <td>
+                              <% if(releaseGames[a].is_complete == 1) {%>
+                              <input type="checkbox" id="<%=releaseGames[a].id%>" onclick="handleCheckboxClick(this,'game')" checked>
+                              <% } else {%>
+                              <input type="checkbox" id="<%=releaseGames[a].id%>" onclick="handleCheckboxClick(this,'game')">
+                              <% } %>
+                            </td>
+                          </tr>
+
+                    <% } %>
+                    <% } %>

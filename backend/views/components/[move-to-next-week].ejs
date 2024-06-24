@@ -1,0 +1,64 @@
+<section>
+  <button class="badge badge-primary" onclick="toggleBody('-move-task-by-week-<%=dynamicCategory%>-<%=taskId%>')"> move </button>
+
+  <!-- update targets pop -->
+  <div class="body" id="body-move-task-by-week-<%=dynamicCategory%>-<%=taskId%>">
+    <div>
+      <div class="pending-leaves-container">
+        <div class="edit-form m-2">
+          <p class="titl2">Move Task</p>
+          <hr>
+
+          <div class="input-box text-center mb-4">
+            <label for="">
+            <% if (dynamicCategory == 'weekly') { %>
+              Week
+            <% } else { %>
+              Month
+            <% } %>
+             </label>
+
+            <button class="btn btn-warning" id="prevButton" onclick="changeValue(-1,'moveto-week-input-<%=dynamicCategory%>-<%=taskId%>','<%=limit%>')">Prev</button>
+            <input id="moveto-week-input-<%=dynamicCategory%>-<%=taskId%>" style="width:60px" class="btn btn-outline-dark" type="text" value="<%=moveToValue%>">
+            <button class="btn btn-warning" id="nextButton" onclick="changeValue(1,'moveto-week-input-<%=dynamicCategory%>-<%=taskId%>','<%=limit%>')">Next</button>
+
+          </div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <button onclick="moveTaskByWeek('moveto-week-input-<%=dynamicCategory%>','<%=dynamicCategory%>','<%=taskId%>','<%=moveToValue%>')">
+        Save
+      </button>
+      <button onclick="toggleBody('-move-task-by-week-<%=dynamicCategory%>-<%=taskId%>')">
+        Close
+      </button>
+    </div>
+  </div>
+  <!-- update targets pop -->
+</section>
+
+<script>
+  function changeValue(step, id, limit) {
+    const numberInput = document.getElementById(id);
+    let currentValue = parseInt(numberInput.value);
+
+    // Update the input value with the incremented or decremented value
+    numberInput.value = currentValue + step <= 0 ? 1 : currentValue + step;
+
+    // Optionally, you can add validation to stay within the specified range (min, max)
+    const min = parseInt(numberInput.min) || Number.MIN_SAFE_INTEGER;
+    const max = parseInt(numberInput.max) || Number.MAX_SAFE_INTEGER;
+
+    if (numberInput.value < min) {
+      numberInput.value = min;
+    } else if (numberInput.value > max) {
+      numberInput.value = max;
+    }
+
+    // Ensure that the value does not exceed the specified limit
+    if (limit !== undefined && numberInput.value > limit) {
+      numberInput.value = limit;
+    }
+  }
+</script>

@@ -1,0 +1,57 @@
+
+  <section>
+
+    <div class="category-container mb-3">
+      <div class="accordion-item">
+        <div class="accordion-header" id="">
+          <a class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#emp-target-status-box" aria-expanded="true" aria-controls="collapseThree">
+            <h4>Employee task status</h4>
+          </a>
+          <div class="acc-activity-box">
+
+          </div>
+        </div>
+        <div id="emp-target-status-box" class="accordion-collapse collapse" aria-labelledby="" data-bs-parent="#accordionExample">
+          <div class="accordion-body">
+            <% if(empTaskStatus.length > 0 ) {%>
+            <table>
+             <thead>
+                <tr class="th-style">
+                  <th class="th-style">Task Owner</th>
+                  <th class="th-style">Completed</th>
+                  <th class="th-style">Not Completed</th>
+                  <th class="th-style">Total</th>
+                 
+                </tr>
+              </thead>
+              <tbody>
+                <% for( a = 0; a < empTaskStatus.length; a++) { %>
+
+               <tr>
+                <td>
+                    <%=empTaskStatus[a].task_owner%>
+                </td>
+                <td>
+                    <button class="pop-up-btn btn  btn-success "><%= Number(empTaskStatus[a].completed_tasks)%></button>
+                </td>
+                <td>
+                    <button class="pop-up-btn btn  btn-danger "><%= Number(empTaskStatus[a].not_completed_tasks)%></button>
+                </td>
+                <td>
+                    <button class="pop-up-btn btn  btn-dark "><%= Number(empTaskStatus[a].completed_tasks) + Number(empTaskStatus[a].not_completed_tasks) %></button>
+                </td>
+               </tr>
+
+               <% } %>
+              </tbody>
+            </table>
+            <% } else { %>
+            <table>
+              <strong class="py-3">No Data Found </strong>
+            </table>
+            <% } %>
+        </div>
+    </div>
+
+  </section>
+

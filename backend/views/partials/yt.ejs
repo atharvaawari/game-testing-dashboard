@@ -1,0 +1,327 @@
+  <%  const currentDay = new Date().toLocaleDateString('en-US', { weekday: 'long' }); %>
+  
+  <tbody>
+    <%
+      // Define a custom function
+      function calculatePercentageYT(counts, target) {
+        return (counts / target) * 100;
+      }
+    %>
+    <tr style="border-bottom: 1px solid #8080805e;background: white; ">
+
+      <td class="px-2 text-left">
+        <a class="f-btn d-inline-flex align-items-center pop-up-btn btn btn-primary position-relative" type="button" onclick="toggleBody('-notes-<%= i %>-<%= a %>')">
+          Notes
+          <% if(! data[a].dataArray2[i][1].notes.notes.trim() == '') { %>
+          <span class="position-absolute top-4 start-100 translate-middle badge rounded-pill bg-danger">
+            <%=data[a].dataArray2[i][1].notes.notes.trim().substring(0,10) + ".. "%>
+          </span>
+          <% } %>
+        </a>
+
+        <div class="body" id="body-notes-<%= i %>-<%= a %>">
+          <div>
+            <div class="tr pending-leaves-container">
+              <div class="edit-form m-2">
+                <p class="titl2">Notes for <%=data[a].dataArray2[i][0]%></p>
+                <hr>
+
+                <% if(! data[a].dataArray2[i][1].notes.notes.trim() == '') { %>
+
+                <textarea id="notes-text-<%= i %>-<%= a %>" cols="30" rows="5"><%= data[a].dataArray2[i][1].notes.notes %></textarea>
+
+                <% } else { %>
+                <textarea id="notes-text-<%= i %>-<%= a %>" cols="30" rows="5"></textarea>
+
+                <% } %>
+              </div>
+            </div>
+          </div>
+          <div>
+            <button onclick="submitNotes('notes-text-<%= i %>-<%= a %>','<%= data[a].dataArray2[i][1].channels_id.channels_id %>')">
+              Save
+            </button>
+            <button onclick="toggleBody('-notes-<%= i %>-<%= a %>')">
+              Close
+            </button>
+          </div>
+        </div>
+      </td>
+
+      <td class="px-2 text-left"><strong><%=data[a].dataArray2[i][0]%></strong></td>
+
+      <td
+        class="
+         <%if(currentDay == 'Saturday'){%>
+           active-section
+         <%}%>
+         "
+        >
+        <strong>
+          <button onclick="toggleBody('-video-<%= i %>-<%= a %>')" <%
+              const percentageVideoYt = calculatePercentageYT(data[a].dataArray2[i][1].counts.video, data[a].dataArray2[i][1].target.video_target);
+            %> <% if(percentageVideoYt >= 50 && percentageVideoYt < 100  && !percentageVideoYt < 50) {%> class="btn btn-warning f-btn" <% } else if(percentageVideoYt >= 100) {%> class="btn btn-success f-btn" <% } else { %> class="btn btn-danger f-btn" <% } %>>
+            <%= data[a].dataArray2[i][1].counts.video %>
+          </button>
+          |
+          <small><%= data[a].dataArray2[i][1].target.video_target %></small><br>
+
+        </strong>
+
+        <div class="body" id="body-video-<%= i %>-<%= a %>">
+          <div style="
+              height: 400px;
+              overflow-y: scroll;
+              background: #F1F6F9;
+            ">
+            <h3 class="p-3"><strong>Users for <%= data[a].dataArray2[i][0] %> Upload</strong></h3>
+
+            <% if (data[a].dataArray2[i][1].userData.video.length > 0) { %>
+            <% for (let l = 0; l < data[a].dataArray2[i][1].userData.video.length; l++) { %>
+            <div class="tr p-3">
+
+              <div class="p-1">
+                <strong class="baged--1">Name: <%= data[a].dataArray2[i][1].userData.video[l].user_name %></strong>
+              </div>
+
+              <div class="p-1">
+                      <%
+                        const timestamp = new Date(data[a].dataArray2[i][1].userData.video[l].time_stamp);
+                        const formattedDate = timestamp.toLocaleDateString('en-US');
+                        const formattedTime = timestamp.toLocaleTimeString('en-US');
+                      %>
+
+                <strong>Date: <%= formattedDate %> | Time <%= formattedTime %></strong>
+              </div>
+            </div>
+            <% } %>
+            <% } %>
+
+          </div>
+
+          <div>
+
+              <%- include('../partials/content-upload-temp.ejs',{ channelId : data[a].dataArray2[i][1].channels_id.channels_id , contentType : 'video'  }) -%>
+    
+          </div>
+        </div>
+      </td>
+
+      <td
+        class="
+         <%if(currentDay == 'Sunday' || currentDay == 'wednesday'){%>
+          active-section
+         <%}%>
+         "
+        >
+        <strong>
+          <button onclick="toggleBody('-shorts-<%= i %>-<%= a %>')" <%
+              const percentageShortsYt = calculatePercentageYT(data[a].dataArray2[i][1].counts.shorts, data[a].dataArray2[i][1].target.shorts_target);
+            %> <% if(percentageShortsYt >= 50 && percentageShortsYt < 100  && !percentageShortsYt < 50) {%> class="btn btn-warning f-btn" <% } else if(percentageShortsYt >= 100) {%> class="btn btn-success f-btn" <% } else { %> class="btn btn-danger f-btn" <% } %>>
+            <%= data[a].dataArray2[i][1].counts.shorts %>
+          </button>
+          |
+          <small><%= data[a].dataArray2[i][1].target.shorts_target %></small>
+        </strong>
+
+        <div class="body" id="body-shorts-<%= i %>-<%= a %>">
+          <div style="
+              height: 400px;
+              overflow-y: scroll;
+              background: #F1F6F9;
+            ">
+            <h3 class="p-3"><strong>Users for <%= data[a].dataArray2[i][0] %> Upload</strong></h3>
+
+            <% for (let j = 0; j < data[a].dataArray2[i][1].userData.shorts.length; j++) { %>
+            <div class="tr p-3">
+              <div class="p-1">
+                <strong class="baged--1">Name: <%= data[a].dataArray2[i][1].userData.shorts[j].user_name %></strong>
+              </div>
+
+              <div class="p-1">
+                <%
+                      const timestamp = new Date(data[a].dataArray2[i][1].userData.shorts[j].time_stamp);
+                      const formattedDate = timestamp.toLocaleDateString('en-US');
+                      const formattedTime = timestamp.toLocaleTimeString('en-US');
+                    %>
+
+                <strong>Date: <%= formattedDate %> | Time <%= formattedTime %></strong>
+              </div>
+            </div>
+            <% } %>
+
+          </div>
+
+          <div>
+
+              <%- include('../partials/content-upload-temp.ejs',{ channelId : data[a].dataArray2[i][1].channels_id.channels_id , contentType : 'shorts'  }) -%>
+    
+          </div>
+        </div>
+      </td>
+
+      <td
+        class="
+         <%if(currentDay == 'Thursday'){%>
+           active-section
+         <%}%>
+         "
+        >
+        <strong>
+          <button onclick="toggleBody('-post-<%= i %>-<%= a %>')" <%
+              const percentagePostYt = calculatePercentageYT(data[a].dataArray2[i][1].counts.post, data[a].dataArray2[i][1].target.post_target);
+            %> <% if(percentagePostYt >= 50 && percentagePostYt < 100  && !percentagePostYt < 50) {%> class="btn btn-warning f-btn" <% } else if(percentagePostYt >= 100) {%> class="btn btn-success f-btn" <% } else { %> class="btn btn-danger f-btn" <% } %>>
+            <%= data[a].dataArray2[i][1].counts.post %>
+          </button>
+          |
+          <small><%= data[a].dataArray2[i][1].target.post_target %></small>
+        </strong>
+
+        <div class="body" id="body-post-<%= i %>-<%= a %>">
+          <div style="
+              height: 400px;
+              overflow-y: scroll;
+              background: #F1F6F9;
+            ">
+            <h3 class="p-3"><strong>Users for <%= data[a].dataArray2[i][0] %> Upload</strong></h3>
+
+            <% for (let j = 0; j < data[a].dataArray2[i][1].userData.post.length; j++) { %>
+            <div class="tr p-3">
+              <div class="p-1">
+                <strong class="baged--1">Name: <%= data[a].dataArray2[i][1].userData.post[j].user_name %></strong>
+              </div>
+
+              <div class="p-1">
+                <%
+                      const timestamp = new Date(data[a].dataArray2[i][1].userData.post[j].time_stamp);
+                      const formattedDate = timestamp.toLocaleDateString('en-US');
+                      const formattedTime = timestamp.toLocaleTimeString('en-US');
+                    %>
+
+                <strong>Date: <%= formattedDate %> | Time <%= formattedTime %></strong>
+              </div>
+            </div>
+            <% } %>
+
+          </div>
+
+          <div>
+
+              <%- include('../partials/content-upload-temp.ejs',{ channelId : data[a].dataArray2[i][1].channels_id.channels_id , contentType : 'post'  }) -%>
+    
+          </div>
+        </div>
+      </td>
+
+      <td
+        class="
+         <%if(currentDay == 'Tuesday'){%>
+           active-section
+         <%}%>
+         "
+        >
+        <strong>
+          <button onclick="toggleBody('-polls-<%= i %>-<%= a %>')" <%
+                const percentagePollsYt = calculatePercentageYT(data[a].dataArray2[i][1].counts.polls, data[a].dataArray2[i][1].target.polls_target);
+              %> <% if(percentagePollsYt >= 50 && percentagePollsYt < 100  && !percentagePollsYt < 50) {%> class="btn btn-warning f-btn" <% } else if(percentagePollsYt >= 100) {%> class="btn btn-success f-btn" <% } else { %> class="btn btn-danger f-btn" <% } %>>
+            <%= data[a].dataArray2[i][1].counts.polls %>
+          </button>
+          |
+          <small><%= data[a].dataArray2[i][1].target.polls_target %></small>
+        </strong>
+
+        <div class="body" id="body-polls-<%= i %>-<%= a %>">
+          <div style="
+              height: 400px;
+              overflow-y: scroll;
+              background: #F1F6F9;
+            ">
+            <h3 class="p-3"><strong>Users for <%= data[a].dataArray2[i][0] %> Upload</strong></h3>
+
+            <% for (let j = 0; j < data[a].dataArray2[i][1].userData.polls.length; j++) { %>
+            <div class="tr p-3">
+              <div class="p-1">
+                <strong class="baged--1">Name: <%= data[a].dataArray2[i][1].userData.polls[j].user_name %></strong>
+              </div>
+
+              <div class="p-1">
+                <%
+                      const timestamp = new Date(data[a].dataArray2[i][1].userData.polls[j].time_stamp);
+                      const formattedDate = timestamp.toLocaleDateString('en-US');
+                      const formattedTime = timestamp.toLocaleTimeString('en-US');
+                    %>
+
+                <strong>Date: <%= formattedDate %> | Time <%= formattedTime %></strong>
+              </div>
+            </div>
+            <% } %>
+
+          </div>
+
+          <div>
+
+              <%- include('../partials/content-upload-temp.ejs',{ channelId : data[a].dataArray2[i][1].channels_id.channels_id , contentType : 'polls'  }) -%>
+    
+          </div>
+        </div>
+      </td>
+
+      <td
+        class="
+         <%if(currentDay == 'Wednesday' || currentDay == 'Friday '){%>
+           active-section
+         <%}%>
+         "
+        >
+        <strong>
+          <button onclick="toggleBody('-comments-<%= i %>-<%= a %>')" <%
+                const percentageCommentsYt = calculatePercentageYT(data[a].dataArray2[i][1].counts.comments, data[a].dataArray2[i][1].target.comments_target);
+              %> <%=percentageCommentsYt%> <% if(percentageCommentsYt >= 50 && percentageCommentsYt < 100  && !percentageCommentsYt < 50) {%> class="btn btn-warning f-btn" <% } else if(percentageCommentsYt >= 100) {%> class="btn btn-success f-btn" <% } else { %> class="btn btn-danger f-btn" <% } %>>
+            <%= data[a].dataArray2[i][1].counts.comments %>
+          </button>
+          |
+          <small><%= data[a].dataArray2[i][1].target.comments_target %></small>
+        </strong>
+
+        <div class="body" id="body-comments-<%= i %>-<%= a %>">
+          <div style="
+              height: 400px;
+              overflow-y: scroll;
+              background: #F1F6F9;
+            ">
+            <h3 class="p-3"><strong>Users for <%= data[a].dataArray2[i][0] %> Upload</strong></h3>
+
+            <% for (let j = 0; j < data[a].dataArray2[i][1].userData.comments.length; j++) { %>
+            <div class="tr p-3">
+              <div class="p-1">
+                <strong class="baged--1">Name: <%= data[a].dataArray2[i][1].userData.comments[j].user_name %></strong>
+              </div>
+
+              <div class="p-1">
+                <%
+                      const timestamp = new Date(data[a].dataArray2[i][1].userData.comments[j].time_stamp);
+                      const formattedDate = timestamp.toLocaleDateString('en-US');
+                      const formattedTime = timestamp.toLocaleTimeString('en-US');
+                    %>
+
+                <strong>Date: <%= formattedDate %> | Time <%= formattedTime %></strong>
+              </div>
+            </div>
+            <% } %>
+
+
+          </div>
+
+          <div>
+
+              <%- include('../partials/content-upload-temp.ejs',{ channelId : data[a].dataArray2[i][1].channels_id.channels_id , contentType : 'comments'  }) -%>
+  
+          </div>
+        </div>
+      </td>
+
+      <td><strong><%=data[a].dataArray2[i][1].counts.video+data[a].dataArray2[i][1].counts.shorts+data[a].dataArray2[i][1].counts.post+data[a].dataArray2[i][1].counts.polls+data[a].dataArray2[i][1].counts.comments%></strong></td>
+    </tr>
+  </tbody>
+
+

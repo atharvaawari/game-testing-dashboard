@@ -1,0 +1,13 @@
+<label for="date-range">Date Range:</label>
+<input type="text" id="<%= category %>-date-range" name="date-range" required>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    flatpickr("#<%= category %>-date-range", {
+      mode: "range",
+      dateFormat: "Y-m-d",
+      onChange: function(selectedDates, dateStr, instance) {
+        instance.element.value = dateStr;
+      }
+    });
+  });
+</script>

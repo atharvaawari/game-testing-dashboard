@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
+  <title><%=parentCategory%> Task</title>
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <!-- <<<<<<<<< - my style sheet - >>>>>>>>>> -->
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      font-family: 'Nunito', sans-serif;
+      background-color: #f3f4f6;
+      margin: 0;
+      padding: 0;
+      text-align: center;
+    }
+
+    a {
+      text-decoration: none;
+    }
+
+    label {
+      font-size: 18px;
+      vertical-align: sub;
+      font-weight: 700;
+      display: block
+    }
+
+    .input-box {
+      text-align: left;
+      margin: 1.5rem 1rem 0px 1rem;
+    }
+
+    h1 {
+      display: block;
+      margin-bottom: 0.5rem;
+      color: #555;
+      margin-top: 1rem;
+      font-weight: 600;
+    }
+
+    h2 {
+      color: #333;
+      margin-top: 2rem;
+    }
+
+    h4 {
+      text-transform: capitalize;
+      text-align: left;
+      font-weight: 700;
+      font-size: 16px;
+    }
+
+    input[type="date"] {
+      width: 100px;
+      padding: 0.5rem;
+      margin-bottom: 1rem;
+      border: 1px solid #e0e0e0;
+      border-radius: 4px;
+    }
+
+    button {
+      background-color: #007BFF;
+      color: #ffffff;
+      border: none;
+      border-radius: 4px;
+      padding: 0.5rem 1rem;
+      margin: 0.5rem;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    .selected {
+      background-color: #ffeb3b;
+    }
+
+    small {
+      font-size: .875em;
+      padding: 6px;
+      border-radius: 8px;
+      color: gray;
+    }
+
+
+
+    .w-sm {
+      width: 30%;
+    }
+
+    .titl2 {
+      font-weight: 800;
+      font-size: 20px;
+      text-transform: capitalize;
+    }
+
+    .center {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+      background: #8a2be233;
+      padding: 15px;
+      border-radius: 8px;
+      height: 100%;
+    }
+
+    .tr {
+      border: 1px solid black;
+      padding: 0 5px;
+      background: #F1F6F9;
+    }
+
+    .th {
+      font-weight: 700;
+      border: 1px solid black;
+      width: fit-content;
+      padding: 10px 14px;
+      margin: 30px 0;
+      background: #FFF89A;
+    }
+
+    .color-F7D716D9 {
+      background: #F7D716D9;
+    }
+
+    .color-F66B0EE0 {
+      background: #F66B0EE0;
+    }
+
+    .color-5BF477 {
+      background: #5BF477;
+    }
+
+    .color-FF5F9E {
+      background: #FF5F9E;
+    }
+
+    table {
+      font-size: 14px;
+      caption-side: bottom;
+      border-collapse: collapse;
+      margin: auto;
+      width: 100%;
+      box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.25) !important;
+    }
+
+    .body {
+      width: 450px;
+      overflow: auto;
+      display: none;
+      overflow: auto;
+      background: white;
+      position: fixed;
+      left: 51px;
+      top: 25px;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 1rem;
+      border-radius: 10px;
+      box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.25) !important;
+      opacity: 0;
+      transition: opacity 0.3s, transform 0.3s;
+      z-index: 10000;
+    }
+
+    .body.show {
+      display: block;
+      opacity: 1;
+    }
+
+    .th-style {
+      padding: .5rem .5rem;
+      background-color: #FFD966;
+      border-bottom: 1px solid #8080805e;
+      font-weight: 800;
+    }
+
+    .baged--1 {
+      background: #FFCC8F;
+      padding: 5px 8px;
+      margin: 0 10px;
+      border-radius: 7px;
+      display: inline-block;
+    }
+
+    .category-container {
+      display: inline-block;
+      min-width: 950px;
+    }
+
+    .accordion-item {
+      width: 100%;
+    }
+
+    .grid-box-7-3 {
+      display: grid;
+      grid-template-columns: 70% 30%;
+    }
+
+    .alert-success {
+      z-index: -1 !important;
+    }
+
+    .accordion-button button {
+      position: absolute;
+      right: 5rem;
+    }
+
+    .target-details {
+      max-width: 30vw;
+      height: 50px;
+      min-width: 65%;
+    }
+
+    .w-btn-input input {
+      width: 60px;
+      background-color: #fff;
+    }
+
+    .w-btn-input {
+      display: inline-block;
+    }
+
+    .bck-border {
+      border: 1px solid black;
+      padding: 6px;
+      border-radius: 5px;
+      background-color: #fff;
+      border: 1px solid rgba(0, 0, 0, .125);
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .accordion-button {
+      width: 82%;
+    }
+
+    .acc-activity-box {
+      display: inline-block;
+      padding-top: 6px;
+    }
+
+    .accordion-header {
+      display: flex;
+      justify-content: space-between;
+      box-shadow: inset 0 -1px 0 rgba(0, 0, 0, .125);
+    }
+
+    .accordion-button::after {
+      margin-bottom: 9px;
+      margin-left: 10px;
+    }
+
+    .accordion-button:not(.collapsed) {
+      color: #0c63e4;
+      background-color: white;
+      box-shadow: inset 0 -1px 0 rgba(0, 0, 0, .125);
+    }
+
+    .f-icon {
+      font-size: 15px;
+      padding: .2rem
+    }
+
+    .divider-line {
+      box-shadow: inset 0 -1px 0 rgba(0, 0, 0, .125);
+    }
+
+    /*  Dropdown */
+
+    .dropdown {
+      position: relative;
+      display: inline-block;
+    }
+
+    .dropdown button {
+      padding: 10px;
+      font-size: 16px;
+      margin-left: 0;
+    }
+
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      background-color: #f9f9f9;
+      min-width: 200px;
+      box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+      z-index: 1;
+      height: 300px;
+      overflow-y: scroll;
+    }
+
+    .dropdown-content.show {
+      display: block;
+
+    }
+
+    .dropdown-content a {
+      padding: 12px 16px;
+      display: block;
+      text-decoration: none;
+      color: #333;
+    }
+
+    .dropdown-content a:hover {
+      background-color: #ddd;
+    }
+
+    .input-box textarea {
+      width: 100%
+    }
+  </style>
+
+</head>
+
+<body>
+
+  <%- include('../partials/header.ejs') -%>
+
+  <main>
+
+    <div class="category-container mt-3">
+
+      <div class="section-header mb-4">
+
+        <div class="bck-border">
+          <small class="text-dark"><strong><%=startDate%> To <%=endDate%></strong></small>
+        </div>
+
+        <div class="w-btn-input">
+
+          <a class="btn btn-primary" href="/tasks-<%=parentCategory%>?w=<%=prevWeek%>">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M15 18l-6-6 6-6"></path>
+            </svg>
+          </a>
+          <div class="d-inline-block ">
+            <label for="currentWeek" hidden>Current Week</label>
+            <input class="btn btn-outline-dark " type="text" id="currentWeek" value="<%=currentWeek%>" readonly>
+            <input type="text" id="currentMonth" value="<%=currentMonth%>" hidden>
+          </div>
+          <a class="btn btn-primary" href="/tasks-<%=parentCategory%>?w=<%=nextWeek%>">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M9 18l6-6-6-6"></path>
+            </svg>
+
+          </a>
+
+        </div>
+
+      </div>
+
+
+
+      <%- include("../task/task-sheet.ejs") -%>
+
+      <%- include("./emp-task-count-by-name.ejs") -%>
+
+      <%- include("../partials/weekly-targets-acc.ejs") -%>
+
+      <%- include("../partials/every-weekly-targets-acc.ejs") -%>
+
+      <%- include("../partials/monthly-targets-acc.ejs") -%>
+
+      <%- include("../partials/[ -- ].ejs") -%>
+
+    </div>
+
+  </main>
+
+  <script>
+    function toggleBody(emailId) {
+      const body = document.getElementById('body' + emailId);
+      body.classList.toggle('show');
+    };
+
+    function submitWeeklyTargets(targetsCategory) {
+
+
+      const dateRangeValue = document.querySelector(`#${targetsCategory}-date-range`).value;
+      let targetTitle = document.querySelector(`#${targetsCategory}-target-title`);
+      let taskOwnerEmail = targetTitle.getAttribute(`set-data-email`);
+      let targetDesc = document.querySelector(`#${targetsCategory}-target-desc`);
+      let week = document.querySelector(`#currentWeek`);
+      let currentMonth = document.querySelector(`#currentMonth`);
+      let priority = document.querySelector(`#${targetsCategory}-set-priority`);
+      let moreDetails = document.querySelector(`#${targetsCategory}-more-details`);
+      priority = priority.options[priority.selectedIndex].value;
+
+      if (targetTitle.value !== '' && targetDesc.value !== '' && priority.value !== '') {
+        apiReq('add-wekkly-target', [{
+          task_owner: targetTitle.value,
+          task_details: targetDesc.value,
+          category: '<%=parentCategory%>',
+          week: week.value,
+          targets_category: targetsCategory,
+          current_month: currentMonth.value,
+          priority: priority,
+          taskOwnerEmail: taskOwnerEmail,
+          moreDetails: moreDetails.value,
+          dateRangeValue:dateRangeValue
+        }])
+      } else {
+        // document.querySelector('#body-add-' + targetsCategory ).style.display = 'none'
+        document.querySelector('#body-add-' + targetsCategory + ' button')
+
+        alert('please fill all required fields')
+        return;
+      }
+
+    };
+
+    function handleCheckboxClick(elementRef, targetsCategory) {
+
+      let week = document.querySelector(`#currentWeek`);
+
+      apiReq('wekkly-target-is-checked', [{
+        isChecked: elementRef.checked,
+        id: elementRef.id,
+        category: '<%=parentCategory%>',
+        targets_category: targetsCategory,
+        week: week.value
+      }])
+
+    };
+
+    function editWeeklyTargets(id, targetsCategory, currTask) {
+
+      let dateRangeValue = document.querySelector(`#${targetsCategory}-date-range-edit-${currTask}`).value;
+      let targetOwner = document.querySelector(`#${targetsCategory}-targets-owner-edit-${currTask}`);
+      let targetDetails = document.querySelector(`#${targetsCategory}-targets-details-edit-${currTask}`);
+      let moreDetails = document.querySelector(`#${targetsCategory}-more-details-edit-${currTask}`);
+      let week = document.querySelector(`#currentWeek`);
+      let priority = document.querySelector(`#${targetsCategory}-set-priority-edit-${currTask}`)
+      priority = priority.options[priority.selectedIndex].value;
+      let taskOwnerEmail = targetOwner.getAttribute(`set-data-email`);
+
+      apiReq('wekkly-target-is-edit', [{
+        task_owner: targetOwner.value,
+        task_details: targetDetails.value,
+        task_id: id,
+        category: '<%=parentCategory%>',
+        targets_category: targetsCategory,
+        week: week.value,
+        priority: priority,
+        moreDetails: moreDetails.value,
+        taskOwnerEmail: taskOwnerEmail,
+        dateRangeValue:dateRangeValue
+      }])
+    };
+
+    function deleteTask(taskId, targetsCategory) {
+
+      apiReq('delete-task', {
+        task_id: taskId,
+        targets_category: targetsCategory,
+        category: '<%=parentCategory%>'
+      })
+
+    };
+
+    function checkPriDub(priorityNum, targetsCategory) {
+
+      let values = document.querySelectorAll(`#${targetsCategory}-targets-table tbody tr`);
+      let firstTdValues = [];
+      let res = false
+
+      values.forEach((tr) => {
+
+        let firstTd = tr.querySelector('td:first-child');
+
+        if (firstTd) {
+          let firstTdValue = firstTd.textContent.trim();
+
+          firstTdValues.push(firstTdValue);
+        }
+      });
+
+      if (firstTdValues.includes(priorityNum)) {
+        alert(`Priority ${priorityNum} is already set.`);
+        res = true;
+      }
+
+      return res;
+    };
+
+    function toggleDropdown(dropdownId) {
+      var dropdown = document.querySelector('#' + dropdownId + ' .dropdown-content').style.display = 'block'
+
+    };
+
+    function getSelectedValue(ele, drop, category) {
+
+      let searchInput = document.querySelector('#' + drop + ' input');
+
+      searchInput.value = ele.innerText
+
+      document.querySelector('#' + drop + ' input')
+
+      searchInput.setAttribute('set-data-email', ele.getAttribute('data-email'))
+
+      var dropdown = document.querySelector('#' + drop + ' .dropdown-content').style.display = 'none'
+
+    };
+
+
+    function filterOptions(dropdownId) {
+      var input, filter, options, a, i;
+      input = document.querySelector("#" + dropdownId + " input");
+      filter = input.value.toUpperCase();
+      options = document.querySelectorAll("#" + dropdownId + " .dropdown-content a");
+
+      for (i = 0; i < options.length; i++) {
+        a = options[i];
+        if (a.innerText.toUpperCase().indexOf(filter) > -1) {
+          options[i].style.display = "";
+        } else {
+          options[i].style.display = "none";
+        }
+      }
+
+    };
+
+    function moveTask(id, category) {
+
+      let moveTask = document.querySelector(`#move-task-dropdown`);
+      moveTask = moveTask.options[moveTask.selectedIndex].value;
+
+      apiReq('move-task', {
+        moveTask: moveTask,
+        tastId: id,
+        taskCategory: category
+      })
+
+    }
+
+    function moveTaskByWeek(elementRef, category, taskId, week) {
+
+      const movetoWeek = document.getElementById(`${elementRef}-${taskId}`);
+
+      apiReq('move-task-by-week', {
+        week: week,
+        tastId: taskId,
+        category: category,
+        parentCategory: '<%=parentCategory%>',
+        movetoWeek: movetoWeek.value
+      })
+
+    }
+  </script>
+
+  <script type="text/javascript" src="/static/js/pop-msg.js"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js" integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V" crossorigin="anonymous"></script>
+
+
+</body>
+
+</html>

@@ -1,0 +1,52 @@
+        <div class="table-container-1">
+          <p class="titl2">Ideas and Innovation</p>
+          <hr>
+          <button class="float-end me-3" onclick="toggleBody('-add-idea')">Add Your Creative Idea</button>
+
+          <div class="body" id="body-add-idea" style="z-index: 999">
+
+            <div style="
+                      height: 400px;
+                      overflow-y: scroll;
+                      border: 1px solid #8080805e;
+                      z-index: 999;">
+
+            <div class="edit-form m-2 pb-3">
+                <h4 class="titl2 mt-3 m-2 text-start">Tell Us Your Innovative Idea</p>
+              
+
+                <div class="input-box m-0">
+                  <label for="" hidden>Your Idea</label>
+                  <textarea id="add-your-idea" cols="20" rows="10"></textarea>
+                </div>
+
+            </div>
+
+            </div>
+
+            <div>
+              <button onclick="onFormSubmit(['add-your-idea'], 'add-idea-innovation')">
+                Submit
+              </button>
+              <button onclick="toggleBody('-add-idea')">
+                Close
+              </button>
+            </div>
+          </div>
+
+          <table id="idea-inno">
+            <thead>
+              <tr>
+                <th class="th">Name</th>
+                <th class="th">Idea</th>
+              </tr>
+            </thead>
+
+            <tbody>
+
+            </tbody>
+
+          </table>
+
+          <a href="/ideas-and-innovation" class="btn btn-outline-dark me-2"> See more</a>
+        </div>

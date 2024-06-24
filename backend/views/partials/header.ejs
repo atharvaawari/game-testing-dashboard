@@ -1,0 +1,132 @@
+<style>
+  header {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  .dropdown-menu .nav-link{
+    padding:.3rem 0;
+    margin:.3rem .5rem;
+    border-radius: 5px;
+  }
+
+  .dropdown-menu .nav-link:hover{
+    background-color:rgb(227, 226, 226) ;
+    padding: .3rem 0;
+    border-radius: 5px;
+  }
+</style>
+
+<header class="p-3 bg-light text-dark">
+  <div class="">
+    <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+      <div class="navbar-nav me-auto">
+        <a class="navbar-brand text-dark fw-bolder" href="/">
+          <span>
+            <img style="width: 30px; vertical-align: top;
+          padding: 0 4px 0 0;" src="https://www.mindyourlogic.com/static/Home_page_Assets/favicon.png" alt="">
+          </span>
+          <span class="mt-5">MindYourLogic</span>
+        </a>
+      </div>
+
+      <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+        <li><a href="/" class="nav-link px-2 text-dark">Home</a></li>
+
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle text-dark" href="#" id="UploadsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Leaves
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="UploadsDropdown">
+            <li><a href="/office-leaves" class="nav-link px-2 text-dark">Submit Leaves</a></li>
+            <% if (adminData.p1) { %>
+            <% const privileges = JSON.parse(adminData.p1); %>
+            <% if (privileges.MasterAdmin==true || privileges.LeavesAdmin==true || privileges.ReadAdmin==true) { %>
+            <li><a href="/view-leave" class="nav-link px-2 text-dark">View Leaves</a></li>
+            <% } %>
+            <% } %>
+          </ul>
+        </li>
+
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle text-dark" href="#" id="UploadsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Uploads
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="UploadsDropdown">
+            <li><a href="/uploads-youtube" class="nav-link px-2 text-dark">Youtube Uploads</a></li>
+            <li><a href="/uploads-instagram" class="nav-link px-2 text-dark">Instagram Uploads</a></li>
+            <li><a href="/uploads-facebook" class="nav-link px-2 text-dark">Facebook Uploads</a></li>
+            <li><a href="/uploads-website" class="nav-link px-2 text-dark">Website Uploads</a></li>
+          </ul>
+        </li>
+
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle text-dark" href="#" id="UploadsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Team Tasks
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="UploadsDropdown">
+            <li><a href="/my-tasks" class="nav-link px-2 text-dark">My Task </a></li>
+            <li><a href="/tasks-animation" class="nav-link px-2 text-dark">Team Animation </a></li>
+            <li><a href="/tasks-game" class="nav-link px-2 text-dark">Team Game</a></li>
+            <li><a href="/tasks-uploads" class="nav-link px-2 text-dark">Team Uploads </a></li>
+            <li><a href="/tasks-website" class="nav-link px-2 text-dark">Team Website</a></li>
+          </ul>
+        </li>
+
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle text-dark" href="#" id="UploadsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Games
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="UploadsDropdown">
+            <li><a href="/games-score" class="nav-link px-2 text-dark">Games scores</a></li>
+
+          </ul>
+        </li>
+
+      </ul>
+      <div id="my-task-count">
+      </div>
+
+      <div class="">
+        <% if (adminData.p1) { %>
+        <% const privileges = JSON.parse(adminData.p1); %>
+        <% if (privileges.MasterAdmin==true) { %>
+        <a href="/admin-dasboard" type="button" class="btn btn-outline-dark me-2">Add / Update Employee</a>
+        <% } %>
+        <% } %>
+
+        <a href="/logout" type="button" class="btn btn-outline-dark me-2">Logout</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<script>
+  fetch("/get-task-count-1")
+    .then(response => {
+      // Check if the request was successful (status code 200)
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      // Parse the response as JSON
+      return response.json();
+    })
+    .then(data => {
+
+      const myTaskCount = document.querySelector(`#my-task-count`);
+      const percentage = `${(data.count.completed_count / (data.count.not_completed_count + data.count.completed_count)) * 100} `;
+
+      myTaskCount.innerHTML = `${data.count.not_completed_count === undefined || data.count.completed_count === undefined ? `
+        <a type="button" href="/my-tasks" class="btn btn-info me-2">Your tasks : 0 / 0</a>
+      ` : 
+        percentage < 50 ? `
+        <a type="button" href="/my-tasks" class="btn btn-danger me-2"> Your tasks : ${data.count.completed_count} / ${data.count.not_completed_count+data.count.completed_count} </a>
+      ` :
+        `
+        <a type="button" href="/my-tasks" class="btn btn-success me-2"> Your tasks : ${data.count.completed_count} / ${data.count.not_completed_count+data.count.completed_count} </a>
+      `}`;
+        
+    })
+    .catch(error => {
+      console.error('Error fetching data:', error);
+    });
+</script>

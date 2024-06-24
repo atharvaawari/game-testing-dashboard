@@ -1,0 +1,899 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
+  <title><%=parentCategory%> Task</title>
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <!-- <<<<<<<<< - my style sheet - >>>>>>>>>> -->
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      font-family: 'Nunito', sans-serif;
+      background-color: #f3f4f6;
+      margin: 0;
+      padding: 0;
+      text-align: center;
+    }
+
+    a {
+      text-decoration: none;
+    }
+
+    label {
+      font-size: 18px;
+      vertical-align: sub;
+      font-weight: 700;
+      display: block
+    }
+
+    .input-box {
+      text-align: left;
+      margin: 1.5rem 1rem 0px 1rem;
+    }
+
+    h1 {
+      display: block;
+      margin-bottom: 0.5rem;
+      color: #555;
+      margin-top: 1rem;
+      font-weight: 600;
+    }
+
+    h2 {
+      color: #333;
+      margin-top: 2rem;
+    }
+
+    h4 {
+      text-transform: capitalize;
+      text-align: left;
+      font-weight: 700;
+      font-size: 16px;
+    }
+
+    input[type="date"] {
+      width: 100px;
+      padding: 0.5rem;
+      margin-bottom: 1rem;
+      border: 1px solid #e0e0e0;
+      border-radius: 4px;
+    }
+
+    button {
+      background-color: #007BFF;
+      color: #ffffff;
+      border: none;
+      border-radius: 4px;
+      padding: 0.5rem 1rem;
+      margin: 0.5rem;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    .selected {
+      background-color: #ffeb3b;
+    }
+
+    small {
+      font-size: .875em;
+      padding: 6px;
+      border-radius: 8px;
+      color: gray;
+    }
+
+
+
+    .w-sm {
+      width: 30%;
+    }
+
+    .titl2 {
+      font-weight: 800;
+      font-size: 20px;
+      text-transform: capitalize;
+    }
+
+    .center {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+      background: #8a2be233;
+      padding: 15px;
+      border-radius: 8px;
+      height: 100%;
+    }
+
+    .tr {
+      border: 1px solid black;
+      padding: 0 5px;
+      background: #F1F6F9;
+    }
+
+    .th {
+      font-weight: 700;
+      border: 1px solid black;
+      width: fit-content;
+      padding: 10px 14px;
+      margin: 30px 0;
+      background: #FFF89A;
+    }
+
+    .color-F7D716D9 {
+      background: #F7D716D9;
+    }
+
+    .color-F66B0EE0 {
+      background: #F66B0EE0;
+    }
+
+    .color-5BF477 {
+      background: #5BF477;
+    }
+
+    .color-FF5F9E {
+      background: #FF5F9E;
+    }
+
+    table {
+      font-size: 14px;
+      caption-side: bottom;
+      border-collapse: collapse;
+      margin: auto;
+      width: 100%;
+      box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.25) !important;
+    }
+
+    .body {
+      width: 450px;
+      overflow: auto;
+      display: none;
+      overflow: auto;
+      background: white;
+      position: fixed;
+      left: 51px;
+      top: 25px;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 1rem;
+      border-radius: 10px;
+      box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.25) !important;
+      opacity: 0;
+      transition: opacity 0.3s, transform 0.3s;
+      z-index: 10000;
+    }
+
+    .body.show {
+      display: block;
+      opacity: 1;
+    }
+
+    .th-style {
+      padding: .5rem .5rem;
+      background-color: #FFD966;
+      border-bottom: 1px solid #8080805e;
+      font-weight: 800;
+    }
+
+    .baged--1 {
+      background: #FFCC8F;
+      padding: 5px 8px;
+      margin: 0 10px;
+      border-radius: 7px;
+      display: inline-block;
+    }
+
+    .category-container {
+      display: inline-block;
+      min-width: 950px;
+    }
+
+    .accordion-item {
+      width: 100%;
+    }
+
+    .grid-box-7-3 {
+      display: grid;
+      grid-template-columns: 70% 30%;
+    }
+
+    .alert-success {
+      z-index: -1 !important;
+    }
+
+    .accordion-button button {
+      position: absolute;
+      right: 5rem;
+    }
+
+    .target-details {
+      max-width: 30vw;
+      height: 50px;
+      min-width: 65%;
+    }
+
+    .w-btn-input input {
+      width: 60px;
+      background-color: #fff;
+    }
+
+    .w-btn-input {
+      display: inline-block;
+    }
+
+    .bck-border {
+      border: 1px solid black;
+      padding: 6px;
+      border-radius: 5px;
+      background-color: #fff;
+      border: 1px solid rgba(0, 0, 0, .125);
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .accordion-button {
+      width: 82%;
+    }
+
+    .acc-activity-box {
+      display: inline-block;
+      padding-top: 6px;
+    }
+
+    .accordion-header {
+      display: flex;
+      justify-content: space-between;
+      box-shadow: inset 0 -1px 0 rgba(0, 0, 0, .125);
+    }
+
+    .accordion-button::after {
+      margin-bottom: 9px;
+      margin-left: 10px;
+    }
+
+    .accordion-button:not(.collapsed) {
+      color: #0c63e4;
+      background-color: white;
+      box-shadow: inset 0 -1px 0 rgba(0, 0, 0, .125);
+    }
+
+    .f-icon {
+      font-size: 15px;
+      padding: .2rem
+    }
+
+    .divider-line {
+      box-shadow: inset 0 -1px 0 rgba(0, 0, 0, .125);
+    }
+
+    /*  Dropdown */
+
+    .dropdown {
+      position: relative;
+      display: inline-block;
+    }
+
+    .dropdown button {
+      padding: 10px;
+      font-size: 16px;
+      margin-left: 0;
+    }
+
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      background-color: #f9f9f9;
+      min-width: 200px;
+      box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+      z-index: 1;
+      height: 300px;
+      overflow-y: scroll;
+    }
+
+    .dropdown-content.show {
+      display: block;
+
+    }
+
+    .dropdown-content a {
+      padding: 12px 16px;
+      display: block;
+      text-decoration: none;
+      color: #333;
+    }
+
+    .dropdown-content a:hover {
+      background-color: #ddd;
+    }
+
+    .input-box textarea {
+      width: 100%
+    }
+  </style>
+
+</head>
+
+<body>
+
+  <%- include('../partials/header.ejs') -%>
+
+  <main>
+
+    <div class="category-container mt-3">
+
+      <div class="section-header mb-4">
+
+        <div class="bck-border">
+          <small class="text-dark"><strong><%=startDate%> To <%=endDate%></strong></small>
+        </div>
+
+
+        <div class="add-release-container">
+            <button class="float-end" onclick="toggleBody('-add-release')">Add Release </button>
+
+            <div class="body" id="body-add-release">
+                <div>
+                  <div class="pending-leaves-container">
+                    <div class="edit-form m-2">
+                      <p class="titl2">Add Release</p>
+                      <hr>
+
+                      <div class="input-box">
+                        <label for="">Release Title</label>
+
+                        <div class="dropdown" >
+                          <input type="text" id="release-title" >
+                        </div>
+                      </div>
+
+                      <div class="input-box">
+                        <label for="">Release Date</label>
+
+                        <div class="dropdown" >
+                          <input type="text" id="release-date" >
+                        </div>
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+                <div>
+                  <button class="btn btn-primary" onclick="submitReleaseGame('game')">
+                    Save
+                  </button>
+                  <button class="btn btn-primary" onclick="toggleBody('-add-release')">
+                    Close
+                  </button>
+                </div>
+            </div>
+        </div>
+
+      </div>
+
+      <%- include("../task/task-sheet.ejs") -%>
+
+      <%- include("../all-uploads/emp-task-count-by-name.ejs") -%>
+
+      <% for (let i = 0; i < releaseGames.length; i++) { %>
+        
+      <section>
+
+        <div class="category-container mb-3">
+          <div class="accordion-item">
+            <div class="accordion-header" id="">
+              <a class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#task-box-<%=releaseGames[i][0].id %>" aria-expanded="true" aria-controls="collapseThree">
+                <h4> <%=releaseGames[i][0].release_title%> </h4>
+              </a>
+              <div class="acc-activity-box">
+            <% if( ( (privilegeData.AnimationAdmin || privilegeData.MasterAdmin ) && parentCategory == 'animation' )  ||
+             ( (privilegeData.GameAdmin || privilegeData.MasterAdmin ) && parentCategory == 'game' ) ||
+             ( (privilegeData.UploadsAdmin || privilegeData.MasterAdmin ) && parentCategory == 'uploads' )  ||
+             ( (privilegeData.MasterAdmin ) && parentCategory == 'website' ) 
+             ) 
+             { %>
+                <!-- add targets pop -->
+                <button class="float-end" onclick="toggleBody('-add-game-<%=releaseGames[i][0].id %>')">Add </button>
+
+                <button class="btn btn-outline-dark ms-5">
+
+                  <% let filteredItems = releaseGames[i].filter(item => item.is_complete == 0);%>
+                  <%=filteredItems.length%>
+
+                </button>
+                <div class="body" id="body-add-game-<%=releaseGames[i][0].id %>">
+                  <div>
+                    <div class="pending-leaves-container">
+                      <div class="edit-form m-2">
+                        <p class="titl2">Add This Week Targets</p>
+                        <hr>
+
+                        <div class="input-box">
+                          <label for="">Task Owner</label>
+
+                          <div class="dropdown" id="dropdown1-<%=releaseGames[i][0].id %>">
+                            <input type="text" id="game-<%=releaseGames[i][0].id %>-target-owner" set-data-email="" oninput="filterOptions('dropdown1-<%=releaseGames[i][0].id %>')" placeholder="Search..." onclick="toggleDropdown('dropdown1-<%=releaseGames[i][0].id %>')" value="">
+
+                            <div class="dropdown-content">
+                                <% for (let b = 0; b < empList.length; b++) { %>
+                                  <a onclick="getSelectedValue(this,'dropdown1-<%=releaseGames[i][0].id %>','game-<%=releaseGames[i][0].id %>')" data-email="<%= empList[b].email %>"><%= empList[b].name %></a>
+                                <% } %>
+                              </div>
+                          </div>
+                        </div>
+
+                        <div class="input-box">
+                          <label for="">Task Title</label>
+                          <textarea id="game-<%=releaseGames[i][0].id %>-target-title" cols="18" rows="1"></textarea>
+                        </div>
+                        <div class="input-box">
+                          <label for="">Task Details</label>
+                          <textarea id="game-<%=releaseGames[i][0].id %>-more-details" cols="18" rows="1"></textarea>
+                        </div>
+                        <div class="input-box mb-4">
+                          <label for="">Priority </label>
+
+                          <select id="game-<%=releaseGames[i][0].id %>-set-priority">
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div>
+                    <button class="btn btn-primary" onclick="submitgameTargets('game-<%=releaseGames[i][0].id %>','<%=releaseGames[i][0].release_title %>')">
+                      Save
+                    </button>
+                    <button class="btn btn-primary" onclick="toggleBody('-add-game-<%=releaseGames[i][0].id %>')">
+                      Close
+                    </button>
+                  </div>
+                </div>
+                <!-- add targets pop -->
+                <% } %>
+              </div>
+            </div>
+            <div id="task-box-<%=releaseGames[i][0].id %>" class="accordion-collapse collapse" aria-labelledby="" data-bs-parent="#accordionExample">
+              <div class="accordion-body">
+           
+                <table id='game-targets-table'>
+
+                  <thead>
+                    <tr class="th-style">
+                      <th class="th-style">Priority </th>
+                      <th class="th-style">Task Owner</th>
+                      <th class="th-style">Title</th>
+                      <th class="th-style"> Task Details</th>
+                      <th class="th-style">Check</th>
+                      <% if( ( (privilegeData.AnimationAdmin || privilegeData.MasterAdmin ) && parentCategory == 'animation' )  ||
+                  ( (privilegeData.GameAdmin || privilegeData.MasterAdmin ) && parentCategory == 'game' ) ||
+                  ( (privilegeData.UploadsAdmin || privilegeData.MasterAdmin ) && parentCategory == 'uploads' )  ||
+                  ( (privilegeData.MasterAdmin || privilegeData.WebsiteAdmin  ) && parentCategory == 'website' ) 
+                  ){ %>
+                      <th class="th-style">Edit</th>
+                      <th class="th-style">Delete</th>
+                      <th class="th-style"></th>
+                      <% } %>
+                    </tr>
+                  </thead>
+
+                  <tbody>
+
+                    <% let firstIteration = 0; for( a = 0; a < releaseGames[i].length; a++) { %>
+
+                    <% if(releaseGames[i][a].is_complete == 0 ) {%>
+
+                        <tr>
+                            <td><%=releaseGames[i][a].priority %></td>
+                            <td><%=releaseGames[i][a].task_owner %></td>
+                            <td class="target-details"><%=releaseGames[i][a].task_details%></td>
+                            <td>
+                              <%- include("../task/details.ejs", { dynamicCategory: "game" , dynamicValues: releaseGames[i][a].more_details , taskId:releaseGames[i][a].id }) -%>
+                            </td>
+                            <td>
+                              <% if(releaseGames[i][a].is_complete == 1) {%>
+                              <input type="checkbox" id="<%=releaseGames[i][a].id%>" onclick="handleCheckboxClick(this,'game')" checked>
+                              <% } else {%>
+                              <input type="checkbox" id="<%=releaseGames[i][a].id%>" onclick="handleCheckboxClick(this,'game')">
+                              <% } %>
+                            </td>
+                            <% if( ( (privilegeData.AnimationAdmin || privilegeData.MasterAdmin ) && parentCategory == 'animation' )  ||
+                          ( (privilegeData.GameAdmin || privilegeData.MasterAdmin ) && parentCategory == 'game' ) ||
+                          ( (privilegeData.UploadsAdmin || privilegeData.MasterAdmin ) && parentCategory == 'uploads' )  ||
+                          ( (privilegeData.MasterAdmin || privilegeData.WebsiteAdmin  ) && parentCategory == 'website' ) 
+                          ){ %>
+                            <td>
+                              <button onclick="toggleBody('-game-targets-edit-<%=a%>')" class="pop-up-btn btn  btn-secondary f-icon"> ✏️</button>
+      
+                              <!-- update targets pop -->
+                              <div class="body" id="body-game-targets-edit-<%=a%>">
+                                <div>
+                                  <div class="pending-leaves-container">
+                                    <div class="edit-form m-2">
+                                      <p class="titl2">Update Task Details</p>
+                                      <hr>
+      
+                                      <div class="input-box">
+                                        <label for="">Task Owner</label>
+                                        <div class="dropdown" id="dropdown2-<%=a%>">
+                                          <input type="text" id="game-targets-owner-edit-<%=a%>" set-data-email="" oninput="filterOptions('dropdown2-<%=a%>')" placeholder="Search..." onclick="toggleDropdown('dropdown2-<%=a%>')" value="<%=releaseGames[i][a].task_owner%>">
+      
+                                          <div class="dropdown-content">
+                                            <% for (let b = 0; b < empList.length; b++) { %>
+                                            <a onclick="getSelectedValue(this,'dropdown2-<%=a%>','game-<%=releaseGames[i][0].id %>')" data-email="<%= empList[b].email %>" id="<%= empList[b].name %>"><%= empList[b].name %></a>
+                                            <% } %>
+                                          </div>
+                                        </div>
+                                      </div>
+
+                                      <div class="input-box">
+                                        <label for="">Task Title</label>
+                                        <textarea id="game-targets-details-edit-<%=a%>" cols="18" rows="2"><%=releaseGames[i][a].task_details%></textarea>
+                                      </div>
+      
+                                      <div class="input-box">
+                                        <label for="">Task Details</label>
+                                        <textarea id="game-more-details-edit-<%=a%>" cols="18" rows="1"><%=releaseGames[i][a].more_details%></textarea>
+                                      </div>
+                                      <div class="input-box mb-4">
+                                        <label for="">Priority </label>
+      
+                                        <select id="game-set-priority-edit-<%=a%>">
+                                          <option value="1">1</option>
+                                          <option value="2">2</option>
+                                          <option value="3">3</option>
+                                          <option value="4">4</option>
+                                          <option value="5">5</option>
+                                        </select>
+      
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div>
+                                  <button onclick="editgameTargets('<%=releaseGames[i][a].id%>','game','<%=a%>')">
+                                    Save
+                                  </button>
+                                  <button onclick="toggleBody('-game-targets-edit-<%=a%>')">
+                                    Close
+                                  </button>
+                                </div>
+                              </div>
+                              <!-- update targets pop -->
+                            </td>
+                            <td>
+                              <button onclick="deleteTask('<%=releaseGames[i][a].id%>','game')" class="pop-up-btn btn  btn-secondary f-icon"> 🗑️ </button>
+                            </td>
+
+      
+                            <% } %>
+                          </tr>
+      
+                          <% } else { %>
+      
+                          <% if(firstIteration == 0) {%>
+      
+                          <tr class="divider-line">
+                            <td>
+      
+                            </td>
+                          </tr>
+      
+                          <%  firstIteration = 1 } %>
+      
+                          <tr>
+                            <td><%=releaseGames[i][a].priority %></td>
+                            <td><%=releaseGames[i][a].task_owner %></td>
+                            <td class="target-details"><%=releaseGames[i][a].task_details%></td>
+                            <td>
+                              <%- include("../task/details.ejs", { dynamicCategory: "game"  , dynamicValues: releaseGames[i][a].more_details , taskId:releaseGames[i][a].id }) -%>
+                            </td>
+                            <td>
+                              <% if(releaseGames[i][a].is_complete == 1) {%>
+                              <input type="checkbox" id="<%=releaseGames[i][a].id%>" onclick="handleCheckboxClick(this,'game')" checked>
+                              <% } else {%>
+                              <input type="checkbox" id="<%=releaseGames[i][a].id%>" onclick="handleCheckboxClick(this,'game')">
+                              <% } %>
+                            </td>
+                            <% if( ( (privilegeData.AnimationAdmin || privilegeData.MasterAdmin ) && parentCategory == 'animation' )  ||
+                         ( (privilegeData.GameAdmin || privilegeData.MasterAdmin ) && parentCategory == 'game' ) ||
+                         ( (privilegeData.UploadsAdmin || privilegeData.MasterAdmin ) && parentCategory == 'uploads' )  ||
+                         ( (privilegeData.MasterAdmin || privilegeData.WebsiteAdmin  ) && parentCategory == 'website' ) 
+                         ){ %>
+                            <td>
+                              <button onclick="toggleBody('-game-targets-edit-<%=a%>')" class="pop-up-btn btn  btn-secondary f-icon"> ✏️</button>
+      
+                              <!-- update targets pop -->
+                              <div class="body" id="body-game-targets-edit-<%=a%>">
+                                <div>
+                                  <div class="pending-leaves-container">
+                                    <div class="edit-form m-2">
+                                      <p class="titl2">Update Task Details</p>
+                                      <hr>
+      
+                                      <div class="input-box">
+                                        <label for="">Task Owner</label>
+                                        <div class="dropdown" id="dropdown2-<%=a%>">
+                                          <input type="text" id="game-targets-owner-edit-<%=a%>" set-data-email="" oninput="filterOptions('dropdown2-<%=a%>')" placeholder="Search..." onclick="toggleDropdown('dropdown2-<%=a%>')" value="<%=releaseGames[i][a].task_owner%>">
+      
+                                          <div class="dropdown-content">
+                                            <% for (let b = 0; b < empList.length; b++) { %>
+                                            <a onclick="getSelectedValue(this,'dropdown2-<%=a%>','game-<%=releaseGames[i][0].id %>')" data-email="<%= empList[b].email %>" id="<%= empList[b].name %>"><%= empList[b].name %></a>
+                                            <% } %>
+                                          </div>
+                                        </div>
+                                      </div>
+
+                                      <div class="input-box">
+                                        <label for="">Task Title</label>
+                                        <textarea id="game-targets-details-edit-<%=a%>" cols="18" rows="2"><%=releaseGames[i][a].task_details%></textarea>
+                                      </div>
+                                      <div class="input-box">
+                                        <label for="">Task Details</label>
+                                        <textarea id="game-more-details-edit-<%=a%>" cols="18" rows="1"><%=releaseGames[i][a].more_details%></textarea>
+                                      </div>
+                                      <div class="input-box mb-4">
+                                        <label for="">Priority </label>
+      
+                                        <select id="game-set-priority-edit-<%=a%>">
+                                          <option value="1">1</option>
+                                          <option value="2">2</option>
+                                          <option value="3">3</option>
+                                          <option value="4">4</option>
+                                          <option value="5">5</option>
+                                        </select>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div>
+                                  <button onclick="editgameTargets('<%=releaseGames[i][a].id%>','game','<%=a%>')">
+                                    Save
+                                  </button>
+                                  <button onclick="toggleBody('-game-targets-edit-<%=a%>')">
+                                    Close
+                                  </button>
+                                </div>
+                              </div>
+                              <!-- update targets pop -->
+                            </td>
+                            <td>
+                              <button onclick="deleteTask('<%=releaseGames[i][a].id%>','game')" class="pop-up-btn btn  btn-secondary f-icon"> 🗑️ </button>
+                            </td>
+
+                            <% } %>
+                          </tr>
+
+                    <% } %>
+                    <% } %>
+
+                  </tbody>
+
+                </table>
+
+
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+      <% } %>
+
+    </div>
+
+  </main>
+
+  <script>
+    function toggleBody(emailId) {
+      const body = document.getElementById('body' + emailId);
+      body.classList.toggle('show');
+    };
+
+    function submitReleaseGame(targetsCategory) {
+
+      let releaseTitle = document.querySelector(`#release-title`).value;
+      let releaseDate = document.querySelector(`#release-date`).value;
+
+      if (releaseTitle !== '' && releaseDate !== '') {
+        apiReq('add-game-release', [{
+        releaseTitle:releaseTitle,
+        releaseDate:releaseDate
+      }])
+      } else {
+        // document.querySelector('#body-add-' + targetsCategory ).style.display = 'none'
+        document.querySelector('#body-add-' + targetsCategory + ' button')
+
+        alert('please fill all required fields')
+        return;
+      }
+
+    };
+
+    function submitgameTargets(targetsCategory,releaseGame) {
+
+      let targetTitle = document.querySelector(`#${targetsCategory}-target-title`);
+      let taskOwner = document.querySelector(`#${targetsCategory}-target-owner`);
+      let priority = document.querySelector(`#${targetsCategory}-set-priority`);
+      priority = priority.options[priority.selectedIndex].value;
+      let moreDetails = document.querySelector(`#${targetsCategory}-more-details`);
+      let taskOwnerEmail = taskOwner.getAttribute('set-data-email')
+
+      if (taskOwner.value !== '' && targetTitle.value !== '' && moreDetails.value !== '') {
+        apiReq('add-game-tasks', [
+        {
+          taskOwner: taskOwner.value,
+          targetTitle: targetTitle.value,
+          priority: priority,
+          moreDetails: moreDetails.value,
+          taskOwnerEmail:taskOwnerEmail,
+          releaseGame:releaseGame
+        }
+      ])
+      } else {
+
+        document.querySelector('#body-add-' + targetsCategory + ' button')
+
+        alert('please fill all required fields')
+        return;
+      }
+
+    };
+
+    function handleCheckboxClick(elementRef, targetsCategory) {
+
+      apiReq('wekkly-target-is-checked', [{
+        isChecked: elementRef.checked,
+        id: elementRef.id,
+        category: 'game',
+        targets_category: targetsCategory,
+
+      }])
+
+    };
+
+    function editgameTargets(id, targetsCategory, currTask) {
+
+      let targetOwner = document.querySelector(`#${targetsCategory}-targets-owner-edit-${currTask}`);
+      let targetDetails = document.querySelector(`#${targetsCategory}-targets-details-edit-${currTask}`);
+      let moreDetails = document.querySelector(`#${targetsCategory}-more-details-edit-${currTask}`);
+      let priority = document.querySelector(`#${targetsCategory}-set-priority-edit-${currTask}`)
+      priority = priority.options[priority.selectedIndex].value;
+      const taskOwnerEmail = targetOwner.getAttribute('set-data-email')
+      
+      apiReq('wekkly-target-is-edit', [{
+        task_owner: targetOwner.value,
+        task_details: targetDetails.value,
+        task_id: id,
+        category: '<%=parentCategory%>',
+        targets_category: 'game',
+        priority: priority,
+        moreDetails: moreDetails.value,
+        taskOwnerEmail:taskOwnerEmail
+      }])
+    };
+
+    function deleteTask(taskId, targetsCategory) {
+
+      apiReq('delete-task', {
+        task_id: taskId,
+        targets_category: 'game',
+        category: 'game'
+      })
+
+    };
+
+    function checkPriDub(priorityNum, targetsCategory) {
+
+      let values = document.querySelectorAll(`#${targetsCategory}-targets-table tbody tr`);
+      let firstTdValues = [];
+      let res = false
+
+      values.forEach((tr) => {
+
+        let firstTd = tr.querySelector('td:first-child');
+
+        if (firstTd) {
+          let firstTdValue = firstTd.textContent.trim();
+
+          firstTdValues.push(firstTdValue);
+        }
+      });
+
+      if (firstTdValues.includes(priorityNum)) {
+        alert(`Priority ${priorityNum} is already set.`);
+        res = true;
+      }
+
+      return res;
+    };
+
+    function toggleDropdown(dropdownId) {
+      var dropdown = document.querySelector('#' + dropdownId + ' .dropdown-content').style.display = 'block'
+
+    };
+
+    function getSelectedValue(ele, drop, category) {
+
+      let searchInput = document.querySelector('#' + drop + ' input');
+
+      searchInput.value = ele.innerText
+
+      document.querySelector('#' + drop + ' input')
+
+      searchInput.setAttribute('set-data-email', ele.getAttribute('data-email'))
+
+      var dropdown = document.querySelector('#' + drop + ' .dropdown-content').style.display = 'none'
+
+    };
+
+    function filterOptions(dropdownId) {
+      var input, filter, options, a, i;
+      input = document.querySelector("#" + dropdownId + " input");
+      filter = input.value.toUpperCase();
+      options = document.querySelectorAll("#" + dropdownId + " .dropdown-content a");
+
+      for (i = 0; i < options.length; i++) {
+        a = options[i];
+        if (a.innerText.toUpperCase().indexOf(filter) > -1) {
+          options[i].style.display = "";
+        } else {
+          options[i].style.display = "none";
+        }
+      }
+
+    };
+
+    function moveTask(id, category) {
+
+      let moveTask = document.querySelector(`#move-task-dropdown`);
+      moveTask = moveTask.options[moveTask.selectedIndex].value;
+
+      apiReq('move-task', {
+        moveTask: moveTask,
+        tastId: id,
+        taskCategory: category
+      })
+
+    }
+
+    function moveTaskByWeek(elementRef, category, taskId, week) {
+
+      const movetoWeek = document.getElementById(`${elementRef}-${taskId}`);
+
+      apiReq('move-task-by-week', {
+        week: week,
+        tastId: taskId,
+        category: category,
+        parentCategory: '<%=parentCategory%>',
+        movetoWeek: movetoWeek.value
+      })
+
+    }
+  
+  </script>
+
+  <script type="text/javascript" src="/static/js/pop-msg.js"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js" integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V" crossorigin="anonymous"></script>
+
+
+</body>
+
+</html>

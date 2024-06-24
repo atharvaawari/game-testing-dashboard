@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
+  <title>Home Page</title>
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <!-- <<<<<<<<< - my style sheet - >>>>>>>>>> -->
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      font-family: 'Nunito', sans-serif;
+      background-color: #f3f4f6;
+      margin: 0;
+      padding: 0;
+      text-align: center;
+    }
+
+    hr {
+    position: relative; /* or use absolute, fixed, etc. depending on your layout */
+    z-index: 1; /* Adjust the z-index value as needed */
+  }
+
+    label {
+      font-size: 25px;
+      vertical-align: sub;
+    }
+
+    .date-picker-container {
+      background-color: #ffffff;
+      padding: 1rem;
+      border-radius: 8px;
+      margin: 2rem auto;
+      width: 300px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+      display: block;
+      margin-bottom: 0.5rem;
+      color: #555;
+      margin-top: 3rem;
+      font-weight: 600;
+      font-size: 20px;
+    }
+
+    input[type="date"] {
+      width: 100px;
+      padding: 0.5rem;
+      margin-bottom: 1rem;
+      border: 1px solid #e0e0e0;
+      border-radius: 4px;
+    }
+
+    input {
+      height: 25px;
+    }
+
+    button {
+      background-color: #007BFF;
+      color: #ffffff;
+      border: none;
+      border-radius: 4px;
+      padding: 0.5rem 1rem;
+      margin: 0.5rem;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    .selected {
+      background-color: #ffeb3b;
+    }
+
+    .badge {
+      font-size: .875em;
+      background: #fffbfba6;
+      color: black;
+      border-radius: 8px;
+      font-weight: 700;
+      padding: 7px 14px;
+      display: inline-block;
+      box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.25) !important;
+    }
+
+    .center {
+      /* display: flex; */
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      background: #8a2be233;
+      padding: 15px;
+      border-radius: 8px;
+    }
+
+    .titl2 {
+      font-weight: 800;
+      font-size: 20px;
+    }
+
+    .tr {
+      /* border: 1px solid black; */
+      padding: 0 5px;
+      margin: auto;
+      background: #F1F6F9;
+      font-size: 14px
+    }
+
+    .table-container {
+      display: flex;
+      width: 100%;
+      overflow-x: scroll;
+    }
+
+    .table-container-1 {
+      display: inline-block;
+      margin: .5rem 1rem;
+      padding: 1rem .5rem;
+      border-radius: 8px;
+      background-color: white;
+      box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.25) !important;
+    }
+
+    .table-main-container {
+      position: relative;
+      width: 100%;
+    }
+
+    .th {
+      font-size: 14px;
+      font-weight: 700;
+      width: fit-content;
+      padding: 3px 5px;
+      margin: 30px 0;
+      background-color: #FFD966;
+      border-bottom: 1px solid #8080805e;
+      font-weight: 800;
+    }
+
+    .color-F7D716D9 {
+      background: #F7D716D9;
+    }
+
+    .color-F66B0EE0 {
+      background: #F66B0EE0;
+    }
+
+    .color-5BF477 {
+      background: #5BF477;
+    }
+
+    .color-FF5F9E {
+      background: #FF5F9E;
+    }
+
+    table {
+      caption-side: bottom;
+      border-collapse: collapse;
+      margin: auto;
+      width: 90%;
+      margin: 1rem auto;
+      box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.25) !important;
+    }
+
+    .body {
+      width: 400px;
+      overflow: auto;
+      display: none;
+      overflow: auto;
+      background: white;
+      position: fixed;
+      left: 51px;
+      top: 25px;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 1rem;
+      border-radius: 16px;
+      box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.25) !important;
+      z-index: 99999;
+    }
+
+    .body.show {
+      display: block;
+    }
+
+    .edit-form label {
+      text-align: left;
+      display: block;
+      margin-bottom: 5px;
+      font-weight: 700;
+    }
+
+    .edit-form input {
+      height: 40px;
+    }
+
+    .pending-leave-box {
+      grid-template-columns: 50% 50%;
+      display: grid;
+    }
+
+    #body-pending-leaves {
+      width: 500px
+    }
+
+    .pending-leaves-container {
+      overflow-y: scroll;
+      height: 400px;
+    }
+
+    .pending-leave-box-1 {
+      background: white;
+      margin: 1rem 0;
+      padding: .5rem 0;
+    }
+
+    #csv-button {
+      position: absolute;
+      top: 0;
+      right: 35px;
+      background-color: green;
+    }
+
+    .sm-input {
+      width: 100px;
+      display: inline-block;
+    }
+
+    .leave-data {
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: 33% 33% 33%;
+    }
+
+    .like-box {
+      background: white;
+      gap: 0px;
+      width: 150px;
+    }
+
+    .like-btn-box a{
+      width: 100px;
+    }
+
+    /* __________ form css  ____________ */
+
+    .input-box {
+      text-align: left;
+      text-align: left;
+      margin: 1.5rem .5rem;
+    }
+
+    .input-box label {
+      display: block; /* Make labels appear on a new line */
+      margin-bottom: 8px; /* Add spacing between labels and form elements */
+      font-size: 16px; /* Set the font size */
+      font-weight: bold; /* Make the font bold, adjust as needed */
+      color: #333; /* Set the text color */
+    }
+    
+    .input-box label.required::after {
+      content: " *"; /* Display an asterisk (*) after required labels */
+      color: #ff0000; /* Set the color of the asterisk */
+    }
+
+    /* __________ form css  ____________ */
+    /* ___________ attendance css ____________ */
+
+    .attendance-btn {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* ___________ attendance css ____________ */
+
+    @media screen and (max-width: 992px) {
+      .pending-leave-box {
+        grid-template-columns: 100%;
+        display: grid;
+      }
+
+      #body-pending-leaves {
+        width: 90%;
+      }
+
+      .leave-data {
+        overflow: hidden;
+        display: grid;
+        grid-template-columns: 100%;
+      }
+
+      .btn-box {
+        display: flex !important;
+        flex-direction: column;
+      }
+    }
+  </style>
+
+</head>
+
+<body>
+
+  <%- include('./partials/header.ejs') -%>
+
+  <section>
+    <div class="container my-2">
+
+      <div class="leave-data">
+
+        <%- include('./partials/idea-innovation.ejs') -%>
+
+        <div class="table-container-1">
+         <p class="titl2">Uploads Status</p>
+         <hr>
+          <table >
+            <thead>
+              <tr>
+                <th class="th">Sno</th>
+                <th class="th">Name</th>
+                <th class="th">Target Status</th>
+                <th class="th">Details</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr>
+                <td class="tr" style="border-bottom: 1px solid #8080805e;background: white; "><strong>1</strong></td>
+                <td class="tr" style="border-bottom: 1px solid #8080805e;background: white; ">
+                  <strong>Youtube Uploads</strong>
+                </td>
+                <td class="tr" style="border-bottom: 1px solid #8080805e;background: white; "><strong><span id="yt-target-status">⏳</span></strong></td>
+                <td class="tr" style="border-bottom: 1px solid #8080805e;background: white; ">
+                  <a class="btn btn-dark m-2" type="button" href="/uploads-youtube">
+                   Details
+                  </a>
+                </td>
+              </tr>
+              <tr>
+                <td class="tr" style="border-bottom: 1px solid #8080805e;background: white; "><strong>2</strong></td>
+                <td class="tr" style="border-bottom: 1px solid #8080805e;background: white; "><strong>Instagram Uploads </strong></td>
+                <td class="tr" style="border-bottom: 1px solid #8080805e;background: white; "><strong><span id="insta-target-status">⏳</span></strong></td>
+                <td class="tr" style="border-bottom: 1px solid #8080805e;background: white; ">
+                  <a class="btn btn-dark m-2" type="button" href="/uploads-instagram">
+                   Details
+                  </a>
+                </td>
+              </tr>
+              <tr>
+                <td class="tr" style="border-bottom: 1px solid #8080805e;background: white; "><strong>3</strong></td>
+                <td class="tr" style="border-bottom: 1px solid #8080805e;background: white; "><strong>Facebook Uploads</strong></td>
+                <td class="tr" style="border-bottom: 1px solid #8080805e;background: white; "><strong><span id="fb-target-status">⏳</span></strong></td>
+                <td class="tr" style="border-bottom: 1px solid #8080805e;background: white; ">
+                  <a class="btn btn-dark m-2" type="button" href="/uploads-facebook">
+                   Details
+               </a>
+                </td>
+              </tr>
+              <tr>
+                <td class="tr" style="border-bottom: 1px solid #8080805e;background: white; "><strong>4</strong></td>
+                <td class="tr" style="border-bottom: 1px solid #8080805e;background: white; "><strong>Uploads</strong></td>
+                <td class="tr" style="border-bottom: 1px solid #8080805e;background: white; "><strong><span id="web-target-status">⏳</span></strong></td>
+                <td class="tr" style="border-bottom: 1px solid #8080805e;background: white; ">
+                  <a class="btn btn-dark m-2" type="button" href="/uploads-website">
+                   Details
+               </a>
+                </td>
+              </tr>
+            </tbody>
+
+          </table>
+        </div>
+        <div class="table-container-1">
+         <p class="titl2">Team Tasks</p>
+         <hr>
+          <table>
+            <thead>
+              <tr>
+                <th class="th">Sno</th>
+                <th class="th">Name</th>
+                <th class="th">Target Status</th>
+                <th class="th">Details</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr>
+                <td class="tr" style="border-bottom: 1px solid #8080805e;background: white; "><strong>1</strong></td>
+                <td class="tr" style="border-bottom: 1px solid #8080805e;background: white; "><strong>Team Animation</strong></td>
+                <td class="tr" style="border-bottom: 1px solid #8080805e;background: white; "><strong><span id="animation-task-status"></span></strong></td>
+                <td class="tr" style="border-bottom: 1px solid #8080805e;background: white; ">
+                  <a class="btn btn-dark m-2" type="button" href="/tasks-animation">
+                   Details
+                  </a>
+                </td>
+              </tr>
+              <tr>
+                <td class="tr" style="border-bottom: 1px solid #8080805e;background: white; "><strong>2</strong></td>
+                <td class="tr" style="border-bottom: 1px solid #8080805e;background: white; "><strong>Team Game</strong></td>
+                <td class="tr" style="border-bottom: 1px solid #8080805e;background: white; "><strong><span id="game-task-status"></span></strong></td>
+                <td class="tr" style="border-bottom: 1px solid #8080805e;background: white; ">
+                  <a class="btn btn-dark m-2" type="button" href="/tasks-game">
+                   Details
+                  </a>
+                </td>
+              </tr>
+              <tr>
+                <td class="tr" style="border-bottom: 1px solid #8080805e;background: white; "><strong>3</strong></td>
+                <td class="tr" style="border-bottom: 1px solid #8080805e;background: white; "><strong>Team Uploads</strong></td>
+                <td class="tr" style="border-bottom: 1px solid #8080805e;background: white; ">
+                 <strong><span id="uploads-task-status">
+               
+                 </span></strong></td>
+                <td class="tr" style="border-bottom: 1px solid #8080805e;background: white; ">
+                  <a class="btn btn-dark m-2" type="button" href="/tasks-uploads">
+                   Details
+                  </a>
+                </td>
+              </tr>
+              <tr>
+                <td class="tr" style="border-bottom: 1px solid #8080805e;background: white; "><strong>3</strong></td>
+                <td class="tr" style="border-bottom: 1px solid #8080805e;background: white; "><strong>Team Website</strong></td>
+                <td class="tr" style="border-bottom: 1px solid #8080805e;background: white; ">
+                 <strong><span id="website-task-status">
+               
+                 </span></strong></td>
+                <td class="tr" style="border-bottom: 1px solid #8080805e;background: white; ">
+                  <a class="btn btn-dark m-2" type="button" href="/tasks-website">
+                   Details
+                  </a>
+                </td>
+              </tr>
+              
+            </tbody>
+
+          </table>
+        </div>
+        <div class="table-container-1">
+          <p class="titl2">Today</p>
+          <hr>
+
+          <% if (todayLeaveData.length>0) { %>
+          <table  id="emp--table">
+            <thead>
+              <tr>
+                <th class="th">Sno</th>
+                <th class="th">Name</th>
+              </tr>
+            </thead>
+
+            <% for (let i = 0; i < todayLeaveData.length; i++) { %>
+            <tbody>
+              <tr>
+                <td class="tr p-3" style="border-bottom: 1px solid #8080805e;background: white; "><strong><%=i+1%></strong></td>
+                <td class="tr p-3" style="border-bottom: 1px solid #8080805e;background: white; "><strong><%=todayLeaveData[i].name%></strong></td>
+              </tr>
+            </tbody>
+            <% } %>
+
+          </table>
+
+          <% } else { %>
+          <p><strong>Team in full action today, no one is on leave today</strong></p>
+
+          <% } %>
+
+        </div>
+        <div class="table-container-1">
+          <p class="titl2">Next 14 Days Leave Status</p>
+          <hr>
+
+          <% if (tomorrowLeaveData.length>0) { %>
+          <table  id="emp--table">
+            <thead>
+              <tr>
+                <th class="th">Sno</th>
+                <th class="th">Name</th>
+                <th class="th">Details</th>
+              </tr>
+            </thead>
+
+            <% let index = 1  %>
+            <% tomorrowLeaveData.forEach(match => { %>
+
+            <% for (const name in match) { %>
+            <tbody>
+              <tr>
+                <td class="tr" style="border-bottom: 1px solid #8080805e;background: white; "><strong><%=index%></strong></td>
+                <td class="tr" style="border-bottom: 1px solid #8080805e;background: white; "><strong><%= name %></strong></td>
+                <td class="tr" style="border-bottom: 1px solid #8080805e;background: white; ">
+
+                    <!-- Add a data attribute to the button so we can get the corresponding body -->
+                    <button class="pop-up-btn btn  btn-dark" onclick="toggleBody('<%=index%>')">
+                      Details
+                    </button>
+             
+                  <!-- Add a unique ID to the body based on the email -->
+                  <div class="body" id="body<%=index%>">
+
+                    <div style="
+                      height: 400px;
+                      overflow-y: scroll;
+                      z-index: 1;
+                      border: 1px solid #8080805e;">
+                      <% let index1 = 1  %>
+                      <% match[name].forEach(leave => { %>
+
+                      <div class="tr" style="border-bottom: 1px solid #8080805e;background: white; ">
+                       
+                        <div><strong><%=index1 %> . </strong> Date : <%= leave.emp_leave_date %></div>
+                        <div><%= leave.day_type %> </div>
+                      </div>
+                      <% index1++  }); %>
+
+                      <%  } %>
+
+                    </div>
+                    <div>
+                      <button onclick="toggleBody('<%=index%>')">
+                        Close
+                      </button>
+                    </div>
+                  </div>
+                </td>
+                <% index++ }); %>
+
+              </tr>
+            </tbody>
+
+          </table>
+          <% } else { %>
+          <p><strong>Next 14 days, no one is on leave – we're on a mission!</strong></p>
+          <% } %>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <%- include('./partials/footer.ejs') -%>
+
+  <script>
+  
+    function toggleBody(emailId) {
+      const body = document.getElementById('body' + emailId);
+
+      body.classList.toggle('show');
+    }
+
+    document.addEventListener('DOMContentLoaded',async () => {
+
+      fetch('/get-task-count')
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          return response.json();
+        })
+        .then(data => {
+
+          const animationElement = document.getElementById('animation-task-status');
+          const gameElement = document.getElementById('game-task-status');
+          const uploadsElement = document.getElementById('uploads-task-status');
+          const websiteElement = document.getElementById('website-task-status');
+          animationElement.innerText = `${data.animationTaskCount.weekCountResult.completed_count} / ${data.animationTaskCount.weekCountResult.completed_count + data.animationTaskCount.weekCountResult.not_completed_count}`
+          gameElement.innerText = `${data.gameTaskCount.weekCountResult.completed_count} / ${data.gameTaskCount.weekCountResult.completed_count + data.gameTaskCount.weekCountResult.not_completed_count}`
+          uploadsElement.innerText = `${data.uploadsTaskCount.weekCountResult.completed_count} / ${data.uploadsTaskCount.weekCountResult.completed_count + data.uploadsTaskCount.weekCountResult.not_completed_count}`
+          websiteElement.innerText = `${data.websiteTaskCount.weekCountResult.completed_count} / ${data.websiteTaskCount.weekCountResult.completed_count + data.websiteTaskCount.weekCountResult.not_completed_count}`
+
+          const ytTargetStatus = document.getElementById('yt-target-status');
+          const fbTargetStatus = document.getElementById('fb-target-status');
+          const instaTargetStatus = document.getElementById('insta-target-status');
+          const webTargetStatus = document.getElementById('web-target-status');
+          ytTargetStatus.innerText = `${data.youtubeCount.targetDone} / ${data.youtubeCount.target}`
+          fbTargetStatus.innerText = `${data.facebookCount.targetDone} / ${data.facebookCount.target}`
+          instaTargetStatus.innerText = `${data.instagramCount.targetDone} / ${data.instagramCount.target}`
+          webTargetStatus.innerText = `${data.websiteCount.targetDone} / ${data.websiteCount.target}`
+
+        })
+        .catch(error => {
+          console.error('Error fetching data:', error);
+        });
+
+       const data11 = await fetchData('/get-idea-innovation');
+       await appendDataToTable(data11.ideasInnovation, 'idea-inno',
+       user =>`
+       <tr>
+        <td class="tr" style="border-bottom: 1px solid #8080805e;background: white;"><strong>..</strong></td>
+        <td class="tr" style="border-bottom: 1px solid #8080805e;background: white;"><strong>${user.idea.substring(0, 30) + '...'}</strong></td>
+       </tr>
+    `);
+
+    });
+
+
+    async function fetchData(url) {
+          try {
+            const response = await fetch(url);
+
+            if (!response.ok) {
+              throw new Error('Network response was not ok');
+            }
+
+            const data = await response.json();
+            return data;
+          } catch (error) {
+            throw error;
+          }
+    }
+
+    async function appendDataToTable(data, tableId, templateFunction) {
+      const table = document.querySelector(`#${tableId} tbody`);
+    
+      data.slice(0, 5).forEach(item => {
+        const row = templateFunction(item);
+        table.innerHTML += row;
+      });
+    }
+   
+  </script>
+  
+  <script type="text/javascript" src="/static/js/pop-msg.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous">
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js" integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V" crossorigin="anonymous"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
+  <title>View Leave</title>
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <!-- <<<<<<<<< - my style sheet - >>>>>>>>>> -->
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      font-family: 'Nunito', sans-serif;
+      background-color: #f3f4f6;
+      margin: 0;
+      padding: 0;
+      /* text-align: center; */
+    }
+
+    label {
+      font-size: 25px;
+      vertical-align: sub;
+    }
+
+    .date-picker-container {
+      background-color: #ffffff;
+      padding: 1rem;
+      border-radius: 8px;
+      margin: 2rem auto;
+      width: 300px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+      display: block;
+      margin-bottom: 0.5rem;
+      color: #555;
+      margin-top: 3rem;
+      font-weight: 600;
+    }
+
+    input[type="date"] {
+      width: 100px;
+      padding: 0.5rem;
+      margin-bottom: 1rem;
+      border: 1px solid #e0e0e0;
+      border-radius: 4px;
+    }
+
+    input {
+      height: 25px;
+    }
+
+    button {
+      background-color: #007BFF;
+      color: #ffffff;
+      border: none;
+      border-radius: 4px;
+      padding: 0.5rem 1rem;
+      margin: 0.5rem;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    .selected {
+      background-color: #ffeb3b;
+    }
+
+    .badge {
+      font-size: .875em;
+      background: #fffbfba6;
+      color: black;
+      border-radius: 8px;
+      font-weight: 700;
+      padding: 7px 14px;
+      display: inline-block;
+      box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.25) !important;
+    }
+
+    .center {
+      /* display: flex; */
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      background: #8a2be233;
+      padding: 15px;
+      border-radius: 8px;
+    }
+
+    .titl2 {
+      font-weight: 800;
+      font-size: 20px;
+    }
+
+    .tr {
+      padding: 0 5px;
+      margin: auto;
+      background: white;
+      font-size: 14px;
+      border-bottom: 1px solid #8080805e;
+    }
+
+    .table-container {
+      display: flex;
+      width: 100%;
+      overflow-x: scroll;
+    }
+
+    .table-container-1 {
+      width: 100%;
+    }
+
+    .table-main-container {
+      background-color: white;
+      box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.25) !important;
+      position: relative;
+      width: 100%;
+    }
+
+    .th {
+      font-size: 14px;
+      font-weight: 700;
+      border-bottom: 1px solid #8080805e;
+      width: fit-content;
+      padding: 10px 14px;
+      margin: 30px 0;
+      background-color: #FFD966;
+    }
+
+    .color-F7D716D9 {
+      background: #F7D716D9;
+    }
+
+    .color-F66B0EE0 {
+      background: #F66B0EE0;
+    }
+
+    .color-5BF477 {
+      background: #5BF477;
+    }
+
+    .color-FF5F9E {
+      background: #FF5F9E;
+    }
+
+    table {
+      caption-side: bottom;
+      border-collapse: collapse;
+      margin: auto;
+      margin: 1rem auto;
+      box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.25) !important;
+    }
+
+    .body {
+      width: 400px;
+      overflow: auto;
+      display: none;
+      overflow: auto;
+      background: white;
+      position: fixed;
+      left: 51px;
+      top: 25px;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 1rem;
+      border-radius: 16px;
+      box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.25) !important;
+    }
+
+    .body.show {
+      display: block;
+    }
+
+    .edit-form label {
+      text-align: left;
+      display: block;
+      margin-bottom: 5px;
+      font-weight: 700;
+    }
+
+    .edit-form input {
+      height: 40px;
+    }
+
+    .pending-leave-box {
+      grid-template-columns: 50% 50%;
+      display: grid;
+    }
+
+    #body-pending-leaves ,#body-cancellation-leaves {
+      width: 500px
+    }
+
+    .pending-leaves-container {
+      overflow-y: scroll;
+      height: 400px;
+    }
+
+    .pending-leave-box-1 {
+      background: white;
+      margin: 1rem 0;
+      padding: .5rem 0;
+    }
+
+    #csv-button {
+      position: absolute;
+      top: 0;
+      right: 35px;
+      background-color: green;
+    }
+
+    .sm-input {
+      width: 100px;
+      display: inline-block;
+    }
+
+  .y-btn-input input {
+  width: 80px;
+  height: inherit;
+  background-color: #fff;
+}
+
+    @media screen and (max-width: 992px) {
+      .pending-leave-box {
+        grid-template-columns: 100%;
+        display: grid;
+      }
+
+      #body-pending-leaves,#body-cancellation-leaves {
+        width: 90%;
+      }
+    }
+  </style>
+
+
+</head>
+
+<body>
+
+  <%- include('./partials/header.ejs') -%>
+
+  <div>
+
+    <div class="p-5 text-center bg-body-tertiary rounded-3">
+      <strong><%if(admin.is_admin) {%>
+        <%=admin.is_admin.replace(/_/g, ' ').replace(/\b\w/g, (char) => char.toUpperCase())%> : 
+        <%}else {%>
+        User : 
+        <%}%> 
+        <%=login_email%> </strong>
+        <br>
+
+        <br>
+        <% if(admin.is_admin =="admin"  ) { %>
+
+        <div class="m-0 p-0" style="height: 40px">
+
+          <div class="d-inline-block me-3 float-start">
+            <a class="d-inline-flex align-items-center pop-up-btn btn btn-primary px-4 position-relative" type="button" onclick="toggleBody('-pending-leaves')">
+              Pending Leave
+              <% if(empPendingLeaves && Object.keys(empPendingLeaves).length > 0) {%>
+              <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                <%= Object.keys(empPendingLeaves).length %>
+              </span>
+              <% } %>
+              </a>
+      
+              <div class="body" id="body-pending-leaves" style="z-index: 1">
+              <div>
+                <div class="tr pending-leaves-container">
+                  <div class="edit-form m-2">
+                    <p class="titl2">Pending Leaves</p>
+                    <hr>
+                    <% if(Object.keys(empPendingLeaves).length > 0) {%>
+                    <%  for(let email in empPendingLeaves) { %>
+      
+                    <div class="pending-leave-box-1 shadow rounded">
+                      <span><strong><%=empPendingLeaves[email][0].name%></strong></span>
+                      <hr>
+                      <% let index = 1  %>
+                      <% if (empPendingLeaves[email] && empPendingLeaves[email].length) { %>
+                      <% empPendingLeaves[email].forEach((leave, idx, arr) => { %>
+      
+                      <div class="leave-col" id="col-<%= leave.sno %>">
+                        <div class="pending-leave-box">
+                          <div>
+                            <div><strong><%= index %></strong>. Date : <%= leave.emp_leave_date %></div>
+                            <div><%= leave.day_type %></div>
+                          </div>
+                          <div>
+                            <button class="pop-up-btn btn btn-success" onclick="leaveApproval(<%= leave.sno %>,'approve')">Approve</button>
+                            <button class="pop-up-btn btn btn-danger" onclick="leaveApproval(<%= leave.sno %>,'cancel')">Cancel</button>
+                          </div>
+                        </div>
+      
+                        <% if (idx !== arr.length - 1) { %>
+                        <hr>
+                        <% } %>
+                      </div>
+      
+      
+                      <% index++; %>
+                      <% }); %>
+      
+                      <% } %>
+                    </div>
+                    <%  } %>
+                    <% } else {%> <p class="py-5"> <strong>No Pending Leaves</strong></p><%  } %>
+      
+                  </div>
+                </div>
+              </div>
+              <div>
+                <button onclick="toggleBody('-pending-leaves')">
+                  Close
+                </button>
+              </div>
+              </div>
+          </div>
+
+          <div class="d-inline-block float-start">
+            <a class="d-inline-flex align-items-center pop-up-btn btn btn-primary px-4 position-relative" type="button" onclick="toggleBody('-cancellation-leaves')">
+              Cancellation Leave
+              <% if(empCancellationLeaves && Object.keys(empCancellationLeaves).length > 0) {%>
+              <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                <%= Object.keys(empCancellationLeaves).length %>
+              </span>
+              <% } %>
+              </a>
+      
+            <div class="body" id="body-cancellation-leaves" style="z-index: 1">
+              <div>
+                <div class="tr pending-leaves-container">
+                  <div class="edit-form m-2">
+                    <p class="titl2">Cancellation Leaves</p>
+                    <hr>
+                    <% if(Object.keys(empCancellationLeaves).length > 0) {%>
+                    <%  for(let email in empCancellationLeaves) { %>
+      
+                    <div class="pending-leave-box-1 shadow rounded">
+                      <span><strong><%=empCancellationLeaves[email][0].name%></strong></span>
+                      <hr>
+                      <% let index = 1  %>
+                      <% if (empCancellationLeaves[email] && empCancellationLeaves[email].length) { %>
+                      <% empCancellationLeaves[email].forEach((leave, idx, arr) => { %>
+      
+                      <div class="leave-col" id="col-<%= leave.sno %>">
+                        <div class="pending-leave-box">
+                          <div>
+                            <div><strong><%= index %></strong>. Date : <%= leave.emp_leave_date %></div>
+                            <div><%= leave.day_type %></div>
+                          </div>
+                          <div>
+                            <button class="pop-up-btn btn btn-success" onclick="leaveCancellation(<%= leave.sno %>,'approve')">Approve</button>
+                            <button class="pop-up-btn btn btn-danger" onclick="leaveCancellation(<%= leave.sno %>,'cancel')">Cancel</button>
+                          </div>
+                        </div>
+      
+                        <% if (idx !== arr.length - 1) { %>
+                        <hr>
+                        <% } %>
+                      </div>
+      
+      
+                      <% index++; %>
+                      <% }); %>
+      
+                      <% } %>
+                    </div>
+                    <%  } %>
+                    <% } else {%> <p class="py-5"> <strong>No Cancellation Leaves</strong></p><%  } %>
+      
+                  </div>
+                </div>
+              </div>
+              <div>
+                <button onclick="toggleBody('-cancellation-leaves')">
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>
+  
+          <div class="d-inline-block float-end">
+            <div class="y-btn-input">
+
+              <a class="btn btn-primary" href="/view-leave?y=<%=yearVal.prevYear%>">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M15 18l-6-6 6-6"></path>
+                </svg>
+              </a>
+              <div class="d-inline-block ">
+                <input class="btn btn-outline-dark " type="text" value="<%=yearVal.currentYear%>" readonly>
+              
+              </div>
+              <a class="btn btn-primary" href="/view-leave?y=<%=yearVal.nextYear%>">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M9 18l6-6-6-6"></path>
+                </svg>
+    
+              </a>
+    
+            </div>
+          </div>
+        
+        </div>
+
+        <% } %>
+
+      <% if(allLeavsData) { %>
+
+      <% if(admin.is_admin =="admin" || admin.is_admin =="read_only_admin" || privilegeData.ReadAdmin==true) { %>
+
+      <div class="mt-3 center table-main-container">
+        <div style="position: relative">
+          <p class="titl2">All Employee Leaves</p>
+          <button class="mb-5" id="csv-button" onclick="downloadCSV()">Download CSV </button>
+        </div>
+
+        <div style="overflow: hidden;">
+          <div class="table-container-1">
+            <table id="emp--table">
+              <thead>
+                <tr>
+                  <th class="th">Name</th>
+                  <th class="th">Email</th>
+                  <th class="th">Leaves</th>
+                  <th class="th">Total</th>
+                  <th class="th">Taken</th>
+                  <th class="th">Extra</th>
+                  <th class="th">Penalty </th>
+                  <th class="th">Remaining</th>
+                  <% if(admin.is_admin =='admin') {%>
+                  <th class="th">Edit</th>
+                  <%}%>
+                </tr>
+              </thead>
+
+              <%  for(let email in allLeavsData) { %>
+              <tbody>
+                <tr>
+                  <td class="tr"><strong><%=allLeavsData[email][0].name%></strong></td>
+                  <td class="tr"><strong><%=email%></strong></td>
+                  <td class="tr ">
+                    <h2>
+                      <!-- Add a data attribute to the button so we can get the corresponding body -->
+                      <button class="pop-up-btn btn  btn-dark" onclick="toggleBody('<%=email.replace(/[^a-zA-Z0-9]/g, "")%>')">
+                        Details
+                      </button>
+                    </h2>
+
+                    <!-- Add a unique ID to the body based on the email -->
+                    <div class="body" id="body<%=email.replace(/[^a-zA-Z0-9]/g, "")%>">
+
+                      <div style="
+                      height: 400px;
+                      overflow-y: scroll;
+                      border: 1px solid #8080805e;
+                      z-index: 1">
+                        <% let index = 1  %>
+                        <%  allLeavsData[email].forEach(leave => { %>
+
+                        <div class="tr">
+                          <div> </div>
+                          <div><strong><%= index %></strong>. Date : <%= leave.emp_leave_date %></div>
+                          <div><%= leave.day_type %></div>
+                        </div>
+                        <% index++ %>
+                        <%  });  %>
+
+                      </div>
+
+                      <div>
+                        <button onclick="toggleBody('<%=email.replace(/[^a-zA-Z0-9]/g, "")%>')">
+                          Close
+                        </button>
+                      </div>
+                    </div>
+                  </td>
+                  <td class="tr"><strong><%=allLeavsData[email].totalLeaves%></strong></td>
+                  <td class="tr"><strong><%=allLeavsData[email].totalLeaveTakenCount%></strong></td>
+                  <td class="tr"><strong><%=allLeavsData[email].extraLeaves%></strong></td>
+                  <td class="tr"><strong><%=allLeavsData[email][0].penalty%></strong></td>
+                  <td class="tr"><strong><%=allLeavsData[email].remainingLeaves%></strong></td>
+                  <% if(admin.is_admin=='admin') {%>
+                  <td class="tr"><button onclick="toggleBody('<%=email.replace(/[^a-zA-Z0-9]/g, "")%>-edit')" class="pop-up-btn btn  btn-secondary"> ✏️</button>
+                    <div class="body" id="body<%=email.replace(/[^a-zA-Z0-9]/g, "")%>-edit" style="overflow: hidden;">
+                    
+                      <div style="">
+
+                        <div class="tr">
+
+                          <div class="edit-form m-4">
+
+                            <label class="my-3 text-center"> Edit Employee Details</label>
+                            <hr>
+                            <div class="mb-3">
+                              <label for="exampleInputEmail1" class="form-label">Name</label>
+                              <input type="text" id="emp_name<%=allLeavsData[email][0].id%>" class="form-control" value="<%=allLeavsData[email][0].name%>" aria-describedby="">
+                            </div>
+                            <div class="mb-3 ">
+                              <label for="exampleInputEmail1" class="form-label">penalty </label>
+                              <input type="text" id="penalty<%=allLeavsData[email][0].id%>" class="form-control" value="<%=allLeavsData[email][0].penalty%>" aria-describedby="">
+                            </div>
+                            <div class="mb-3 sm-input">
+                              <label for="exampleInputEmail1" class="form-label">Total</label>
+                              <input type="text" id="emp_total_leave<%=allLeavsData[email][0].id%>" class="form-control" value="<%=allLeavsData[email].totalLeaves%>" aria-describedby="">
+                            </div>
+                            <div class="mb-3 sm-input">
+                              <label for="exampleInputEmail1" class="form-label">Extra</label>
+                              <input type="text" id="emp_extra_leave<%=allLeavsData[email][0].id%>" class="form-control" value="<%=allLeavsData[email].extraLeaves%>" aria-describedby="">
+                            </div>
+                            <input type="email" id="emp_email<%=allLeavsData[email][0].id%>" class="form-control" aria-describedby="" value="<%=email%>" hidden>
+                            <input type="email" id="admin_email<%=allLeavsData[email][0].id%>" class="form-control" aria-describedby="" value="<%=login_email%>" hidden>
+                            <input id="curr-year-<%=allLeavsData[email][0].id%>" type="text" value="<%=yearVal.currentYear%>" hidden>
+                            <hr>
+                            <button onclick="submit(<%=allLeavsData[email][0].id%>)" class="btn btn-primary">Submit</button>
+                            <button class="btn btn-primary" onclick="toggleBody('<%=email.replace(/[^a-zA-Z0-9]/g, "")%>-edit')">
+                              Close
+                            </button>
+
+                          </div>
+
+                        </div>
+                        <div>
+
+                        </div>
+                      </div>
+
+                    </div>
+                  </td>
+                  <% } %>
+                </tr>
+              </tbody>
+              <% } %>
+
+
+            </table>
+
+          </div>
+        </div>
+
+      </div>
+
+      <% } %>
+
+      <% } %>
+
+    </div>
+
+  </div>
+
+  <%- include('./partials/footer.ejs') -%>
+  <script>
+    function toggleBody(emailId) {
+      const body = document.getElementById('body' + emailId);
+      body.classList.toggle('show');
+    }
+
+    function submit(id) {
+
+      const emp_email = document.getElementById('emp_email' + id).value;
+      const admin_email = document.getElementById('admin_email' + id).value;
+      const emp_name = document.getElementById('emp_name' + id).value;
+      const total_leaves = document.getElementById('emp_total_leave' + id).value;
+      const extra_leaves = document.getElementById('emp_extra_leave' + id).value;
+      const penalty = document.getElementById('penalty' + id).value;
+      const currYear = document.getElementById('curr-year-' + id).value;
+
+      // Use fetch to send the data to the backend
+      fetch('/edit-userinfo', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+
+            emp_email: emp_email,
+            admin_email: admin_email,
+            emp_name: emp_name,
+            total_leaves: total_leaves,
+            extra_leaves: extra_leaves,
+            penalty: penalty,
+            currYear:currYear
+
+          })
+        })
+        .then(response => {
+          if (response.ok) {
+           location.reload();
+          } else {
+            // console.log('Error submitting leaves');
+            showMessagePopup('Error submitting leaves');
+            setTimeout(() => {
+              location.reload();
+            }, 1000);
+          }
+        })
+        .catch(error => {
+          // An error occurred
+          console.log(error);
+        });
+    }
+
+
+    function showMessagePopup(message) {
+      const popup = document.createElement('div');
+      popup.style.position = 'fixed';
+      popup.style.top = '20px';
+      popup.style.right = '20px';
+      popup.style.padding = '10px';
+      popup.style.backgroundColor = 'rgba(0,0,0,0.8)';
+      popup.style.color = 'white';
+      popup.style.borderRadius = '5px';
+      popup.style.zIndex = 1000; // to ensure it appears above other elements
+      popup.innerText = message;
+
+      document.body.appendChild(popup);
+
+      // Remove the message pop-up after 5 seconds
+      setTimeout(() => {
+        popup.remove();
+      }, 5000);
+    }
+
+    function leaveApproval(leaveID, action) {
+
+      // Use fetch to send the data to the backend
+      fetch('/approve-leave', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            leave_id: leaveID,
+            action: action,
+          })
+        })
+        .then(response => response.json()).then(message => {
+          showMessagePopup(message.message);
+          document.getElementById('col-' + leaveID).remove()
+          let leaveCols = document.querySelectorAll('.leave-col')
+
+          if (leaveCols.length < 1) {
+            document.querySelector('.edit-form ').innerHTML = `<p class="titl2">Pending Leaves</p>
+              <hr><p class="py-5"> <strong>No Pending Leaves</strong></p>`;
+            document.querySelector('.pop-up-btn .badge').style.display = 'none'
+          }
+
+        })
+        .catch(error => {
+          // An error occurred
+          console.log(error);
+        });
+    }
+
+    function leaveCancellation(leaveID, action) {
+
+      // Use fetch to send the data to the backend
+      fetch('cancel-leave', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            leave_id: leaveID,
+            action: action,
+          })
+        })
+        .then(response => response.json()).then(message => {
+          showMessagePopup(message.message);
+          document.getElementById('col-' + leaveID).remove()
+          let leaveCols = document.querySelectorAll('.leave-col')
+
+          if (leaveCols.length < 1) {
+            document.querySelector('.edit-form ').innerHTML = `<p class="titl2">Pending Leaves</p>
+              <hr><p class="py-5"> <strong>No Pending Leaves</strong></p>`;
+            document.querySelector('.pop-up-btn .badge').style.display = 'none'
+          }
+
+        })
+        .catch(error => {
+          // An error occurred
+          console.log(error);
+        });
+    }
+
+    function downloadCSV() {
+      let table = document.getElementById("emp--table");
+      let csv = [];
+      let rows = table.querySelectorAll("tr");
+
+      for (let i = 0; i < rows.length; i++) {
+
+        let row = [],
+          cols = rows[i].querySelectorAll("td, th");
+
+        for (let j = 0; j < cols.length; j++)
+          row.push(cols[j].innerText);
+
+        csv.push(row.join(","));
+      }
+
+      // Create CSV & download
+      let csvFile = new Blob([csv.join("\n")], {
+        type: "text/csv"
+      });
+      let downloadLink = document.createElement("a");
+      let url = URL.createObjectURL(csvFile);
+      downloadLink.href = url;
+      downloadLink.download = 'table.csv';
+
+      document.body.appendChild(downloadLink);
+      downloadLink.click();
+      document.body.removeChild(downloadLink);
+    }
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js" integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V" crossorigin="anonymous"></script>
+
+
+</body>
+
+</html>

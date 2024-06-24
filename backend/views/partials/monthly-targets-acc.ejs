@@ -1,0 +1,341 @@
+<section>
+
+  <div class="category-container mb-3">
+    <div class="accordion-item">
+      <div class="accordion-header">
+        <a class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#m--targets-box" aria-expanded="true" aria-controls="collapseThree">
+          <h4>This Month Targets</h4>
+        </a>
+
+        <div class="acc-activity-box">
+
+          <% if( ( (privilegeData.AnimationAdmin || privilegeData.MasterAdmin ) && parentCategory == 'animation' )  ||
+            ( (privilegeData.GameAdmin || privilegeData.MasterAdmin ) && parentCategory == 'game' ) ||
+            ( (privilegeData.UploadsAdmin || privilegeData.MasterAdmin ) && parentCategory == 'uploads' )  ||
+( (privilegeData.MasterAdmin || privilegeData.WebsiteAdmin  ) && parentCategory == 'website' ) 
+            ) 
+            { %>
+          <!-- add targets pop -->
+          <button class="float-end" onclick="toggleBody('-add-monthly')">Add </button>
+          <button class="btn btn-outline-dark ms-5">
+            <% let filteredItems = monthlyTargets.filter(item => item.is_complete == 0);%>
+            <%=filteredItems.length%>
+          </button>
+          <div class="body" id="body-add-monthly">
+            <div>
+              <div class="pending-leaves-container">
+                <div class="edit-form m-2">
+                  <p class="titl2">Add Month Targets</p>
+                  <hr>
+                  <div class="input-box">
+                    <label for="mySelect">Task Owner</label>
+
+                    <div class="dropdown" id="monthly-dropdown">
+                      <input type="text" id="monthly-target-title" set-data-email="" oninput="filterOptions('monthly-dropdown')" placeholder="Search..." onclick="toggleDropdown('monthly-dropdown')" value="">
+
+                      <div class="dropdown-content">
+                        <% for (let b = 0; b < empList.length; b++) { %>
+                        <a onclick="getSelectedValue(this,'monthly-dropdown','monthly')" data-email="<%= empList[b].email %>" id="<%= empList[b].name %>"><%= empList[b].name %></a>
+                        <% } %>
+                      </div>
+
+                    </div>
+
+                  </div>
+                  <div class="input-box">
+                    <label for="">Task Title</label>
+                    <textarea id="monthly-target-desc" ols="18" rows="1"></textarea>
+                  </div>
+                  <div class="input-box">
+                    <label for="">Task Details</label>
+                    <textarea id="monthly-more-details" cols="18" rows="1"></textarea>
+                  </div>
+                  <div class="input-box mb-4">
+                    <label for="">Priority </label>
+
+                    <select id="monthly-set-priority">
+                      <option value="1">1</option>
+                      <option value="2">2</option>
+                      <option value="3">3</option>
+                      <option value="4">4</option>
+                      <option value="5">5</option>
+                    </select>
+                  </div>
+                  <div class="input-box">
+                    <%- include("../task/task-deadline.ejs",{category:"monthly"}) -%>
+                    <div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div>
+              <button onclick="submitWeeklyTargets('monthly')">
+                Save
+              </button>
+              <button onclick="toggleBody('-add-monthly')">
+                Close
+              </button>
+            </div>
+          </div>
+          <!-- add targets pop -->
+          <% } %>
+
+        </div>
+      </div>
+      <div id="m--targets-box" class="accordion-collapse collapse" aria-labelledby="" data-bs-parent="#accordionExample">
+        <div class="accordion-body">
+
+          <% if(monthlyTargets.length > 0 ) {%>
+          <table id='monthly-targets-table'>
+            <thead>
+              <tr class="th-style">
+                <th class="th-style">Priority </th>
+                <th class="th-style">Task Owner</th>
+                <th class="th-style"> Title</th>
+                <th class="th-style"> Details</th>
+                <th class="th-style">Check</th>
+                <% if( ( (privilegeData.AnimationAdmin || privilegeData.MasterAdmin ) && parentCategory == 'animation' )  ||
+                  ( (privilegeData.GameAdmin || privilegeData.MasterAdmin ) && parentCategory == 'game' ) ||
+                  ( (privilegeData.UploadsAdmin || privilegeData.MasterAdmin ) && parentCategory == 'uploads' )  ||
+( (privilegeData.MasterAdmin || privilegeData.WebsiteAdmin  ) && parentCategory == 'website' ) 
+                  ) 
+                  { %>
+                <th class="th-style">Edit</th>
+                <th class="th-style">Delete</th>
+                <th class="th-style"></th>
+                <th class="th-style">Deadline</th>
+                <% } %>
+              </tr>
+            </thead>
+            <tbody>
+
+              <% let firstIteration = 0;  for( a = 0; a < monthlyTargets.length; a++) { %>
+
+              <% if(monthlyTargets[a].is_complete == 0 ) {%>
+
+              <tr>
+                <td><%=monthlyTargets[a].priority %></td>
+                <td><%=monthlyTargets[a].task_owner %></td>
+                <td class="target-details"><%=monthlyTargets[a].task_details%></td>
+                <td>
+                  <%- include("../task/details.ejs", { dynamicCategory: "monthly", dynamicValues: monthlyTargets[a].more_details , taskId:monthlyTargets[a].id }) -%>
+                </td>
+                <td>
+                  <% if(monthlyTargets[a].is_complete == 1) {%>
+                  <input type="checkbox" id="<%=monthlyTargets[a].id%>" onclick="handleCheckboxClick(this,'monthly')" checked>
+                  <% } else {%>
+                  <input type="checkbox" id="<%=monthlyTargets[a].id%>" onclick="handleCheckboxClick(this,'monthly')">
+                  <% } %>
+                </td>
+                <% if( ( (privilegeData.AnimationAdmin || privilegeData.MasterAdmin ) && parentCategory == 'animation' )  ||
+                  ( (privilegeData.GameAdmin || privilegeData.MasterAdmin ) && parentCategory == 'game' ) ||
+                  ( (privilegeData.UploadsAdmin || privilegeData.MasterAdmin ) && parentCategory == 'uploads' )  ||
+( (privilegeData.MasterAdmin || privilegeData.WebsiteAdmin  ) && parentCategory == 'website' ) 
+                  ) 
+                  { %>
+                <td>
+
+                  <button onclick="toggleBody('-monthly-targets-edit-<%=a%>')" class="pop-up-btn btn  btn-secondary f-icon"> ✏️</button>
+
+                  <!-- update targets pop -->
+                  <div class="body" id="body-monthly-targets-edit-<%=a%>">
+                    <div>
+                      <div class="pending-leaves-container">
+                        <div class="edit-form m-2">
+                          <p class="titl2">Update Weekly Targets</p>
+                          <hr>
+
+                          <div class="input-box">
+                            <label for="">Task Owner</label><br>
+
+                            <div class="dropdown" id="monthly-dropdown-edit-<%=a%>">
+                              <input type="text" id="monthly-targets-owner-edit-<%=a%>" set-data-email="<%=monthlyTargets[a].email%>" oninput="filterOptions('monthly-dropdown-edit-<%=a%>')" placeholder="Search..." onclick="toggleDropdown('monthly-dropdown-edit-<%=a%>')" value="<%=monthlyTargets[a].task_owner%>">
+
+                              <div class="dropdown-content">
+                                <% for (let b = 0; b < empList.length; b++) { %>
+                                <a onclick="getSelectedValue(this,'monthly-dropdown-edit-<%=a%>')" data-email="<%= empList[b].email %>" id="<%= empList[b].name %>"><%= empList[b].name %></a>
+                                <% } %>
+                              </div>
+
+                            </div>
+
+                          </div>
+                          <div class="input-box">
+                            <label for="">Task Title</label><br>
+                            <textarea id="monthly-targets-details-edit-<%=a%>" cols="30" rows="5"><%=monthlyTargets[a].task_details%></textarea>
+                          </div>
+                          <div class="input-box">
+                            <label for="">Task Details</label>
+                            <textarea id="monthly-more-details-edit-<%=a%>" cols="18" rows="1"><%=monthlyTargets[a].more_details%></textarea>
+                          </div>
+                          <div class="input-box mb-4">
+                            <label for="">Priority </label><br>
+
+                            <select id="monthly-set-priority-edit-<%=a%>">
+                              <option value="1">1</option>
+                              <option value="2">2</option>
+                              <option value="3">3</option>
+                              <option value="4">4</option>
+                              <option value="5">5</option>
+                            </select>
+                          </div>
+
+                          <div class="input-box">
+                            <%- include("../task/update-task-deadline.ejs",{category:"weekly",id:a,updateValue:monthlyTargets[a].deadline}) -%>
+                            <div>
+                            
+                            </div>
+                          </div>
+                        </div>
+                        <div>
+                          <button onclick="editWeeklyTargets('<%=monthlyTargets[a].id%>','monthly','<%=a%>')">
+                            Save
+                          </button>
+                          <button onclick="toggleBody('-monthly-targets-edit-<%=a%>')">
+                            Close
+                          </button>
+                        </div>
+                      </div>
+                      <!-- update targets pop -->
+                </td>
+                <td>
+                  <button onclick="deleteTask('<%=monthlyTargets[a].id%>','monthly')" class="pop-up-btn btn  btn-secondary f-icon"> 🗑️ </button>
+                </td>
+                <td>
+
+                  <%- include("../components/[move-to-next-week].ejs",{dynamicCategory: "monthly" , taskId:monthlyTargets[a].id  , moveToValue :monthlyTargets[a].month ,limit :12}) -%>
+                </td>
+                <td><button class="badge badge-primary"><%=monthlyTargets[a].deadline %></button></td>
+
+                <% } %>
+              </tr>
+
+              <% } else { %>
+
+              <% if(firstIteration == 0) { %>
+
+              <tr class="divider-line">
+                <td>
+
+                </td>
+              </tr>
+
+              <%  firstIteration = 1 } %>
+
+              <tr>
+                <td><%=monthlyTargets[a].priority%></td>
+                <td><%=monthlyTargets[a].task_owner %></td>
+                <td class="target-details"><%=monthlyTargets[a].task_details%></td>
+                <td>
+                  <%- include("../task/details.ejs", { dynamicCategory: "monthly", dynamicValues: monthlyTargets[a].more_details , taskId:monthlyTargets[a].id }) -%>
+                </td>
+                <td>
+                  <% if(monthlyTargets[a].is_complete == 1) {%>
+                  <input type="checkbox" id="<%=monthlyTargets[a].id%>" onclick="handleCheckboxClick(this,'monthly')" checked>
+                  <% } else {%>
+                  <input type="checkbox" id="<%=monthlyTargets[a].id%>" onclick="handleCheckboxClick(this,'monthly')">
+                  <% } %>
+                </td>
+                <% if( ( (privilegeData.AnimationAdmin || privilegeData.MasterAdmin ) && parentCategory == 'animation' )  ||
+                  ( (privilegeData.GameAdmin || privilegeData.MasterAdmin ) && parentCategory == 'game' ) ||
+                  ( (privilegeData.UploadsAdmin || privilegeData.MasterAdmin ) && parentCategory == 'uploads' )  ||
+( (privilegeData.MasterAdmin || privilegeData.WebsiteAdmin  ) && parentCategory == 'website' ) 
+                  ) 
+                  { %>
+                <td>
+
+                  <button onclick="toggleBody('-monthly-targets-edit-<%=a%>')" class="pop-up-btn btn  btn-secondary f-icon"> ✏️</button>
+
+                  <!-- update targets pop -->
+                  <div class="body" id="body-monthly-targets-edit-<%=a%>">
+                    <div>
+                      <div class="pending-leaves-container">
+                        <div class="edit-form m-2">
+                          <p class="titl2">Update Weekly Targets</p>
+                          <hr>
+
+                          <div class="input-box">
+                            <label for="">Task Owner</label><br>
+
+                            <div class="dropdown" id="monthly-dropdown-edit-<%=a%>">
+                              <input type="text" id="monthly-targets-owner-edit-<%=a%>" set-data-email="<%=monthlyTargets[a].email%>" oninput="filterOptions('monthly-dropdown-edit-<%=a%>')" placeholder="Search..." onclick="toggleDropdown('monthly-dropdown-edit-<%=a%>')" value="<%=monthlyTargets[a].task_owner%>">
+
+                              <div class="dropdown-content">
+                                <% for (let b = 0; b < empList.length; b++) { %>
+                                <a onclick="getSelectedValue(this,'monthly-dropdown-edit-<%=a%>')" data-email="<%= empList[b].email %>" id="<%= empList[b].name %>"><%= empList[b].name %></a>
+                                <% } %>
+                              </div>
+
+                            </div>
+
+                            <div class="input-box">
+                              <label for="">Task Title</label><br>
+                              <textarea id="monthly-targets-details-edit-<%=a%>" cols="30" rows="5"><%=monthlyTargets[a].task_details%></textarea>
+                            </div>
+                            <div class="input-box">
+                              <label for="">Task Details</label>
+                              <textarea id="monthly-more-details-edit-<%=a%>" cols="18" rows="1"><%=monthlyTargets[a].more_details%></textarea>
+                            </div>
+                            <div class="input-box mb-4">
+                              <label for="">Priority </label><br>
+                              <select id="monthly-set-priority-edit-<%=a%>">
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                              </select>
+                            </div>
+                            <div class="input-box">
+                              <%- include("../task/task-deadline.ejs",{category:"monthly",id:a,updateValue:monthlyTargets[a].deadline}) -%>
+
+                              <div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div>
+                        <button onclick="editWeeklyTargets('<%=monthlyTargets[a].id%>','monthly','<%=a%>')">
+                          Save
+                        </button>
+                        <button onclick="toggleBody('-monthly-targets-edit-<%=a%>')">
+                          Close
+                        </button>
+                      </div>
+                    </div>
+                    <!-- update targets pop -->
+                </td>
+                <td>
+                  <button onclick="deleteTask('<%=monthlyTargets[a].id%>','monthly')" class="pop-up-btn btn  btn-secondary f-icon"> 🗑️ </button>
+                </td>
+                <td>
+
+                  <%- include("../components/[move-to-next-week].ejs",{dynamicCategory: "monthly" , taskId:monthlyTargets[a].id  , moveToValue :monthlyTargets[a].month , limit :12 }) -%>
+                </td>
+                <td><button class="badge badge-primary"><%=monthlyTargets[a].deadline %></button></td>
+
+                <% } %>
+              </tr>
+
+              <%  } %>
+
+
+              <% } %>
+
+
+
+            </tbody>
+          </table>
+          <% } else { %>
+          <table>
+            <strong class="py-3">No Data Found </strong>
+          </table>
+          <% } %>
+
+        </div>
+      </div>
+    </div>
+
+</section>

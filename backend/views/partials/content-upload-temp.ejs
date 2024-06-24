@@ -1,0 +1,17 @@
+
+<% if(
+  ( (privilegeData.UploadsAdmin || privilegeData.MasterAdmin ) && parentCategory == 'youtube' ) ||
+  ( (privilegeData.UploadsAdmin || privilegeData.MasterAdmin ) && parentCategory == 'instagram' ) ||
+  ( (privilegeData.UploadsAdmin || privilegeData.MasterAdmin ) && parentCategory == 'website' )||
+  ( (privilegeData.UploadsAdmin || privilegeData.MasterAdmin ) && parentCategory == 'facebook' )
+){ %> 
+  <div class="input-box form-group text-center" id="update-content">
+    <label style="font-size: 18px;" class="badge bg-secondary" for="add">add <input id="add" type="radio" value="1"> </label>
+    <label style="font-size: 18px;" class="badge bg-secondary" for="remove">remove <input id="remove" type="radio" value="-1"> </label>
+  </div>
+  <div class="pt-4">
+    <button onclick="updateContent('<%=a%>', '<%=channelId%>', '<%=contentType%>')">Submit</button>
+    <button onclick="toggleBody('-<%=contentType%>-<%= i %>-<%= a %>')">Close</button>
+  </div>
+
+<% } %>

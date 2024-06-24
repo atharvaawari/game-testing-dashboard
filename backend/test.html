@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Slate Editor Example</title>
+    <style>
+        /* Basic styling for editor */
+        #editor {
+            border: 1px solid #ccc;
+            padding: 10px;
+            height: 300px;
+            overflow-y: auto;
+            font-family: Arial, sans-serif;
+        }
+    </style>
+</head>
+<body>
+    <div id="editor" contenteditable="true">
+        <p>Welcome to Slate!</p>
+    </div>
+    <button onclick="logContent()">Log Content</button>
+
+    <!-- Include Slate library -->
+    <script src="https://unpkg.com/slate@latest/dist/slate.js"></script>
+    <script>
+        // JavaScript code to initialize Slate editor
+        const { createEditor } = Slate;
+
+        // Create a Slate editor instance
+        const editor = createEditor();
+
+        // Function to log editor content
+        function logContent() {
+            const content = Array.from(editor.children)
+                .map(node => Slate.Node.string(node))
+                .join('\n');
+            console.log(content);
+        }
+    </script>
+</body>
+</html>

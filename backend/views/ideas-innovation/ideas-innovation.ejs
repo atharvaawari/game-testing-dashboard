@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
+  <title>ideas and innovation</title>
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <!-- <<<<<<<<< - my style sheet - >>>>>>>>>> -->
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      font-family: 'Nunito', sans-serif;
+      background-color: #f3f4f6;
+      margin: 0;
+      padding: 0;
+      text-align: center;
+    }
+
+    hr {
+      position: relative;
+      /* or use absolute, fixed, etc. depending on your layout */
+      z-index: 1;
+      /* Adjust the z-index value as needed */
+    }
+
+    label {
+      font-size: 25px;
+      vertical-align: sub;
+    }
+
+    h1 {
+      display: block;
+      margin-bottom: 0.5rem;
+      color: #555;
+      margin-top: 3rem;
+      font-weight: 600;
+      font-size: 20px;
+    }
+
+    button {
+      background-color: #007BFF;
+      color: #ffffff;
+      border: none;
+      border-radius: 4px;
+      padding: 0.5rem 1rem;
+      margin: 0.5rem;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    .titl2 {
+      font-weight: 800;
+      font-size: 20px;
+    }
+
+    .tr {
+      padding: 0 5px;
+      margin: auto;
+      background: #F1F6F9;
+      font-size: 14px
+    }
+
+    .table-container-1 {
+      display: inline-block;
+      margin: .5rem 1rem;
+      padding: 1rem .5rem;
+      border-radius: 8px;
+      background-color: white;
+      box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.25) !important;
+      width: 80vw;
+      max-width: 1200px
+    }
+
+    .th {
+      font-size: 14px;
+      font-weight: 700;
+      width: fit-content;
+      padding: 3px 5px;
+      margin: 30px 0;
+      background-color: #FFD966;
+      border-bottom: 1px solid #8080805e;
+      font-weight: 800;
+    }
+
+    .color-F7D716D9 {
+      background: #F7D716D9;
+    }
+
+    .color-F66B0EE0 {
+      background: #F66B0EE0;
+    }
+
+    .color-5BF477 {
+      background: #5BF477;
+    }
+
+    .color-FF5F9E {
+      background: #FF5F9E;
+    }
+
+    table {
+      caption-side: bottom;
+      border-collapse: collapse;
+      margin: auto;
+      width: 100%;
+      margin: 1rem auto;
+      box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.25) !important;
+    }
+
+    .body {
+      width: 400px;
+      overflow: auto;
+      display: none;
+      overflow: auto;
+      background: white;
+      position: fixed;
+      left: 51px;
+      top: 25px;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 1rem;
+      border-radius: 16px;
+      box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.25) !important;
+    }
+
+    .body.show {
+      display: block;
+    }
+
+    .edit-form label {
+      text-align: left;
+      display: block;
+      margin-bottom: 5px;
+      font-weight: 700;
+    }
+
+    .edit-form input {
+      height: 40px;
+    }
+
+    .pending-leave-box {
+      grid-template-columns: 50% 50%;
+      display: grid;
+    }
+
+    #body-pending-leaves {
+      width: 500px
+    }
+
+    .pending-leaves-container {
+      overflow-y: scroll;
+      height: 400px;
+    }
+
+    .pending-leave-box-1 {
+      background: white;
+      margin: 1rem 0;
+      padding: .5rem 0;
+    }
+
+    .like-box {
+      background: white;
+      gap: 0px;
+      width: 200px;
+    }
+
+    .like-btn-box a {
+      width: 100px;
+    }
+
+    /* __________ form css  ____________ */
+
+    .input-box {
+      text-align: left;
+      text-align: left;
+      margin: 1.5rem .5rem;
+    }
+
+    .input-box label {
+      display: block;
+      /* Make labels appear on a new line */
+      margin-bottom: 8px;
+      /* Add spacing between labels and form elements */
+      font-size: 16px;
+      /* Set the font size */
+      font-weight: bold;
+      /* Make the font bold, adjust as needed */
+      color: #333;
+      /* Set the text color */
+    }
+
+    .input-box label.required::after {
+      content: " *";
+      /* Display an asterisk (*) after required labels */
+      color: #ff0000;
+      /* Set the color of the asterisk */
+    }
+
+    /* __________ form css  ____________ */
+
+    @media screen and (max-width: 992px) {
+      .pending-leave-box {
+        grid-template-columns: 100%;
+        display: grid;
+      }
+
+      #body-pending-leaves {
+        width: 90%;
+      }
+
+      .leave-data {
+        overflow: hidden;
+        display: grid;
+        grid-template-columns: 100%;
+      }
+
+      .btn-box {
+        display: flex !important;
+        flex-direction: column;
+      }
+    }
+  </style>
+
+</head>
+
+<body>
+
+  <%- include('../partials/header.ejs') -%>
+
+  <%- include('../attendance/mark-attendance.ejs') -%>
+
+  <div class="table-container-1 my-2">
+    <p class="titl2">Ideas and Innovation</p>
+    <hr>
+
+    <button class="float-end mx-0" onclick="toggleBody('-add-idea')">Add Your Creative Idea</button>
+
+    <div class="body" id="body-add-idea" style="z-index: 999">
+
+      <div style="
+                height: 400px;
+                overflow-y: scroll;
+                border: 1px solid #8080805e;
+                z-index: 999;">
+
+        <div class="edit-form m-2 pb-3">
+          <h4 class="titl2 mt-3 m-2 text-start">Tell Us Your Innovative Idea</p>
+
+
+            <div class="input-box m-0">
+              <label for="" hidden>Your Idea</label>
+              <textarea id="add-your-idea" cols="20" rows="10"></textarea>
+            </div>
+
+        </div>
+
+      </div>
+
+      <div>
+        <button onclick="onFormSubmit(['add-idea-name','add-your-idea'], 'add-idea-innovation')">
+          Submit
+        </button>
+        <button onclick="toggleBody('-add-idea')">
+          Close
+        </button>
+      </div>
+    </div>
+
+    <table id="idea-inno">
+      <thead>
+        <tr>
+          <th class="th">Name</th>
+          <th class="th">Idea</th>
+          <th class="th"></th>
+        </tr>
+      </thead>
+
+      <tbody>
+
+      </tbody>
+
+    </table>
+  </div>
+
+  <%- include('../partials/footer.ejs') -%>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+        
+        getAttendance() 
+
+      const ideasInnovation = <%- JSON.stringify(ideasInnoData) %>
+
+      console.log(ideasInnovation)
+      await appendDataToTable(ideasInnovation, 'idea-inno',
+        user => `<tr>
+                  <td class="tr" style="border-bottom: 1px solid #8080805e;background: white;"><strong>..</strong></td>
+                  <td class="tr" style="border-bottom: 1px solid #8080805e;background: white;"><strong>${user.idea}</strong></td>
+                  <td class="tr like-box" style="border-bottom: 1px solid #8080805e;background: white;">
+                  ${user.user_vote == 1 ? `
+                    <a class="btn btn-success my-2" type="button" onclick="likeDislike('like', ${user.idea_id}, '<%=adminData.email%>')">
+                      👍
+                    </a>
+                    <a class="btn btn-outline-danger my-2" type="button" onclick="likeDislike('dislike', ${user.idea_id}, '<%=adminData.email%>')">
+                      👎
+                    </a>
+                    <a class="btn btn-outline-secondary my-2" type="button" onclick="likeDislike('neutral', ${user.idea_id}, '<%=adminData.email%>')">
+                      =
+                    </a>
+                  ` : user.user_vote == -1 ? `
+                    <a class="btn btn-outline-success my-2" type="button" onclick="likeDislike('like', ${user.idea_id}, '<%=adminData.email%>')">
+                      👍
+                    </a>
+                    <a class="btn btn-danger my-2" type="button" onclick="likeDislike('dislike', ${user.idea_id}, '<%=adminData.email%>')">
+                      👎
+                    </a>
+                    <a class="btn btn-outline-secondary my-2" type="button" onclick="likeDislike('neutral', ${user.idea_id}, '<%=adminData.email%>')">
+                      =
+                    </a>
+                  ` : user.user_vote == 0 ? `
+                    <a class="btn btn-outline-success my-2" type="button" onclick="likeDislike('like', ${user.idea_id}, '<%=adminData.email%>')">
+                      👍
+                    </a>
+                    <a class="btn btn-outline-danger my-2" type="button" onclick="likeDislike('dislike', ${user.idea_id}, '<%=adminData.email%>')">
+                      👎
+                    </a>
+                    <a class="btn btn-secondary my-2" type="button" onclick="likeDislike('neutral', ${user.idea_id}, '<%=adminData.email%>')">
+                      =
+                    </a>
+                  ` : `
+                    <a class="btn btn-outline-success my-2" type="button" onclick="likeDislike('like', ${user.idea_id}, '<%=adminData.email%>')">
+                      👍
+                    </a>
+                    <a class="btn btn-outline-danger my-2" type="button" onclick="likeDislike('dislike', ${user.idea_id}, '<%=adminData.email%>')">
+                      👎
+                    </a>
+                    <a class="btn btn-outline-secondary my-2" type="button" onclick="likeDislike('neutral', ${user.idea_id}, '<%=adminData.email%>')">
+                      =
+                    </a>
+                  `}
+                  </td>
+                </tr>
+                `);
+
+    });
+
+
+  async function appendDataToTable(data, tableId, templateFunction) {
+
+      const table = document.querySelector(`#${tableId} tbody`)
+
+      data.forEach(item => {
+
+        const row = templateFunction(item);
+        table.innerHTML += row
+
+      });
+
+    }
+
+    function toggleBody(emailId) {
+      const body = document.getElementById('body' + emailId);
+
+      body.classList.toggle('show');
+    }
+
+    function markAttendance() {
+
+      submitData({
+          "key": "value"
+        }, 'mark-attendance',
+        async function showMessagePopup(message) {
+
+          const attendanceBtn = document.getElementById('attendance-btn-box')
+
+          if (message == 'Attendance marked') {
+
+            attendanceBtn.innerHTML = `
+            <button class="btn btn-success attendance-btn ms-3" >
+            <span>Attendance marked</span>
+            </button>
+          
+          `
+          }
+
+          const popup = document.createElement("div");
+          popup.style.position = "fixed";
+          popup.style.top = "20px";
+          popup.style.right = "20px";
+          popup.style.padding = "10px";
+          popup.style.backgroundColor = "rgba(0,0,0,0.8)";
+          popup.style.color = "white";
+          popup.style.borderRadius = "5px";
+          popup.style.zIndex = 1000; // to ensure it appears above other elements
+          popup.innerText = message;
+
+          document.body.appendChild(popup);
+
+          // Wait for 5 seconds using a promise
+          await new Promise((resolve) => setTimeout(resolve, 5000));
+
+          // Remove the message pop-up
+          popup.remove();
+
+        });
+
+    }
+
+    async function getAttendance() {
+
+      const attendance_status = await fetchData('/get-attendance');
+      const attendanceBtn = document.getElementById('attendance-btn-box');
+      
+
+      if (attendance_status.data.length > 0) {
+
+        attendanceBtn.innerHTML = `
+        <button class="btn btn-success attendance-btn ms-3" >
+        <span>Attendance marked</span>
+        </button>
+      <button class="btn btn-outline-dark" id="emp-not-like-idea">${attendance_status.countUsersWithNoLikes.length}</button>
+      `
+      } else {
+
+        attendanceBtn.innerHTML = `
+        <button class="btn btn-danger attendance-btn ms-3" onclick="markAttendance()">
+        <span>Mark Attendance</span>
+        </button>
+      <button class="btn btn-outline-dark" id="emp-not-like-idea">${attendance_status.countUsersWithNoLikes.length}</button>
+      `
+      }
+
+    }
+
+    async function fetchData(url) {
+      try {
+        const response = await fetch(url);
+
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+
+        const data = await response.json();
+
+        return data;
+      } catch (error) {
+        throw error;
+      }
+    }
+  </script>
+
+  <script type="text/javascript" src="/static/js/pop-msg.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous">
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js" integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V" crossorigin="anonymous"></script>
+
+</body>
+
+</html>

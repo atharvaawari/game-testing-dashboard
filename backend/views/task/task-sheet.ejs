@@ -1,0 +1,91 @@
+
+  <section>
+
+    <div class="category-container mb-3">
+      <div class="accordion-item">
+        <div class="accordion-header" id="">
+          <a class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#task-sheet-box" aria-expanded="true" aria-controls="collapseThree">
+            <h4>Task sheet</h4>
+          </a>
+          <div class="acc-activity-box">
+            <% if( privilegeData.MasterAdmin ) { %> 
+            <!-- add targets pop -->
+            <button class="float-end" onclick="toggleBody('-add-task-sheet')">Add </button>
+
+            <div class="body" id="body-add-task-sheet">
+              <div>
+                <div class="pending-leaves-container">
+                  <div class="edit-form m-2">
+
+                    <div class="input-box">
+                      <label for="">Task sheet title</label>
+                      <input type="text" id="add-task-sheet-title" placeholder="" value="">
+                    </div>
+                    
+                    <div class="input-box">
+                      <label for="">Link</label>
+                      <input type="text" id="add-task-sheet-link" placeholder="" value="">
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+              <div class="mt-3">
+                <button class="btn btn-primary"  onclick="onFormSubmit(['add-task-sheet-title','add-task-sheet-link','currentWeek'],'add-task-sheet','<%=parentCategory%>')">
+                  Save
+                </button>
+                <button class="btn btn-primary" onclick="toggleBody('-add-task-sheet')">
+                  Close
+                </button>
+              </div>
+            </div>
+            <!-- add targets pop -->
+           <% } %>  
+          </div>
+        </div>
+        <div id="task-sheet-box" class="accordion-collapse collapse" aria-labelledby="" data-bs-parent="#accordionExample">
+          <div class="accordion-body">
+            <% if(taskSheetData.length > 0 ) {%>
+            <table id='weekly-targets-table'>
+              <thead>
+                <tr class="th-style">
+                  <th class="th-style" style="width: 10%;">Sno </th>
+                  <th class="th-style">Files</th>
+                  <% if( privilegeData.MasterAdmin ) { %> 
+                   <th class="th-style" style="width: 10%;"> Delete </th>
+                  <% } %>
+                </tr>
+              </thead>
+              <tbody>
+                <% for (let b = 0; b < taskSheetData.length; b++) { %>
+                <tr>
+                    <td>
+                        <%=b+1%>
+                    </td>
+                    <td>
+                        <a target="_blank"  href="<%=taskSheetData[b].link%>"><%=taskSheetData[b].title%></a>
+                    </td>
+                    <% if( privilegeData.MasterAdmin ) { %> 
+                    <td>
+                     <button onclick="deleteTask('<%=taskSheetData[b].id%>','task-sheet')" class="pop-up-btn btn  btn-secondary f-icon"> 🗑️ </button> </td>
+                    </td>
+                    <% } %>
+                </tr>
+
+                <% } %>
+
+
+              </tbody>
+            </table>
+            <% } else { %>
+            <table>
+              <strong class="py-3">No Data Found </strong>
+            </table>
+            <% } %>
+
+          </div>
+        </div>
+    </div>
+
+  </section>
+

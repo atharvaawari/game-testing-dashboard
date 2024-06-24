@@ -1,0 +1,24 @@
+
+  <button onclick="toggleBody('-more-details-<%=dynamicCategory%>-<%=taskId%>')" class="pop-up-btn btn  btn-secondary f-icon">🛈</button>
+
+              <div class="body" id="body-more-details-<%=dynamicCategory%>-<%=taskId%>">
+              <div>
+                <div class="pending-leaves-container">
+                  <div class="edit-form m-2">
+
+                  <% if(dynamicValues) { %>
+                  <%= dynamicValues  %>
+                  <% } else { %>
+                  <h5 class="my-3">
+                    <strong>No details</strong>
+                  </h5>
+                  <% } %>
+                  </div>
+                </div>
+              </div>
+              <div>
+                <button class="btn btn-primary" onclick="toggleBody('-more-details-<%=dynamicCategory%>-<%=taskId%>')">
+                  Close
+                </button>
+              </div>
+            </div>

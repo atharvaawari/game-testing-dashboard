@@ -1,0 +1,316 @@
+
+  <section>
+
+    <div class="category-container mb-3">
+      <div class="accordion-item">
+        <div class="accordion-header" id="">
+          <a class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#move--targets-box" aria-expanded="true" aria-controls="collapseThree">
+            <h4>All Task</h4>
+          </a>
+          <div class="acc-activity-box">
+           <% if( ( (privilegeData.AnimationAdmin || privilegeData.MasterAdmin ) && parentCategory == 'animation' )  ||
+             ( (privilegeData.GameAdmin || privilegeData.MasterAdmin ) && parentCategory == 'game' ) ||
+             ( (privilegeData.UploadsAdmin || privilegeData.MasterAdmin ) && parentCategory == 'uploads' )  ||
+( (privilegeData.MasterAdmin || privilegeData.WebsiteAdmin  ) && parentCategory == 'website' ) 
+             ) 
+             { %> 
+            <!-- add targets pop -->
+            <button class="float-end" onclick="toggleBody('-add-movable')">Add </button>
+            <button class="btn btn-outline-dark ms-5"><%=movableTargets.length%></button>
+            <div class="body" id="body-add-movable">
+              <div>
+                <div class="pending-leaves-container">
+                  <div class="edit-form m-2">
+                    <p class="titl2">Add Every Week Targets</p>
+                    <hr>
+
+                    <div class="input-box">
+                      <label for="">Task Owner</label>
+
+                      <div class="dropdown" id="movable-dropdown">
+                        <input type="text" id="movable-target-title" movable-set-data-email="" oninput="filterOptions('movable-dropdown')" placeholder="Search..." onclick="toggleDropdown('movable-dropdown')" value="">
+
+                        <div class="dropdown-content">
+                          <% for (let b = 0; b < empList.length; b++) { %>
+                            <a onclick="getSelectedValue(this,'movable-dropdown','movable')" movable-data-email="<%= empList[b].email %>" id="<%= empList[b].name %>"><%= empList[b].name %></a>
+                          <% } %>
+                        </div>
+                      </div>
+
+                    </div>
+
+                    <div class="input-box">
+                      <label for="">Task Title</label>
+                      <textarea id="movable-target-desc" cols="18" rows="1"></textarea>
+                    </div>
+                    <div class="input-box">
+                      <label for="">Task Details</label>
+                      <textarea id="movable-more-details" cols="18" rows="1"></textarea>
+                    </div>
+                    <div class="input-box mb-4">
+                      <label for="">Priority </label>
+                      
+                      <select id="movable-set-priority" onchange="moveTask()">
+                       <option value="1" >1</option>
+                       <option value="2" >2</option>
+                       <option value="3" >3</option>
+                       <option value="4" >4</option>
+                       <option value="5" >5</option>
+                      </select>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+              <div>
+                <button onclick="submitWeeklyTargets('movable')">
+                  Save
+                </button>
+                <button onclick="toggleBody('-add-movable')">
+                  Close
+                </button>
+              </div>
+            </div>
+            <!-- add targets pop -->
+            <% } %> 
+          </div>
+        </div>
+        <div id="move--targets-box" class="accordion-collapse collapse " aria-labelledby="" data-bs-parent="#accordionExample">
+          <div class="accordion-body">
+
+            <% if(movableTargets.length > 0 ) {%>
+            <table id='movable-targets-table'>
+              <thead>
+                <tr class="th-style">
+                  <th class="th-style">Priority </th>
+                  <th class="th-style">Task Owner</th>
+                  <th class="th-style">Task Details</th>
+                  <th class="th-style">Details</th>
+                  <th class="th-style">Check</th>
+                  <% if( ( (privilegeData.AnimationAdmin || privilegeData.MasterAdmin ) && parentCategory == 'animation' )  ||
+                  ( (privilegeData.GameAdmin || privilegeData.MasterAdmin ) && parentCategory == 'game' ) ||
+                  ( (privilegeData.UploadsAdmin || privilegeData.MasterAdmin ) && parentCategory == 'uploads' )  ||
+( (privilegeData.MasterAdmin || privilegeData.WebsiteAdmin  ) && parentCategory == 'website' ) 
+                  ) 
+                  { %> 
+                  <th class="th-style">Edit</th>
+                  <th class="th-style">Delete</th>
+                  <th class="th-style">Move</th>
+                  <% } %>  
+                </tr>
+              </thead>
+              <tbody>
+
+                <% let firstIteration = 0;  for( a = 0; a < movableTargets.length; a++) { %>
+
+                <% if(movableTargets[a].is_complete == 0 ) {%>
+
+                <tr>
+                  <td><%=movableTargets[a].priority %></td>
+                  <td><%=movableTargets[a].task_owner %></td>
+                  <td class="target-details"><%=movableTargets[a].task_details%></td>
+                  <td>
+                    <%- include("../task/details.ejs", { dynamicCategory: "movable", dynamicValues: movableTargets[a].more_details , taskId:movableTargets[a].id }) -%>
+                  </td>
+                  <td>
+                    <% if(movableTargets[a].is_complete == 1) {%>
+                    <input type="checkbox" id="<%=movableTargets[a].id%>" onclick="handleCheckboxClick(this,'movable')" checked>
+                    <% } else {%>
+                    <input type="checkbox" id="<%=movableTargets[a].id%>" onclick="handleCheckboxClick(this,'movable')">
+                    <% } %>
+                  </td>
+                   <% if( ( (privilegeData.AnimationAdmin || privilegeData.MasterAdmin ) && parentCategory == 'animation' )  ||
+                   ( (privilegeData.GameAdmin || privilegeData.MasterAdmin ) && parentCategory == 'game' ) ||
+                   ( (privilegeData.UploadsAdmin || privilegeData.MasterAdmin ) && parentCategory == 'uploads' )  ||
+( (privilegeData.MasterAdmin || privilegeData.WebsiteAdmin  ) && parentCategory == 'website' ) 
+                   ) 
+                   { %> 
+                  <td>
+                  
+                    <button onclick="toggleBody('-movable-targets-edit-<%=a%>')" class="pop-up-btn btn  btn-secondary f-icon"> ✏️</button>
+                  
+                    <!-- update targets pop -->
+                    <div class="body" id="body-movable-targets-edit-<%=a%>">
+                      <div>
+                        <div class="tr pending-leaves-container">
+                          <div class="edit-form m-2">
+                            <p class="titl2">Update Every Week Targets</p>
+                            <hr>
+
+                            <div class="input-box">
+                              <label for="">Task Owner</label><br>
+                         
+                              <div class="dropdown" id="movable-dropdown-edit-<%=a%>">
+                                <input type="text" id="movable-targets-owner-edit-<%=a%>" oninput="filterOptions('movable-dropdown-edit-<%=a%>')" placeholder="Search..." onclick="toggleDropdown('movable-dropdown-edit-<%=a%>')" value="<%=movableTargets[a].task_owner%>">
+  
+                                <div class="dropdown-content">
+                                  <% for (let b = 0; b < empList.length; b++) { %>
+                                    <a onclick="getSelectedValue(this,'movable-dropdown-edit-<%=a%>')" id="<%= empList[b].name %>"><%= empList[b].name %></a>
+                                  <% } %>
+                                <div>
+                              </div>
+                             </div>
+                            </div>
+
+                            <div class="input-box">
+                              <label for="">Task Details</label><br>
+                              <textarea id="movable-targets-details-edit-<%=a%>" cols="30" rows="5"><%=movableTargets[a].task_details%></textarea>
+                            </div>
+                            <div class="input-box mb-4">
+                              <label for="">Priority </label>
+                     
+                              <select id="movable-set-priority-edit-<%=a%>">
+                               <option value="1">1</option>
+                               <option value="2">2</option>
+                               <option value="3">3</option>
+                               <option value="4">4</option>
+                               <option value="5">5</option>
+                              </select>
+                            </div>
+
+                          </div>
+                        </div>
+                      </div>
+                      <div>
+                        <button onclick="editWeeklyTargets('<%=movableTargets[a].id%>','movable','<%=a%>')">
+                          Save
+                        </button>
+                        <button onclick="toggleBody('-movable-targets-edit-<%=a%>')">
+                          Close
+                        </button>
+                      </div>
+                    </div>
+                    <!-- update targets pop -->
+                  </td>
+                  <td>
+                   <button onclick="deleteTask('<%=movableTargets[a].id%>','movable')" class="pop-up-btn btn  btn-secondary f-icon"> 🗑️ </button>
+                  </td>
+                  <% } %> 
+                  <td>
+                      <select id="move-task-dropdown" style="width:80px" onchange="moveTask('<%=movableTargets[a].id%>','movable')">
+                       <option value="1">Select</option>
+                       <option value="week_targets">This Week Targets</option>
+                       <option value="every_week_targets">Every Week Targets</option>
+                       <option value="monthly_targets">This Month Targets</option>
+                      </select>
+                  </td> 
+                </tr>
+
+                <% } else { %>
+
+                <% if(firstIteration == 0) {%>
+
+                <tr class="divider-line">
+                  <td>
+                  
+                  </td>
+                </tr>
+
+                <%  firstIteration = 1 } %>
+                
+                <tr>
+                  <td><%=movableTargets[a].priority %></td>
+                  <td><%=movableTargets[a].task_owner %></td>
+                  <td class="target-details"><%=movableTargets[a].task_details%></td>
+                  <td>
+                    <%- include("../task/details.ejs", { dynamicCategory: "movable", dynamicValues: movableTargets[a].more_details , taskId:movableTargets[a].id  }) -%>
+                  </td>
+                  <td>
+                    <% if(movableTargets[a].is_complete == 1) {%>
+                    <input type="checkbox" id="<%=movableTargets[a].id%>" onclick="handleCheckboxClick(this,'movable')" checked>
+                    <% } else {%>
+                    <input type="checkbox" id="<%=movableTargets[a].id%>" onclick="handleCheckboxClick(this,'movable')">
+                    <% } %>
+                  </td>
+                  <% if( ( (privilegeData.AnimationAdmin || privilegeData.MasterAdmin ) && parentCategory == 'animation' )  ||
+                  ( (privilegeData.GameAdmin || privilegeData.MasterAdmin ) && parentCategory == 'game' ) ||
+                  ( (privilegeData.UploadsAdmin || privilegeData.MasterAdmin ) && parentCategory == 'uploads' )  ||
+( (privilegeData.MasterAdmin || privilegeData.WebsiteAdmin  ) && parentCategory == 'website' ) 
+                  ) 
+                  { %> 
+                  <td>
+                  
+                    <button onclick="toggleBody('-movable-targets-edit-<%=a%>')" class="pop-up-btn btn  btn-secondary f-icon"> ✏️</button>
+                  
+                    <!-- update targets pop -->
+                    <div class="body" id="body-movable-targets-edit-<%=a%>">
+                      <div>
+                        <div class="tr pending-leaves-container">
+                          <div class="edit-form m-2">
+                            <p class="titl2">Update Every Week Targets</p>
+                            <hr>
+
+                            <div class="input-box">
+                              <label for="">Task Owner</label><br>
+                         
+                              <div class="dropdown" id="movable-dropdown-edit-<%=a%>">
+                                <input type="text" id="movable-targets-owner-edit-<%=a%>" oninput="filterOptions('movable-dropdown-edit-<%=a%>')" placeholder="Search..." onclick="toggleDropdown('movable-dropdown-edit-<%=a%>')" value="<%=movableTargets[a].task_owner%>">
+  
+                                <div class="dropdown-content">
+                                  <% for (let b = 0; b < empList.length; b++) { %>
+                                    <a onclick="getSelectedValue(this,'movable-dropdown-edit-<%=a%>')" id="<%= empList[b].name %>"><%= empList[b].name %></a>
+                                  <% } %>
+                                <div>
+                              </div>
+                             </div>
+                            </div>
+
+                            <div class="input-box">
+                              <label for="">Task Details</label><br>
+                              <textarea id="movable-targets-details-edit-<%=a%>" cols="30" rows="5"><%=movableTargets[a].task_details%></textarea>
+                            </div>
+                            <div class="input-box mb-4">
+                              <label for="">Priority </label>
+                              <select id="movable-set-priority-edit-<%=a%>">
+                               <option value="1">1</option>
+                               <option value="2">2</option>
+                               <option value="3">3</option>
+                               <option value="4">4</option>
+                               <option value="5">5</option>
+                              </select>
+                            </div>
+                            
+                          </div>
+                        </div>
+                      </div>
+                      <div>
+                        <button onclick="editWeeklyTargets('<%=movableTargets[a].id%>','movable','<%=a%>')">
+                          Save
+                        </button>
+                        <button onclick="toggleBody('-movable-targets-edit-<%=a%>')">
+                          Close
+                        </button>
+                      </div>
+                    </div>
+                    <!-- update targets pop -->
+                  </td>
+                  <td>
+                   <button onclick="deleteTask('<%=movableTargets[a].id%>','movable')" class="pop-up-btn btn  btn-secondary f-icon"> 🗑️ </button>
+                  </td>
+                  <td>
+                    <select id="move-task-dropdown" style="width:80px" onchange="moveTask('<%=movableTargets[a].id%>','movable')">
+                     <option value="1">Select</option>
+                     <option value="week_targets">This Week Targets</option>
+                     <option value="every_week_targets">Every Week Targets</option>
+                     <option value="monthly_targets">This Month Targets</option>
+                    </select>
+                </td>
+                  <% } %>  
+                </tr>
+                <% } %>
+                <% } %>
+
+              </tbody>
+            </table>
+            <% } else { %>
+            <table>
+              <strong class="py-3">No Data Found </strong>
+            </table>
+            <% } %>
+
+          </div>
+        </div>
+    </div>
+
+  </section>
+
