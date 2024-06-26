@@ -5,7 +5,8 @@ import {
   Checkbox,
   ListItem,
   ListItemText,
-  List
+  List,
+  Typography
 } from "@mui/material";
 
 const ChangesCompo = ({ release }) => {
@@ -16,14 +17,12 @@ const ChangesCompo = ({ release }) => {
     const fetchChangesData = async () => {
       try {
         const response = await fetch(
-          `http://localhost:3001/get-changes-data?version=${release.id}`
+          `https://mindyourlogic.team/get-changes-data?version=${release.id}`
         );
         const data = await response.json();
-        console.log(data)
+
 
         if (data && data.length > 0) {
-
-          // Handle data as needed
           dispatch({
             type: "FETCH_CURR_VERSION",
             payload: JSON.parse(data[0].data),
@@ -34,19 +33,16 @@ const ChangesCompo = ({ release }) => {
             payload: [],
           });
         }
-
       } catch (error) {
         console.error("Error fetching changes data:", error);
       }
     };
 
     fetchChangesData();
-  }, [release.id]);
-
+  }, [release.id, dispatch]);
 
   const handleCheckboxChange = (rowIndex, checked) => {
-    console.log("currVersion", state.currVersion)
-    const updatedChangesData = state.currVersion.map((row, index) => {
+    const updatedData = state.currVersion.map((row, index) => {
       if (index === rowIndex) {
         return { ...row, status: checked ? "true" : "false" };
       }
@@ -55,18 +51,17 @@ const ChangesCompo = ({ release }) => {
 
     dispatch({
       type: "FETCH_CURR_VERSION",
-      payload: updatedChangesData,
+      payload: updatedData,
     });
-    console.log("Updated Data:", updatedChangesData);
 
-    fetch('http://localhost:3001/update-changes-data', {
+    fetch('https://mindyourlogic.team/update-changes-data', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
         selectedVersion: release.id,
-        updatedChangesData: updatedChangesData,
+        updatedData: updatedData,
       }),
     })
       .then(response => {
@@ -77,15 +72,13 @@ const ChangesCompo = ({ release }) => {
       })
       .then(data => {
         console.log('Data updated successfully:', data);
-        // Dispatch action to handle updated data
         dispatch({
           type: "FETCH_CURR_VERSION",
-          payload: updatedChangesData,
+          payload: updatedData,
         });
       })
       .catch(error => {
         console.error('Error updating data:', error);
-        // Dispatch action to handle error
         dispatch({
           type: "UPDATE_DATA_ERROR",
           payload: error.message,
@@ -93,38 +86,47 @@ const ChangesCompo = ({ release }) => {
       });
   };
 
-
   return (
-    <>
-      <Container>
-        <List>
-          {state.currVersion.map((row, rowIndex) => (
-            <ListItem key={row.id} // Ensure the key is unique
-              sx={{
-                padding: "0",
-                borderRadius: 0,
-              }}>
-              <ListItemText
-                primary={Object.entries(row)
-                  .filter(([key]) => !keysToSkip.includes(key))
-                  .map(([key, value]) =>
-                    key === "status" ? (
-                      <Checkbox
-                        checked={value === "true"}
-                        onChange={(e) => handleCheckboxChange(rowIndex, e.target.checked)}
-                        color="primary"
-                        key={key}
-                      />
-                    ) : (
-                      <span key={key}>{`${rowIndex + 1}. ${value}`}</span>
-                    )
-                  )}
+    <Container>
+      <List style={{paddingBottom:'0px'}}>
+      {state.currVersion.length > 0 ? (
+  state.currVersion.map((row, rowIndex) => (
+    <ListItem key={row.id} // Ensure the key is unique
+      sx={{
+        padding: "0",
+        borderRadius: 0,
+      }}>
+      <ListItemText
+
+        style={{padding:'0px', margin:'0px'}}
+        primary={Object.entries(row)
+          .filter(([key]) => !keysToSkip.includes(key))
+          .map(([key, value]) =>
+            key === "status" ? (
+              <Checkbox
+                checked={value === "true"}
+                onChange={(e) => handleCheckboxChange(rowIndex, e.target.checked)}
+                color="primary"
+                key={key}
               />
-            </ListItem>
-          ))}
-        </List>
-      </Container>
-    </>
+            ) : (
+              <span key={key}>{`${rowIndex + 1}. ${value}`}</span>
+            )
+          )}
+      />
+    </ListItem>
+  ))
+) : (
+  <Typography style={{
+    textAlign: 'center',
+    background: 'aliceblue',
+    padding: '1rem',
+    boxShadow: 'rgba(0, 0, 0, 0.2) 0px 2px 1px -1px, rgba(0, 0, 0, 0.14) 0px 1px 1px 0px, rgba(0, 0, 0, 0.12) 0px 1px 3px 0px',
+  }} variant="body1">No data available in current version.</Typography>
+)}
+
+      </List>
+    </Container>
   );
 };
 

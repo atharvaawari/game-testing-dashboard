@@ -9,6 +9,7 @@ const initialState = {
   currVersion:[],
   currVersionTestingData:[],
   filesColsData: [],
+  loginTester:'',
   loading: true,
   error: null,
   selectedGame: 1,
@@ -18,7 +19,28 @@ const initialState = {
   testingDialogOpen: false,
   expandedAccordion: null,
   currTesterData:[],
-  currTesterID:null
+  allTesters:[
+  {
+    name:'Rupesh ',
+    id:1,
+    email:'rupesh.sappata@mindyourlogic.in'
+  },
+  {
+    name:'Kanchan Mam',
+    id:2,
+    email:'kanchan.balani@mindyourlogic.in'
+  },
+  {
+    name:'Shubhadeep Sir',
+    id:3,
+    email:'subhadip.singha@mindyourlogic.in'
+  },
+  {
+    name:'Vivek',
+    id:4,
+    email:'vivek.prajapati@mindyourlogic.in'
+  },
+]
 };
 
 // Reducer function to manage state updates
@@ -52,9 +74,13 @@ const gameReducer = (state, action) => {
     case 'FETCH_CURR_TESTING_DATA':
       return { ...state, currVersionTestingData: action.payload, loading: false, error: null };
     case 'SET_FILES_COLS_DATA':
-          return { ...state, filesColsData: action.payload, loading: false, error: action.payload };
+      return { ...state, filesColsData: action.payload, loading: false, error: action.payload };
     case 'CURR_TESTER_DATA':
-          return { ...state, currTesterData: action.payload };     
+      return { ...state, currTesterData: action.payload };    
+    case 'PRIVILAGE':
+      return { ...state, privilege: action.payload };  
+    case 'LOGIN_TESTER':
+      return { ...state,loginTester: action.payload };                 
     default:
       return state;
   }
@@ -70,7 +96,10 @@ export const GameContextProvider = ({ children }) => {
       const response = await fetch(`https://mindyourlogic.team/get-game-version?game=${game}`);
       const data = await response.json();
   
-      dispatch({ type: 'FETCH_SUCCESS', payload: data.reverse() });
+      dispatch({ type: 'FETCH_SUCCESS', payload: data.data.reverse() });
+      dispatch({ type: 'PRIVILAGE', payload: JSON.parse(data.user_data.p1).GameAdmin });
+      dispatch({ type: "LOGIN_TESTER",payload:data.user_data });
+      console.log(data.user_data)
     } catch (error) {
       dispatch({ type: 'FETCH_ERROR', payload: error });
     }

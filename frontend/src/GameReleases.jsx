@@ -1,4 +1,5 @@
 import React, { useContext } from "react";
+import { TestingContextProvider } from './Context/testingContext';
 import {
   Accordion,
   AccordionSummary,
@@ -21,7 +22,9 @@ import AddGameModal from "./components/AddGameModal";
 import { GameContext } from "./Context/gameContext";
 import ChangesCompo from "./components/ChangesCompo";
 import TestingCompo from "./components/TestingCompo";
+import NormalTester from "./components/NormalTester";
 import "./GameReleases.css";
+import { Toaster } from 'react-hot-toast';
 
 const GameReleases = () => {
   const { state, dispatch } = useContext(GameContext);
@@ -72,29 +75,28 @@ const GameReleases = () => {
   const getCurrVersionData = async (selectedVersion) => {
     try {
       const response = await fetch(
-        `http://localhost:3001/get-current-version-data?version=${selectedVersion}`
+        `https://mindyourlogic.team/get-current-version-data?version=${selectedVersion}`
       );
       const data = await response.json();
-          console.log("data", data)
       if (data.length > 0) {
-        // data[0].data = JSON.parse(data[0].data);
-        // dispatch({
-        //   type: "FETCH_CURR_VERSION",
-        //   payload: { versionId: selectedVersion, data: data },
-        // });
+        data[0].data = JSON.parse(data[0].data);
+        dispatch({
+          type: "FETCH_CURR_VERSION",
+          payload: { versionId: selectedVersion, data: data },
+        });
+        
       }
     } catch (error) {
       dispatch({ type: "FETCH_ERROR", payload: error });
     }
   };
 
-
   return (
     <div style={{ padding: "1rem" }}>
       <Container
         style={{
-          marginTop: "20px",
-          padding: "20px",
+          marginTop: "10px",
+          padding: "10px",
           border: "1px solid #ccc",
           borderRadius: "8px",
         }}>
@@ -112,23 +114,25 @@ const GameReleases = () => {
               value={state.selectedGame}
               onChange={handleSheetChange}
               label="Game">
-              <MenuItem value={1}>Game 1</MenuItem>
-              <MenuItem value={2}>Game 2</MenuItem>
-              <MenuItem value={3}>Game 3</MenuItem>
+              <MenuItem value={1}>Detective IQ</MenuItem>
+              <MenuItem value={2}>Pug G</MenuItem>
+              <MenuItem value={3}>GTA 5</MenuItem>
             </Select>
           </FormControl>
+          {state.privilege&&(
           <Button
-            variant="contained"
-            color="primary"
-            startIcon={<AddIcon />}
-            onClick={handleOpenModal}>
-            Add Version
-          </Button>
+          variant="contained"
+          color="primary"
+          startIcon={<AddIcon />}
+          onClick={handleOpenModal}>
+          Add Version
+        </Button>
+          )}
+
         </Box>
         <Typography variant="h6" style={{ fontWeight: "700",margin:"1rem  0" }} gutterBottom>
           Last 5 Releases
         </Typography>
-
         {state.loading ? (
           <Box
             display="flex"
@@ -143,10 +147,10 @@ const GameReleases = () => {
               key={index}
               expanded={state.expandedAccordion === index}
               onChange={handleAccordionChange(index, release)}
-              style={{ marginBottom: "10px" }}>
-              <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                <Typography style={{ fontWeight: "700" }}>
-                  {`[ Version ${index + 1}] `}
+              style={{ marginBottom: "5px"}}>
+              <AccordionSummary  expandIcon={<ExpandMoreIcon />} >
+                <Typography style={{ fontWeight: "700", lineHeight: "2.5" }}>
+                  {`[ Version ${index + 1} ]`}
                 </Typography>
                 <Button
                   variant="contained"
@@ -158,14 +162,10 @@ const GameReleases = () => {
                   }}>
                   {` Release Date : ${release.version_date} 	`}
                 </Button>
-
-                <Button
-                  variant="contained"
-                  color="secondary"
-                  style={{ margin: "0 10px", float: "right" }}>
-                  {` ${10} / ${1} 	`}
-                </Button>
               </AccordionSummary>
+
+              <AccordionDetails style={{borderTop: '1px solid rgb(204, 204, 204)',paddingTop: '1rem', padding:'0px' }}>
+              {state.privilege&&(
               <Box
                 sx={{ display: "flex", justifyContent: "center", gap: "1rem" }}>
                 <Button
@@ -182,19 +182,17 @@ const GameReleases = () => {
                   onClick={toggleDialog}>
                   Add Testing Sheet
                 </Button>
-              </Box>
-
-              <AccordionDetails>
-                {/* Only render ChangesCompo for the expanded accordion */}
-                {state.expandedAccordion === index && (
-                  <Container>
+              </Box>    
+              )}            
+              {state.expandedAccordion === index && (
+                  <Container style={{padding: '0px'}}>
                     <Box>
                       <Typography
                         variant="h5"
                         component="div"
                         gutterBottom
                         sx={{
-                          padding: "1rem",
+                          padding: ".5rem",
                           borderRadius: 0,
                           width: "100%",
                           textAlign: "center",
@@ -204,24 +202,42 @@ const GameReleases = () => {
                       </Typography>
                       <ChangesCompo release={release} />
                     </Box>
-
+                    
                     <Box>
-                      <Typography
-                        variant="h5"
-                        component="div"
-                        gutterBottom
-                        sx={{
-                          padding: "1rem",
-                          borderRadius: 0,
-                          width: "100%",
-                          textAlign: "center",
-                          fontWeight:"700"
-                        }}>
-                        Testing Status
-                      </Typography>
+                    <Typography
+                      variant="h5"
+                      component="div"
+                      gutterBottom
+                      sx={{
+                        padding: "1rem",
+                        borderRadius: 0,
+                        width: "100%",
+                        textAlign: "center",
+                        fontWeight:"700"
+                      }}>
+                      Testing Status
+                    </Typography>
+                    {state.privilege ? (
+                    <TestingContextProvider>
+                    <TestingCompo release={release} />
+                    <AddTestingSheet
+                    open={state.testingDialogOpen}
+                    onClose={toggleDialog}
+                    />
+                    </TestingContextProvider>
+                    ):(
+                     
+                      <TestingContextProvider>
+                      <NormalTester release={release} />
+                      <AddTestingSheet
+                      open={state.testingDialogOpen}
+                      onClose={toggleDialog}
+                      />
+                      </TestingContextProvider>
+                    )}
+                  </Box>
 
-                      <TestingCompo release={release} />
-                    </Box>
+
                   </Container>
                 )}
               </AccordionDetails>
@@ -241,13 +257,16 @@ const GameReleases = () => {
         game={state.selectedGame}
         handleClose={handleCloseModal}
       />
-
-     <AddTestingSheet
-        open={state.testingDialogOpen}
-        onClose={toggleDialog}
+      <Toaster 
+        position="top-right"
+        toastOptions={{
+          // Define default options here
+          style: {
+            background: '#fff',
+            color: 'black',
+          },
+        }}
       />
-
-
     </div>
   );
 };

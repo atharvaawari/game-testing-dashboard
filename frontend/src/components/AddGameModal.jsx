@@ -1,7 +1,8 @@
 import React, { useState, useContext } from 'react';
 import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Button, TextField } from '@mui/material';
-import { toast } from 'react-hot-toast';
+import { toast , Toaster } from 'react-hot-toast';
 import { GameContext } from '../Context/gameContext'; // Import your GameContext here
+
 
 const AddGameModal = ({ open, game, handleClose }) => {
   const { dispatch } = useContext(GameContext); // Get dispatch function from GameContext
@@ -24,7 +25,7 @@ const AddGameModal = ({ open, game, handleClose }) => {
     e.preventDefault();
 
     try {
-      const response = await fetch('http://localhost:3001/add-game-version', {
+      const response = await fetch('https://mindyourlogic.team/loc/add-game-version', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -33,9 +34,11 @@ const AddGameModal = ({ open, game, handleClose }) => {
       });
 
       if (response.ok) {
-        dispatch({ type: 'ADD_VERSION', payload: formData }); // Update global state with new version
-        toast.success('Data inserted successfully!', {
-          position: 'top-right',
+        
+        dispatch({ type: 'ADD_VERSION', payload: {...formData,version_date:formData.release_date} }); // Update global state with new version
+        
+        toast('New Version Added', {
+          position: "top-right"
         });
 
         setFormData({
@@ -95,6 +98,16 @@ const AddGameModal = ({ open, game, handleClose }) => {
           </Button>
         </DialogActions>
       </Dialog>
+      <Toaster 
+        position="top-right"
+        toastOptions={{
+          // Define default options here
+          style: {
+            background: '#388e3c',
+            color: '#fff',
+          },
+        }}
+      />
     </>
   );
 };

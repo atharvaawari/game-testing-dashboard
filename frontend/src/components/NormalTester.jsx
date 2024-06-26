@@ -1,5 +1,6 @@
 import React, { useEffect, useContext, useState } from "react";
 import { testingContext } from "../Context/testingContext";
+import { GameContext } from "../Context/gameContext";
 import {
   Container,
   Checkbox,
@@ -8,17 +9,14 @@ import {
   TableCell,
   TableHead,
   TableRow,
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
   Box,
   Typography
 } from "@mui/material";
 
 const TestingCompo = ({ release }) => {
+  const { state } = useContext(GameContext);
   const {testingState, testingDispatch } = useContext(testingContext);
-  const [selectedTesterId, setSelectedTesterId] = useState('');
+  const [selectedTesterId, setSelectedTesterId] = useState(null);
   const [currTestStatus, setCurrTestStatus] = useState({done:0,total:0});
   const [fullyVetted, setfullyVetted] = useState({fullyTestedCount:0,total:0});
 
@@ -37,21 +35,23 @@ const TestingCompo = ({ release }) => {
             type: "FETCH_CURR_VERSION_TestingData",
             payload: data,
           });
+
+          tempfunc(data);
         } else {
           testingDispatch({
             type: "FETCH_CURR_VERSION_TestingData",
             payload: [],
           });
         }
+        countFullyTestedPoints(data);
 
-        const fullyTestedTaskCount = countFullyTestedPoints(data);
-    
       } catch (error) {
         console.error("Error fetching changes data:", error);
       }
     };
 
     fetchChangesData();
+    
   }, [release.id, testingDispatch]);
 
   const handleCheckboxChange = (row, checked) => {
@@ -92,36 +92,6 @@ const TestingCompo = ({ release }) => {
     const fullyTestedTaskCount = countFullyTestedPoints(updatedTestingDataArray);
     console.log('Number of tasks fully tested by all testers:', fullyTestedTaskCount);
 
-  };
-
-  const handleChange = (event) => {
-    const testerId = event.target.value;
-    setSelectedTesterId(testerId);
-    getSelectedTesterData(testerId);
-  
-  };
-
-  const getSelectedTesterData = (testerId) => {
-
-    const testerData =testingState.TestingData.find(
-      (entry) => entry.tester_id === parseInt(testerId)
-    );
-
-    if (testerData && testerData.data) {
-      const parsedData =
-        typeof testerData.data === "string"
-          ? JSON.parse(testerData.data)
-          : testerData.data;
-
-      testingDispatch({
-        type: "CURR_TESTER_DATA",
-        payload: parsedData,
-      });
-
-      const done = countTrueStatus(parsedData);
-      setCurrTestStatus({done:done,total:parsedData.length})
-  
-    }
   };
 
   const updateTesterData = (updatedTestingData) => {
@@ -188,7 +158,31 @@ const TestingCompo = ({ release }) => {
     setfullyVetted({ fullyTestedCount:fullyTestedCount,total: detailedStatus.length })
     return { fullyTestedCount, detailedStatus };
   };
-  
+
+
+  const tempfunc = (data) => {
+    state.allTesters.map((item)=>{
+
+        if(item.email===state.loginTester.email){
+            setSelectedTesterId(item.id)
+            const testerData = data.find(
+                (entry) => entry.tester_id === parseInt(item.id)
+              );
+
+              if (testerData && testerData.data) {
+                const parsedData =
+                  typeof testerData.data === "string"
+                    ? JSON.parse(testerData.data)
+                    : testerData.data;
+          
+                testingDispatch({
+                  type: "CURR_TESTER_DATA",
+                  payload: parsedData,
+                });       
+              }
+        }
+    })
+  };
 
   return (
     <Container>
@@ -198,29 +192,24 @@ const TestingCompo = ({ release }) => {
         justifyContent: 'space-between',
         alignItems: 'center',
         backgroundColor: '#2196f3',
-        padding: '0.5rem 1rem',
+        padding: '1.5rem 1rem',
         borderRadius: '5px',
         boxShadow: '0px 2px 1px -1px rgba(0,0,0,0.2), 0px 1px 1px 0px rgba(0,0,0,0.14), 0px 1px 3px 0px rgba(0,0,0,0.12)'
       }}>
-        <FormControl sx={{ width: "300px" }}>
-          <InputLabel id="tester-select-label">Select Tester</InputLabel>
-          <Select
-            labelId="tester-select-label"
-            value={selectedTesterId}
-            onChange={handleChange}
-            label="Select Tester"
-          >
-            <MenuItem value="">
-              <em>Select Tester</em>
-            </MenuItem>
-            {testingState.allTesters.map((item) => (
-              <MenuItem key={item.id} value={item.id}>
-                {item.name}
-              </MenuItem>
-            ))}
-          </Select>
-
-        </FormControl>
+        <span
+            variant="contained"
+            color="primary"
+            style={{
+              backgroundColor: 'white',
+              padding: '3px 6px',
+              borderRadius: '4px',
+              fontWeight: 600,
+              marginRight: '.5rem',
+              boxShadow: '0px 2px 4px -1px rgba(0,0,0,0.2),0px 4px 5px 0px rgba(0,0,0,0.14),0px 1px 10px 0px rgba(0,0,0,0.12)'
+            }}
+            >
+User : {state.loginTester.name}
+        </span>
         <div>
         <span
             variant="contained"
@@ -264,8 +253,8 @@ const TestingCompo = ({ release }) => {
     <TableBody>
       {testingState.currTesterData.map((row, index) => (
         <TableRow key={row.id + index}>
-          <TableCell style={{padding:"2px 16px"}}>{row.Point}</TableCell>
-          <TableCell style={{padding:"2px 16px"}}>
+          <TableCell>{row.Point}</TableCell>
+          <TableCell>
             <Checkbox
               checked={row.status === "true"}
               onChange={(e) => handleCheckboxChange(row, e.target.checked)}

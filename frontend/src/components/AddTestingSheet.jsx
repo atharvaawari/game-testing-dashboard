@@ -1,12 +1,13 @@
 import React, { useState, useContext } from 'react';
-import { Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField, FormControl } from '@mui/material';
+import { Dialog, DialogTitle, DialogContent, DialogActions, Button, FormControl } from '@mui/material';
 import * as XLSX from 'xlsx';
 import { GameContext } from "../Context/gameContext";
+import { testingContext } from "../Context/testingContext";
+import { Toaster , toast } from 'react-hot-toast';
 
 const AddSheetDialog = ({ open, onClose}) => {
   const { state, dispatch } = useContext(GameContext);
-
-  const [sheetName, setSheetName] = useState('');
+  const { testingState, testingDispatch } = useContext(testingContext);
   const [excelData, setExcelData] = useState([]);
 
   const handleFileUpload = (event) => {
@@ -30,8 +31,6 @@ const AddSheetDialog = ({ open, onClose}) => {
   };
 
   const handleAdd = () => {
-    // onAdd(sheetName, excelData);
-    setSheetName('');
     setExcelData([]);
     addSheetDB();
     onClose();
@@ -57,29 +56,18 @@ const AddSheetDialog = ({ open, onClose}) => {
 
   const addSheetDB = async () => {
 
-
     const firstColName = Object.keys(state.filesColsData)[0];
     const firstColData = state.filesColsData[firstColName];
     
     const formattedTasks = firstColData.map((task, index) => ({
       id: index + 1,
       Point: task,
-      status: "true",
+      status: "false",
       "Note / Suggestion": ""
     }));
     
-    // Adding an additional task
-    formattedTasks.push({
-      id: 0,
-      Point: "add task here",
-      status: "true",
-      "Note / Suggestion": ""
-    });
-    
-    // dispatch({ type: 'FETCH_CURR_VERSION', payload: formattedTasks });
-
     try {
-      const response = await fetch('http://localhost:3001/add-testing-file-data', {
+      const response = await fetch('https://mindyourlogic.team/add-testing-file-data', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -88,25 +76,41 @@ const AddSheetDialog = ({ open, onClose}) => {
           filesColsData:formattedTasks,
           selectedVersion:state.selectedVersion,
           selectedGame:state.selectedGame,
+          totalTesters:state.allTesters
         })
       });
 
       const resData = await response.json();
       const id = resData.insertId
       const tempObj = { id: id, game_id: state.selectedGame, version_id:state.selectedVersion, data:formattedTasks}
-
+      const tempTestingData = [];
         const data1 = [];
-
         data1.push(tempObj)
 
-        dispatch({
-          type: "FETCH_CURR_TESTING_DATA",
-          payload:data1[0].data,
+        for (const item of state.allTesters) {
+          tempTestingData.push({
+            id: item.id,
+            game_id: state.selectedGame, 
+            version_id:state.selectedVersion, 
+            tester_id:item.id,
+            data:formattedTasks
+          })
+        }
+
+        testingDispatch({
+          type: "FETCH_CURR_VERSION_TestingData",
+          payload:tempTestingData
         });
 
-        // onAdd(state.selectedVersion,{ versionId: state.selectedVersion, data: data1})
+        testingDispatch({
+          type: "CURR_TESTER_DATA",
+          payload:data1[0].data
+        });
 
-        console.log('adding data in db ------ ',data1)
+        toast('Testing File Added', {
+          position: "top-right"
+        });
+
     } catch (error) {
       console.error('Error submitting form:', error);
     };

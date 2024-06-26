@@ -1,12 +1,11 @@
 import React, { useState, useContext } from 'react';
-import { Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField, FormControl } from '@mui/material';
+import { Dialog, DialogTitle, DialogContent, DialogActions, Button, FormControl } from '@mui/material';
 import * as XLSX from 'xlsx';
+import { toast , Toaster } from 'react-hot-toast';
 import { GameContext } from "../Context/gameContext";
 
 const AddSheetDialog = ({ open, onClose, onAdd}) => {
   const { state, dispatch } = useContext(GameContext);
-
-  const [sheetName, setSheetName] = useState('');
   const [excelData, setExcelData] = useState([]);
 
   const handleFileUpload = (event) => {
@@ -30,8 +29,6 @@ const AddSheetDialog = ({ open, onClose, onAdd}) => {
   };
 
   const handleAdd = () => {
-    // onAdd(sheetName, excelData);
-    setSheetName('');
     setExcelData([]);
     addSheetDB();
     onClose();
@@ -55,6 +52,7 @@ const AddSheetDialog = ({ open, onClose, onAdd}) => {
     return columnData;
   };
 
+
   const addSheetDB = async () => {
 
 
@@ -64,22 +62,14 @@ const AddSheetDialog = ({ open, onClose, onAdd}) => {
     const formattedTasks = firstColData.map((task, index) => ({
       id: index + 1,
       Point: task,
-      status: "true",
+      status: "false",
       "Note / Suggestion": ""
     }));
-    
-    // Adding an additional task
-    formattedTasks.push({
-      id: 0,
-      Point: "add task here",
-      status: "true",
-      "Note / Suggestion": ""
-    });
     
     // dispatch({ type: 'FETCH_CURR_VERSION', payload: formattedTasks });
 
     try {
-      const response = await fetch('http://localhost:3001/add-file-data', {
+      const response = await fetch('https://mindyourlogic.team/add-file-data', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -103,10 +93,10 @@ const AddSheetDialog = ({ open, onClose, onAdd}) => {
           type: "FETCH_CURR_VERSION",
           payload:data1[0].data,
         });
-
-        // onAdd(state.selectedVersion,{ versionId: state.selectedVersion, data: data1})
-
-        console.log('adding data in db ------ ',data1)
+        
+        toast('Game Changes File Added', {
+          position: "top-right"
+        });
     } catch (error) {
       console.error('Error submitting form:', error);
     };
