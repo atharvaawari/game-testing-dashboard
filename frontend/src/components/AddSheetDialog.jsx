@@ -3,6 +3,7 @@ import { Dialog, DialogTitle, DialogContent, DialogActions, Button, FormControl 
 import * as XLSX from 'xlsx';
 import { toast , Toaster } from 'react-hot-toast';
 import { GameContext } from "../Context/gameContext";
+import BASEURL from '../config';
 
 const AddSheetDialog = ({ open, onClose, onAdd}) => {
   const { state, dispatch } = useContext(GameContext);
@@ -69,7 +70,7 @@ const AddSheetDialog = ({ open, onClose, onAdd}) => {
     // dispatch({ type: 'FETCH_CURR_VERSION', payload: formattedTasks });
 
     try {
-      const response = await fetch('https://mindyourlogic.team/add-file-data', {
+      const response = await fetch(`${BASEURL}/add-file-data`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

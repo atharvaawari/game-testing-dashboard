@@ -1,4 +1,5 @@
 import React, { createContext, useReducer, useEffect } from 'react';
+import BASEURL from '../config';
 
 // Create the context
 export const GameContext = createContext();
@@ -93,7 +94,7 @@ export const GameContextProvider = ({ children }) => {
   const fetchGameVersions = async (game) => {
     try {
       dispatch({ type: 'LOADING' });
-      const response = await fetch(`https://mindyourlogic.team/get-game-version?game=${game}`);
+      const response = await fetch(`${BASEURL}/get-game-version?game=${game}`);
       const data = await response.json();
   
       dispatch({ type: 'FETCH_SUCCESS', payload: data.data.reverse() });

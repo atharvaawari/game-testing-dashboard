@@ -15,6 +15,7 @@ import {
   Box,
   Typography
 } from "@mui/material";
+import BASEURL from '../config'
 
 const TestingCompo = ({ release }) => {
   const {testingState, testingDispatch } = useContext(testingContext);
@@ -28,7 +29,7 @@ const TestingCompo = ({ release }) => {
     const fetchChangesData = async () => {
       try {
         const response = await fetch(
-          `https://mindyourlogic.team/get-testing-data?version=${release.id}`
+          `${BASEURL}/get-testing-data?version=${release.id}`
         );
         const data = await response.json();
 
@@ -125,7 +126,7 @@ const TestingCompo = ({ release }) => {
   };
 
   const updateTesterData = (updatedTestingData) => {
-    fetch("https://mindyourlogic.team/update-testing-data", {
+    fetch(`${BASEURL}/update-testing-data`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -191,8 +192,8 @@ const TestingCompo = ({ release }) => {
   
 
   return (
-    <Container>
-      <Box sx={{ width: "100%", mx: "auto", mt: 5 }}>
+    <Container style={{paddingBottom: '1.6rem'}} >
+      <Box sx={{ width: "100%", mx: "auto", mt: 2 }}>
         <Box       style={{
         display: 'flex',
         justifyContent: 'space-between',
@@ -200,7 +201,8 @@ const TestingCompo = ({ release }) => {
         backgroundColor: '#2196f3',
         padding: '0.5rem 1rem',
         borderRadius: '5px',
-        boxShadow: '0px 2px 1px -1px rgba(0,0,0,0.2), 0px 1px 1px 0px rgba(0,0,0,0.14), 0px 1px 3px 0px rgba(0,0,0,0.12)'
+        boxShadow: '0px 2px 1px -1px rgba(0,0,0,0.2), 0px 1px 1px 0px rgba(0,0,0,0.14), 0px 1px 3px 0px rgba(0,0,0,0.12)',
+        background: '#ADADFFDB'
       }}>
         <FormControl sx={{ width: "300px" }}>
           <InputLabel id="tester-select-label">Select Tester</InputLabel>
@@ -256,9 +258,9 @@ const TestingCompo = ({ release }) => {
         {selectedTesterId && testingState.currTesterData.length > 0 ? (
   <Table size="small" style={{ border: '1px solid rgba(224, 224, 224, 1)' }}>
     <TableHead sx={{ backgroundColor: "#ffd966" }}>
-      <TableRow>
-        <TableCell>POINT</TableCell>
-        <TableCell>STATUS</TableCell>
+      <TableRow style={{background:"rgb(96, 96, 255)"}}>
+        <TableCell style={{color:"white"}}>POINT</TableCell>
+        <TableCell style={{color:"white"}}>STATUS</TableCell>
       </TableRow>
     </TableHead>
     <TableBody>

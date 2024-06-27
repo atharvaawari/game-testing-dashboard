@@ -25,6 +25,7 @@ import TestingCompo from "./components/TestingCompo";
 import NormalTester from "./components/NormalTester";
 import "./GameReleases.css";
 import { Toaster } from 'react-hot-toast';
+import BASEURL from "./config";
 
 const GameReleases = () => {
   const { state, dispatch } = useContext(GameContext);
@@ -75,7 +76,7 @@ const GameReleases = () => {
   const getCurrVersionData = async (selectedVersion) => {
     try {
       const response = await fetch(
-        `https://mindyourlogic.team/get-current-version-data?version=${selectedVersion}`
+        `${BASEURL}/get-current-version-data?version=${selectedVersion}`
       );
       const data = await response.json();
       if (data.length > 0) {
@@ -101,13 +102,14 @@ const GameReleases = () => {
           borderRadius: "8px",
         }}>
         <Box
+          style={{background: '#ADADFFDB'}}
           className="dash-head"
           display="flex"
           justifyContent="space-between"
           alignItems="center"
           mb={2}>
           <FormControl variant="outlined">
-            <InputLabel id="game-select-label">Game</InputLabel>
+            <InputLabel id="game-select-label" >Game</InputLabel>
             <Select
               labelId="game-select-label"
               id="game-select"
@@ -121,8 +123,9 @@ const GameReleases = () => {
           </FormControl>
           {state.privilege&&(
           <Button
+          style={{background:"#6060ff"}}
           variant="contained"
-          color="primary"
+          // color="primary"
           startIcon={<AddIcon />}
           onClick={handleOpenModal}>
           Add Version
@@ -147,28 +150,31 @@ const GameReleases = () => {
               key={index}
               expanded={state.expandedAccordion === index}
               onChange={handleAccordionChange(index, release)}
-              style={{ marginBottom: "5px"}}>
+              style={{ marginBottom: "5px", background: 'whitesmoke'}}>
               <AccordionSummary  expandIcon={<ExpandMoreIcon />} >
                 <Typography style={{ fontWeight: "700", lineHeight: "2.5" }}>
                   {`[ Version ${index + 1} ]`}
                 </Typography>
                 <Button
                   variant="contained"
-                  color="secondary"
                   style={{
                     margin: "0 10px",
                     float: "right",
+                    fontWeight: 700,
+                    fontSize: '1rem',
                     marginLeft: "auto",
+                    background: '#8B93FF'
                   }}>
-                  {` Release Date : ${release.version_date} 	`}
+                  {` Release Date : ${release.version_date} `}
                 </Button>
               </AccordionSummary>
 
               <AccordionDetails style={{borderTop: '1px solid rgb(204, 204, 204)',paddingTop: '1rem', padding:'0px' }}>
               {state.privilege&&(
               <Box
-                sx={{ display: "flex", justifyContent: "center", gap: "1rem" }}>
+                sx={{ display: "flex", justifyContent: "center", gap: "1rem",  marginTop: '1rem'}}>
                 <Button
+                  style={{background:"#6060ff"}}
                   startIcon={<AddIcon />}
                   variant="contained"
                   color="primary"
@@ -176,6 +182,7 @@ const GameReleases = () => {
                   Add Changes Sheet
                 </Button>
                 <Button
+                  style={{background:"#6060ff"}}
                   startIcon={<AddIcon />}
                   variant="contained"
                   color="primary"
@@ -209,7 +216,8 @@ const GameReleases = () => {
                       component="div"
                       gutterBottom
                       sx={{
-                        padding: "1rem",
+                        paddingLeft: ".5rem",
+                        paddingRight:".5rem",
                         borderRadius: 0,
                         width: "100%",
                         textAlign: "center",

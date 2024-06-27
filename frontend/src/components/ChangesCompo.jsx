@@ -8,6 +8,7 @@ import {
   List,
   Typography
 } from "@mui/material";
+import BASEURL from '../config'
 
 const ChangesCompo = ({ release }) => {
   const { state, dispatch } = useContext(GameContext);
@@ -17,7 +18,7 @@ const ChangesCompo = ({ release }) => {
     const fetchChangesData = async () => {
       try {
         const response = await fetch(
-          `https://mindyourlogic.team/get-changes-data?version=${release.id}`
+          `${BASEURL}/get-changes-data?version=${release.id}`
         );
         const data = await response.json();
 
@@ -54,7 +55,7 @@ const ChangesCompo = ({ release }) => {
       payload: updatedData,
     });
 
-    fetch('https://mindyourlogic.team/update-changes-data', {
+    fetch(`${BASEURL}/update-changes-data`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

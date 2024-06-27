@@ -4,6 +4,7 @@ import * as XLSX from 'xlsx';
 import { GameContext } from "../Context/gameContext";
 import { testingContext } from "../Context/testingContext";
 import { Toaster , toast } from 'react-hot-toast';
+import BASEURL from '../config'
 
 const AddSheetDialog = ({ open, onClose}) => {
   const { state, dispatch } = useContext(GameContext);
@@ -67,7 +68,7 @@ const AddSheetDialog = ({ open, onClose}) => {
     }));
     
     try {
-      const response = await fetch('https://mindyourlogic.team/add-testing-file-data', {
+      const response = await fetch(`${BASEURL}/add-testing-file-data`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
