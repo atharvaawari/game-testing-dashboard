@@ -81,7 +81,7 @@ const gameReducer = (state, action) => {
     case 'PRIVILAGE':
       return { ...state, privilege: action.payload };  
     case 'LOGIN_TESTER':
-      return { ...state,loginTester: action.payload };                 
+      return { ...state, loginTester: action.payload };                 
     default:
       return state;
   }
@@ -115,4 +115,5 @@ export const GameContextProvider = ({ children }) => {
       {children}
     </GameContext.Provider>
   );
+  
 };

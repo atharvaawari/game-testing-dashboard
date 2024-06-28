@@ -150,7 +150,7 @@ const GameReleases = () => {
               key={index}
               expanded={state.expandedAccordion === index}
               onChange={handleAccordionChange(index, release)}
-              style={{ marginBottom: "5px", background: 'whitesmoke'}}>
+              style={{ marginBottom: "5px", background: '#f8f8f8'}}>
               <AccordionSummary  expandIcon={<ExpandMoreIcon />} >
                 <Typography style={{ fontWeight: "700", lineHeight: "2.5" }}>
                   {`[ Version ${index + 1} ]`}
