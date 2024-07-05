@@ -8,7 +8,6 @@ import {
   List,
   Typography
 } from "@mui/material";
-import BASEURL from '../config'
 
 const ChangesCompo = ({ release }) => {
   const { state, dispatch } = useContext(GameContext);
@@ -18,7 +17,7 @@ const ChangesCompo = ({ release }) => {
     const fetchChangesData = async () => {
       try {
         const response = await fetch(
-          `${BASEURL}/get-changes-data?version=${release.id}`
+          `http://localhost:3001/get-changes-data?version=${release.id}`
         );
         const data = await response.json();
 
@@ -55,7 +54,7 @@ const ChangesCompo = ({ release }) => {
       payload: updatedData,
     });
 
-    fetch(`${BASEURL}/update-changes-data`, {
+    fetch('http://localhost:3001/update-changes-data', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -89,7 +88,7 @@ const ChangesCompo = ({ release }) => {
 
   return (
     <Container>
-      <List style={{paddingBottom:'0px'}}>
+      <List>
       {state.currVersion.length > 0 ? (
   state.currVersion.map((row, rowIndex) => (
     <ListItem key={row.id} // Ensure the key is unique
@@ -98,8 +97,6 @@ const ChangesCompo = ({ release }) => {
         borderRadius: 0,
       }}>
       <ListItemText
-
-        style={{padding:'0px', margin:'0px'}}
         primary={Object.entries(row)
           .filter(([key]) => !keysToSkip.includes(key))
           .map(([key, value]) =>

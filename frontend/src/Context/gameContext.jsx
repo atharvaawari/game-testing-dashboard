@@ -1,5 +1,4 @@
 import React, { createContext, useReducer, useEffect } from 'react';
-import BASEURL from '../config';
 
 // Create the context
 export const GameContext = createContext();
@@ -81,7 +80,7 @@ const gameReducer = (state, action) => {
     case 'PRIVILAGE':
       return { ...state, privilege: action.payload };  
     case 'LOGIN_TESTER':
-      return { ...state, loginTester: action.payload };                 
+      return { ...state,loginTester: action.payload };                 
     default:
       return state;
   }
@@ -94,13 +93,13 @@ export const GameContextProvider = ({ children }) => {
   const fetchGameVersions = async (game) => {
     try {
       dispatch({ type: 'LOADING' });
-      const response = await fetch(`${BASEURL}/get-game-version?game=${game}`);
+      const response = await fetch(`http://localhost:3001/get-game-version?game=${game}`);
       const data = await response.json();
   
-      dispatch({ type: 'FETCH_SUCCESS', payload: data.data.reverse() });
+      dispatch({ type: 'FETCH_SUCCESS', payload: data.data });
       dispatch({ type: 'PRIVILAGE', payload: JSON.parse(data.user_data.p1).GameAdmin });
       dispatch({ type: "LOGIN_TESTER",payload:data.user_data });
-      console.log(data.user_data)
+  
     } catch (error) {
       dispatch({ type: 'FETCH_ERROR', payload: error });
     }
@@ -115,5 +114,4 @@ export const GameContextProvider = ({ children }) => {
       {children}
     </GameContext.Provider>
   );
-  
 };

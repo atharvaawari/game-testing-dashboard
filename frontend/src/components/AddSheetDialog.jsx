@@ -3,7 +3,6 @@ import { Dialog, DialogTitle, DialogContent, DialogActions, Button, FormControl 
 import * as XLSX from 'xlsx';
 import { toast , Toaster } from 'react-hot-toast';
 import { GameContext } from "../Context/gameContext";
-import BASEURL from '../config';
 
 const AddSheetDialog = ({ open, onClose, onAdd}) => {
   const { state, dispatch } = useContext(GameContext);
@@ -16,6 +15,8 @@ const AddSheetDialog = ({ open, onClose, onAdd}) => {
     reader.onload = (e) => {
       const data = new Uint8Array(e.target.result);
       const workbook = XLSX.read(data, { type: 'array' });
+
+
       const sheetName = workbook.SheetNames[0];
       const worksheet = workbook.Sheets[sheetName];
       const jsonData = XLSX.utils.sheet_to_json(worksheet);
@@ -23,7 +24,8 @@ const AddSheetDialog = ({ open, onClose, onAdd}) => {
 
       const newEntries = findNewEntries(jsonData);
       const columns = extractColumns(newEntries);
-      dispatch({ type: 'SET_FILES_COLS_DATA', payload: columns });
+      // dispatch({ type: 'SET_FILES_COLS_DATA', payload: columns });
+   
     };
 
     reader.readAsArrayBuffer(file);
@@ -53,9 +55,7 @@ const AddSheetDialog = ({ open, onClose, onAdd}) => {
     return columnData;
   };
 
-
   const addSheetDB = async () => {
-
 
     const firstColName = Object.keys(state.filesColsData)[0];
     const firstColData = state.filesColsData[firstColName];
@@ -67,10 +67,8 @@ const AddSheetDialog = ({ open, onClose, onAdd}) => {
       "Note / Suggestion": ""
     }));
     
-    // dispatch({ type: 'FETCH_CURR_VERSION', payload: formattedTasks });
-
     try {
-      const response = await fetch(`${BASEURL}/add-file-data`, {
+      const response = await fetch('http://localhost:3001/add-file-data', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -101,6 +99,7 @@ const AddSheetDialog = ({ open, onClose, onAdd}) => {
     } catch (error) {
       console.error('Error submitting form:', error);
     };
+
   }
 
   return (

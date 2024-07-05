@@ -391,6 +391,18 @@ app.get("/get-content-child-data", async (req, res) => {
 
 });
 
+app.get("/get-taskdata", async (req, res) => {
+   
+  try {
+    const data = await executeDynamicSQLByTable(`SELECT * FROM task_sheet WHERE category_name = 'game'`);
+
+    res.status(200).json(data);
+    
+  } catch (error) {
+    console.error('Error sending data:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+})
 
 
 // ___________________

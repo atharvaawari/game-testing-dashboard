@@ -4,7 +4,6 @@ import * as XLSX from 'xlsx';
 import { GameContext } from "../Context/gameContext";
 import { testingContext } from "../Context/testingContext";
 import { Toaster , toast } from 'react-hot-toast';
-import BASEURL from '../config'
 
 const AddSheetDialog = ({ open, onClose}) => {
   const { state, dispatch } = useContext(GameContext);
@@ -26,6 +25,7 @@ const AddSheetDialog = ({ open, onClose}) => {
       const newEntries = findNewEntries(jsonData);
       const columns = extractColumns(newEntries);
       dispatch({ type: 'SET_FILES_COLS_DATA', payload: columns });
+    
     };
 
     reader.readAsArrayBuffer(file);
@@ -33,7 +33,8 @@ const AddSheetDialog = ({ open, onClose}) => {
 
   const handleAdd = () => {
     setExcelData([]);
-    addSheetDB();
+    addChangesDB();
+    addTestingDB();
     onClose();
   };
 
@@ -55,20 +56,21 @@ const AddSheetDialog = ({ open, onClose}) => {
     return columnData;
   };
 
-  const addSheetDB = async () => {
+  const addTestingDB = async () => {
 
-    const firstColName = Object.keys(state.filesColsData)[0];
-    const firstColData = state.filesColsData[firstColName];
-    
-    const formattedTasks = firstColData.map((task, index) => ({
-      id: index + 1,
-      Point: task,
-      status: "false",
-      "Note / Suggestion": ""
-    }));
-    
+    // const firstColName = Object.keys(state.filesColsData)[0];
+    // const firstColData = state.filesColsData[firstColName];
+     
     try {
-      const response = await fetch(`${BASEURL}/add-testing-file-data`, {
+
+      const formattedTasks = state.filesColsData.testing.map((task, index) => ({
+        id: index + 1,
+        Point: task,
+        status: "false",
+        "Note / Suggestion": ""
+      }));
+
+      const response = await fetch('http://localhost:3001/add-testing-file-data', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -113,8 +115,64 @@ const AddSheetDialog = ({ open, onClose}) => {
         });
 
     } catch (error) {
-      console.error('Error submitting form:', error);
+      // console.error('Error submitting form:', error);
+      toast('File is not valid', {
+        position: "top-right"
+      });
     };
+
+  }
+
+  const addChangesDB = async () => {
+
+    // const firstColName = Object.keys(state.filesColsData)[0];
+    // const firstColData = state.filesColsData[firstColName];
+
+    try {
+      
+    const formattedTasks = state.filesColsData.changes.map((task, index) => ({
+      id: index + 1,
+      Point: task,
+      status: "false",
+      "Note / Suggestion": ""
+    }));
+    
+    
+      const response = await fetch('http://localhost:3001/add-file-data', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          filesColsData:formattedTasks,
+          selectedVersion:state.selectedVersion,
+          selectedGame:state.selectedGame
+        })
+      });
+
+      const resData = await response.json();
+      const id = resData.insertId
+      const tempObj = { id: id, game_id: state.selectedGame, version_id:state.selectedVersion, data:formattedTasks}
+
+        const data1 = [];
+
+        data1.push(tempObj)
+
+        dispatch({
+          type: "FETCH_CURR_VERSION",
+          payload:data1[0].data,
+        });
+        
+        toast('Game Changes File Added', {
+          position: "top-right"
+        });
+    } catch (error) {
+      // console.error('Error submitting form:', error);
+      toast('File is not valid', {
+        position: "top-right"
+      });
+    };
+
   }
 
   return (
@@ -147,6 +205,7 @@ const AddSheetDialog = ({ open, onClose}) => {
       </DialogActions>
     </Dialog>
   );
+
 };
 
 export default AddSheetDialog;

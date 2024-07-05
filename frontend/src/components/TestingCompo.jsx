@@ -15,7 +15,6 @@ import {
   Box,
   Typography
 } from "@mui/material";
-import BASEURL from '../config'
 
 const TestingCompo = ({ release }) => {
   const {testingState, testingDispatch } = useContext(testingContext);
@@ -29,7 +28,7 @@ const TestingCompo = ({ release }) => {
     const fetchChangesData = async () => {
       try {
         const response = await fetch(
-          `${BASEURL}/get-testing-data?version=${release.id}`
+          `http://localhost:3001/get-testing-data?version=${release.id}`
         );
         const data = await response.json();
 
@@ -45,7 +44,7 @@ const TestingCompo = ({ release }) => {
           });
         }
 
-        const fullyTestedTaskCount = countFullyTestedPoints(data);
+        countFullyTestedPoints(data);
     
       } catch (error) {
         console.error("Error fetching changes data:", error);
@@ -99,7 +98,6 @@ const TestingCompo = ({ release }) => {
     const testerId = event.target.value;
     setSelectedTesterId(testerId);
     getSelectedTesterData(testerId);
-  
   };
 
   const getSelectedTesterData = (testerId) => {
@@ -126,7 +124,7 @@ const TestingCompo = ({ release }) => {
   };
 
   const updateTesterData = (updatedTestingData) => {
-    fetch(`${BASEURL}/update-testing-data`, {
+    fetch("http://localhost:3001/update-testing-data", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -190,10 +188,9 @@ const TestingCompo = ({ release }) => {
     return { fullyTestedCount, detailedStatus };
   };
   
-
   return (
-    <Container style={{paddingBottom: '1.6rem'}} >
-      <Box sx={{ width: "100%", mx: "auto", mt: 2 }}>
+    <Container>
+      <Box sx={{ width: "100%", mx: "auto", mt: 5 }}>
         <Box       style={{
         display: 'flex',
         justifyContent: 'space-between',
@@ -201,8 +198,7 @@ const TestingCompo = ({ release }) => {
         backgroundColor: '#2196f3',
         padding: '0.5rem 1rem',
         borderRadius: '5px',
-        boxShadow: '0px 2px 1px -1px rgba(0,0,0,0.2), 0px 1px 1px 0px rgba(0,0,0,0.14), 0px 1px 3px 0px rgba(0,0,0,0.12)',
-        background: '#ADADFFDB'
+        boxShadow: '0px 2px 1px -1px rgba(0,0,0,0.2), 0px 1px 1px 0px rgba(0,0,0,0.14), 0px 1px 3px 0px rgba(0,0,0,0.12)'
       }}>
         <FormControl sx={{ width: "300px" }}>
           <InputLabel id="tester-select-label">Select Tester</InputLabel>
@@ -258,16 +254,16 @@ const TestingCompo = ({ release }) => {
         {selectedTesterId && testingState.currTesterData.length > 0 ? (
   <Table size="small" style={{ border: '1px solid rgba(224, 224, 224, 1)' }}>
     <TableHead sx={{ backgroundColor: "#ffd966" }}>
-      <TableRow style={{background:"rgb(96, 96, 255)"}}>
-        <TableCell style={{color:"white"}}>POINT</TableCell>
-        <TableCell style={{color:"white"}}>STATUS</TableCell>
+      <TableRow>
+        <TableCell>POINT</TableCell>
+        <TableCell>STATUS</TableCell>
       </TableRow>
     </TableHead>
     <TableBody>
       {testingState.currTesterData.map((row, index) => (
         <TableRow key={row.id + index}>
-          <TableCell style={{padding:"2px 16px"}}>{row.Point}</TableCell>
-          <TableCell style={{padding:"2px 16px"}}>
+          <TableCell>{row.Point}</TableCell>
+          <TableCell>
             <Checkbox
               checked={row.status === "true"}
               onChange={(e) => handleCheckboxChange(row, e.target.checked)}

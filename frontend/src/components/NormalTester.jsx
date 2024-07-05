@@ -12,7 +12,6 @@ import {
   Box,
   Typography
 } from "@mui/material";
-import BASEURL from '../config';
 
 const TestingCompo = ({ release }) => {
   const { state } = useContext(GameContext);
@@ -27,7 +26,7 @@ const TestingCompo = ({ release }) => {
     const fetchChangesData = async () => {
       try {
         const response = await fetch(
-          `${BASEURL}/get-testing-data?version=${release.id}`
+          `http://localhost:3001/get-testing-data?version=${release.id}`
         );
         const data = await response.json();
 
@@ -96,7 +95,7 @@ const TestingCompo = ({ release }) => {
   };
 
   const updateTesterData = (updatedTestingData) => {
-    fetch(`${BASEURL}/update-testing-data`, {
+    fetch("http://localhost:3001/update-testing-data", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
