@@ -93,7 +93,7 @@ function TaskBox() {
           id="panel1a-header"
         >
           <h4>Tasks</h4>
-        </AccordionSummary  >
+        </AccordionSummary >
         <DialogActions style={{ marginRight: ".5rem", justifyContent: "center" }}>
           <Button
             style={{ fontSize: "1.2rem", background: "#2196f3", color: "white" }}
@@ -144,7 +144,8 @@ function TaskBox() {
                         lineHeight: ".5rem",
                         textAlign: 'center',
                         padding: '10px',
-                        borderBottom: '0'
+                        borderBottom: '0',
+                        fontSize:'1rem'
                       }}
                     >
                       {index + 1}
@@ -154,13 +155,13 @@ function TaskBox() {
                         lineHeight: ".5rem",
                         textAlign: 'center',
                         padding: '10px',
-                        borderBottom: '0'
+                        borderBottom: '0',
+                        fontSize:'1rem'
                       }}
                     >
                       <a
                         href={row.link}
                         target='_blank'
-                        style={{ textUnderlineOffset: 'none' }}
                       >
                         {row.title}
                       </a>
@@ -176,7 +177,7 @@ function TaskBox() {
                     >
                       <DeleteTwoToneIcon
                         variant="contained"
-                        sx={{ color: pink[500], fontSize: 35 }}
+                        sx={{ color: pink[500], fontSize: 35, cursor: 'pointer' }}
                         onClick={() => handleDelete(row.id)}
                       >
                       </DeleteTwoToneIcon>
