@@ -4,9 +4,9 @@ import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone';
 import { pink } from '@mui/material/colors';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import TaskBoxPopUp from './TaskBoxPopUp';
+import BASEURL from '../../config'
 
 function TaskBox() {
-
 
   const [rows, setRows] = useState([]);
   const [open, setOpen] = useState(false);
@@ -17,7 +17,7 @@ function TaskBox() {
 
       try {
         const response = await fetch(
-          `http://localhost:3001/get-taskdata`
+          `${BASEURL}/get-taskdata`
         );
         const data = await response.json();
 
@@ -43,7 +43,7 @@ function TaskBox() {
     setRows(updatedRows);
 
     try {
-      const res = await fetch(`http://localhost:3001/delete-task`, {
+      const res = await fetch(`${BASEURL}/delete-task`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

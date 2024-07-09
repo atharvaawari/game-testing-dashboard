@@ -2,7 +2,7 @@ import React, { useState, useContext } from 'react';
 import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Button, TextField } from '@mui/material';
 import { toast , Toaster } from 'react-hot-toast';
 import { GameContext } from '../Context/gameContext'; // Import your GameContext here
-
+import BASEURL from '../config';
 
 const AddGameModal = ({ open, game, handleClose }) => {
   const { dispatch } = useContext(GameContext); // Get dispatch function from GameContext
@@ -25,7 +25,7 @@ const AddGameModal = ({ open, game, handleClose }) => {
     e.preventDefault();
 
     try {
-      const response = await fetch('http://localhost:3001/add-game-version', {
+      const response = await fetch(`${BASEURL}/add-game-version`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

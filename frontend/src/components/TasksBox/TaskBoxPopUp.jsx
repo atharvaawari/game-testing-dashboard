@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Dialog, DialogTitle, DialogContent, TextField, Button, DialogActions } from '@mui/material';
 import toast from 'react-hot-toast';
+import BASEURL from '../../config';
 
 function TaskBoxPopUp({ open, handleClose, handleAddFile }) {
   const [formData, setFormData] = useState({
@@ -26,7 +27,7 @@ function TaskBoxPopUp({ open, handleClose, handleAddFile }) {
     ];
 
     try {
-      const response = await fetch('http://localhost:3001/add-task-sheet', {
+      const response = await fetch(`${BASEURL}/add-task-sheet`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

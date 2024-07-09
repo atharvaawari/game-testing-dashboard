@@ -26,6 +26,7 @@ import NormalTester from "./components/NormalTester";
 import "./GameReleases.css";
 import { Toaster } from 'react-hot-toast';
 import TaskBox from "./components/TasksBox/TaskBox";
+import BASEURL from "./config";
 
 const GameReleases = () => {
   const { state, dispatch } = useContext(GameContext);
@@ -76,7 +77,7 @@ const GameReleases = () => {
   const getCurrVersionData = async (selectedVersion) => {
     try {
       const response = await fetch(
-        `http://localhost:3001/get-current-version-data?version=${selectedVersion}`
+        `${BASEURL}/get-current-version-data?version=${selectedVersion}`
       );
       const data = await response.json();
       if (data.length > 0) {

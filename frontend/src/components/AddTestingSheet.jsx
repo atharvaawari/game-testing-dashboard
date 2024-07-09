@@ -3,7 +3,8 @@ import { Dialog, DialogTitle, DialogContent, DialogActions, Button, FormControl 
 import * as XLSX from 'xlsx';
 import { GameContext } from "../Context/gameContext";
 import { testingContext } from "../Context/testingContext";
-import { Toaster , toast } from 'react-hot-toast';
+import { toast } from 'react-hot-toast';
+import BASEURL from '../config';
 
 const AddSheetDialog = ({ open, onClose}) => {
   const { state, dispatch } = useContext(GameContext);
@@ -70,7 +71,7 @@ const AddSheetDialog = ({ open, onClose}) => {
         "Note / Suggestion": ""
       }));
 
-      const response = await fetch('http://localhost:3001/add-testing-file-data', {
+      const response = await fetch(`${BASEURL}/add-testing-file-data`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -138,7 +139,7 @@ const AddSheetDialog = ({ open, onClose}) => {
     }));
     
     
-      const response = await fetch('http://localhost:3001/add-file-data', {
+      const response = await fetch(`${BASEURL}/add-file-data`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
