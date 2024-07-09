@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react';
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button, FormControl } from '@mui/material';
 import * as XLSX from 'xlsx';
-import { toast , Toaster } from 'react-hot-toast';
+import { toast } from 'react-hot-toast';
 import { GameContext } from "../Context/gameContext";
 
 const AddSheetDialog = ({ open, onClose, onAdd}) => {

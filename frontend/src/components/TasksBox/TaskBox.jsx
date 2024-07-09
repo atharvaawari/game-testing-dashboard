@@ -1,5 +1,7 @@
-import React, {useEffect, useState} from 'react'
+import React, { useEffect, useState } from 'react'
 import { Accordion, AccordionSummary, AccordionDetails, TableContainer, Paper, Table, TableHead, TableRow, TableCell, TableBody, Button, DialogActions } from '@mui/material';
+import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone';
+import { pink } from '@mui/material/colors';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import TaskBoxPopUp from './TaskBoxPopUp';
 
@@ -10,8 +12,9 @@ function TaskBox() {
   const [open, setOpen] = useState(false);
 
 
-  useEffect( () =>{
+  useEffect(() => {
     const fetchTskBoxData = async () => {
+
       try {
         const response = await fetch(
           `http://localhost:3001/get-taskdata`
@@ -29,18 +32,46 @@ function TaskBox() {
       }
     };
     fetchTskBoxData()
-  }, [setRows] )
 
-  
+  }, [rows])
 
-  const handleDelete = (id) => {
+
+
+  const handleDelete = async (id) => {
+    // Optimistically update the UI by filtering out the deleted row
     const updatedRows = rows.filter(row => row.id !== id);
     setRows(updatedRows);
+
+    try {
+      const res = await fetch(`http://localhost:3001/delete-task`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          task_id: id,
+          category: 'game',
+          targets_category: 'game',
+        }),
+      });
+
+
+      if (!res.ok) {
+        throw new Error(`Error: ${res.status} ${res.statusText}`);
+      }
+
+      const data = await res.json();
+      console.log('Delete successful:', data);
+
+    } catch (error) {
+      console.error('Failed to delete task:', error);
+    }
   };
+
 
   const handleOpen = () => {
     setOpen(true);
-    
+
   };
 
   const handleClose = () => {
@@ -49,12 +80,13 @@ function TaskBox() {
 
   const handleAddFile = (newTask) => {
     setRows([...rows, newTask]);
+    console.log(rows)
   };
 
   return (
     <div>
-      <Accordion style={{ maxWidth: '1200px', margin:'auto'}}>
-        
+      <Accordion style={{ maxWidth: '1200px', margin: 'auto' }}>
+
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
           aria-controls="panel1a-content"
@@ -63,9 +95,9 @@ function TaskBox() {
           <h4>Tasks</h4>
         </AccordionSummary  >
         <DialogActions style={{ marginRight: ".5rem", justifyContent: "center" }}>
-          <Button 
-          style={{ fontSize: "1.2rem", background: "#2196f3", color: "white" }} 
-          onClick={handleOpen}>
+          <Button
+            style={{ fontSize: "1.2rem", background: "#2196f3", color: "white" }}
+            onClick={handleOpen}>
             Add+
           </Button>
         </DialogActions>
@@ -73,28 +105,92 @@ function TaskBox() {
           <TableContainer component={Paper}>
             <Table>
               <TableHead>
-                <TableRow style={{ background: "#FFD966", padding: ".5rem .5rem" }}>
-                  <TableCell style={{ lineHeight: ".5rem", textAlign: 'center' }}>Sr No</TableCell>
-                  <TableCell style={{ lineHeight: ".5rem", textAlign: 'center' }}>Files</TableCell>
-                  <TableCell style={{ lineHeight: ".5rem", textAlign: 'center' }}>Delete</TableCell>
+                <TableRow
+                  style={{
+                    background: "#FFD966",
+                    padding: ".5rem .5rem"
+                  }}
+                >
+                  <TableCell
+                    style={{
+                      lineHeight: ".5rem",
+                      textAlign: 'center'
+                    }}
+                  >
+                    Sr No
+                  </TableCell>
+                  <TableCell
+                    style={{
+                      lineHeight: ".5rem",
+                      textAlign: 'center'
+                    }}>
+                    Files
+                  </TableCell>
+                  <TableCell
+                    style={{
+                      lineHeight: ".5rem",
+                      textAlign: 'center'
+                    }}
+                  >
+                    Delete
+                  </TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
-                {rows.map((row) =>  row ? (
+                {rows.map((row, index) => row ? (
                   <TableRow key={row.id}>
-                    <TableCell style={{ lineHeight: ".5rem", textAlign: 'center', padding:'10px', borderBottom:'0' }}>{row.id}</TableCell>
-                    <TableCell style={{ lineHeight: ".5rem", textAlign: 'center', padding:'10px', borderBottom:'0' }}>{row.title}</TableCell>
-                    <TableCell style={{ lineHeight: ".5rem", textAlign: 'center', padding:'10px', borderBottom:'0'  }}>
-                      <Button
+                    <TableCell
+                      style={{
+                        lineHeight: ".5rem",
+                        textAlign: 'center',
+                        padding: '10px',
+                        borderBottom: '0'
+                      }}
+                    >
+                      {index + 1}
+                    </TableCell>
+                    <TableCell
+                      style={{
+                        lineHeight: ".5rem",
+                        textAlign: 'center',
+                        padding: '10px',
+                        borderBottom: '0'
+                      }}
+                    >
+                      <a
+                        href={row.link}
+                        target='_blank'
+                        style={{ textUnderlineOffset: 'none' }}
+                      >
+                        {row.title}
+                      </a>
+                    </TableCell>
+
+                    <TableCell
+                      style={{
+                        lineHeight: ".5rem",
+                        textAlign: 'center',
+                        padding: '10px',
+                        borderBottom: '0'
+                      }}
+                    >
+                      <DeleteTwoToneIcon
                         variant="contained"
-                        color="secondary"
+                        sx={{ color: pink[500], fontSize: 35 }}
                         onClick={() => handleDelete(row.id)}
                       >
-                        Delete
-                      </Button>
+                      </DeleteTwoToneIcon>
                     </TableCell>
                   </TableRow>
-                ):  "error")}
+                ) : <TableRow key={index}>
+                  <TableCell
+                    colSpan={3}
+                    style={{ textAlign: 'center' }}
+                  >
+                    No data available
+                  </TableCell>
+                </TableRow>
+                )}
               </TableBody>
             </Table>
           </TableContainer>
